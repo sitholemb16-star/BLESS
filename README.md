@@ -67,6 +67,62 @@ Reconstruct all recoverable data into **human-readable, chronological outputs** 
   - Media index with message linkage
 - Record parser confidence and unresolved references.
 
+## Emulator Communication Harness
+
+A lightweight ADB harness is included at `scripts/emulator-comm`.
+
+### Target selection
+
+- Explicit serial: `--serial <serial>`
+- Environment fallback: `ANDROID_SERIAL=<serial>`
+
+### Supported operations
+
+- Connection/status checks (`status`)
+- Outgoing call start/end (`call-start`, `call-end`)
+- Incoming call inject/accept/reject (`call-incoming`, `call-accept`, `call-reject`)
+- Outgoing SMS composer (`sms-send`)
+- Incoming SMS injection (`sms-incoming`)
+
+### Usage examples
+
+```bash
+# show target and connectivity
+scripts/emulator-comm status
+
+# select device explicitly
+scripts/emulator-comm --serial emulator-5554 status
+
+# outgoing call
+scripts/emulator-comm call-start 15551234567
+scripts/emulator-comm call-end
+
+# incoming call simulation (emulator only)
+scripts/emulator-comm call-incoming 15557654321
+scripts/emulator-comm call-accept 15557654321
+scripts/emulator-comm call-reject 15557654321
+
+# outgoing sms composer
+scripts/emulator-comm sms-send 15551234567 "hello from harness"
+
+# incoming sms simulation (emulator only)
+scripts/emulator-comm sms-incoming 15557654321 "test inbound"
+```
+
+### Behavioral notes and limitations
+
+- Primary target is the Android Emulator.
+- On physical devices, ADB connectivity commands are supported.
+- Incoming call/SMS injection is **not available** on physical devices and is reported explicitly as:
+  - `UNSUPPORTED_ON_PHYSICAL_DEVICE: incoming call/SMS injection requires Android Emulator`
+- This behavior is a hard failure (non-zero exit), not a silent no-op.
+
+### Path alignment
+
+Emulator path reference is aligned to mounted sparsebundle:
+
+`/Volumes/VOLUME 1/2027 Final Drafts.sparsebundle`
+
 ## Definition of Done
 
 The process is complete when the dataset is no longer just technical artifacts, but a coherent and navigable record of communication and activity from top to bottom.

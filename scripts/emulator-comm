@@ -1,0 +1,192 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+usage() {
+  cat <<'USAGE'
+Usage:
+  emulator-comm [--serial SERIAL] <command> [args]
+
+Commands:
+  status
+      Check ADB connectivity and report target type.
+
+  call-start <number>
+      Start an outgoing call to <number> on emulator/device.
+
+  call-end
+      End current call.
+
+  call-incoming <number>
+      Inject incoming call from <number> (emulator only).
+
+  call-accept <number>
+      Inject and accept incoming call from <number> (emulator only).
+
+  call-reject <number>
+      Inject and reject incoming call from <number> (emulator only).
+
+  sms-send <number> <message>
+      Open outgoing SMS composer.
+
+  sms-incoming <number> <message>
+      Inject incoming SMS (emulator only).
+
+Options:
+  --serial SERIAL     Target device serial. If omitted, uses $ANDROID_SERIAL.
+  -h, --help          Show this help.
+USAGE
+}
+
+SERIAL="${ANDROID_SERIAL:-}"
+if [[ "${1:-}" == "--serial" ]]; then
+  SERIAL="${2:-}"
+  shift 2
+fi
+
+if [[ -z "${1:-}" ]] || [[ "${1:-}" == "-h" ]] || [[ "${1:-}" == "--help" ]]; then
+  usage
+  exit 0
+fi
+
+CMD="$1"
+shift || true
+
+adb_cmd() {
+  local -a base=(adb)
+  if [[ -n "$SERIAL" ]]; then
+    base+=( -s "$SERIAL" )
+  fi
+  "${base[@]}" "$@"
+}
+
+require_adb() {
+  if ! command -v adb >/dev/null 2>&1; then
+    echo "ERROR: adb not found in PATH" >&2
+    exit 2
+  fi
+}
+
+require_connected() {
+  local state
+  if ! state="$(adb_cmd get-state 2>/dev/null)"; then
+    echo "ERROR: no ADB target available" >&2
+    exit 3
+  fi
+  if [[ "$state" != "device" ]]; then
+    echo "ERROR: ADB target not in 'device' state: $state" >&2
+    exit 3
+  fi
+}
+
+target_serial() {
+  if [[ -n "$SERIAL" ]]; then
+    echo "$SERIAL"
+    return
+  fi
+  adb devices | awk 'NR>1 && $2=="device" {print $1; exit}'
+}
+
+is_emulator() {
+  local s
+  s="$(target_serial)"
+  [[ "$s" == emulator-* ]]
+}
+
+require_emulator() {
+  if ! is_emulator; then
+    echo "UNSUPPORTED_ON_PHYSICAL_DEVICE: incoming call/SMS injection requires Android Emulator" >&2
+    exit 4
+  fi
+}
+
+cmd_status() {
+  require_connected
+  local s kind
+  s="$(target_serial)"
+  if [[ "$s" == emulator-* ]]; then
+    kind="emulator"
+  else
+    kind="physical"
+  fi
+  echo "ADB_CONNECTED serial=$s type=$kind"
+}
+
+cmd_call_start() {
+  local number="${1:-}"
+  [[ -n "$number" ]] || { echo "ERROR: call-start requires <number>" >&2; exit 1; }
+  require_connected
+  adb_cmd shell am start -a android.intent.action.CALL -d "tel:${number}" >/dev/null
+  echo "CALL_OUTGOING_STARTED number=$number"
+}
+
+cmd_call_end() {
+  require_connected
+  adb_cmd emu gsm cancel >/dev/null
+  echo "CALL_ENDED"
+}
+
+cmd_call_incoming() {
+  local number="${1:-}"
+  [[ -n "$number" ]] || { echo "ERROR: call-incoming requires <number>" >&2; exit 1; }
+  require_connected
+  require_emulator
+  adb_cmd emu gsm call "$number" >/dev/null
+  echo "CALL_INCOMING_INJECTED number=$number"
+}
+
+cmd_call_accept() {
+  local number="${1:-}"
+  [[ -n "$number" ]] || { echo "ERROR: call-accept requires <number>" >&2; exit 1; }
+  require_connected
+  require_emulator
+  adb_cmd emu gsm call "$number" >/dev/null
+  adb_cmd emu gsm accept "$number" >/dev/null
+  echo "CALL_INCOMING_ACCEPTED number=$number"
+}
+
+cmd_call_reject() {
+  local number="${1:-}"
+  [[ -n "$number" ]] || { echo "ERROR: call-reject requires <number>" >&2; exit 1; }
+  require_connected
+  require_emulator
+  adb_cmd emu gsm call "$number" >/dev/null
+  adb_cmd emu gsm cancel "$number" >/dev/null
+  echo "CALL_INCOMING_REJECTED number=$number"
+}
+
+cmd_sms_send() {
+  local number="${1:-}"
+  local message="${2:-}"
+  [[ -n "$number" && -n "$message" ]] || { echo "ERROR: sms-send requires <number> <message>" >&2; exit 1; }
+  require_connected
+  adb_cmd shell am start -a android.intent.action.SENDTO -d "sms:${number}" --es sms_body "$message" >/dev/null
+  echo "SMS_COMPOSER_OPENED number=$number"
+}
+
+cmd_sms_incoming() {
+  local number="${1:-}"
+  local message="${2:-}"
+  [[ -n "$number" && -n "$message" ]] || { echo "ERROR: sms-incoming requires <number> <message>" >&2; exit 1; }
+  require_connected
+  require_emulator
+  adb_cmd emu sms send "$number" "$message" >/dev/null
+  echo "SMS_INCOMING_INJECTED number=$number"
+}
+
+require_adb
+
+case "$CMD" in
+  status) cmd_status "$@" ;;
+  call-start) cmd_call_start "$@" ;;
+  call-end) cmd_call_end "$@" ;;
+  call-incoming) cmd_call_incoming "$@" ;;
+  call-accept) cmd_call_accept "$@" ;;
+  call-reject) cmd_call_reject "$@" ;;
+  sms-send) cmd_sms_send "$@" ;;
+  sms-incoming) cmd_sms_incoming "$@" ;;
+  *)
+    echo "ERROR: unknown command '$CMD'" >&2
+    usage
+    exit 1
+    ;;
+esac
