@@ -1,100 +1,78 @@
 #!/usr/bin/env bash
+
 set -euo pipefail
 
-SCRIPT="scripts/emulator-comm"
+ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+TMP="$(mktemp -d)"
+trap 'rm -rf "$TMP"' EXIT
 
-pass() { echo "PASS: $1"; }
-fail() { echo "FAIL: $1"; exit 1; }
-
-ADB_MOCK_DIR="$(mktemp -d)"
-ADB_LOG="$(mktemp)"
-
-cat >"$ADB_MOCK_DIR/adb" <<'ADB'
+cat >"$TMP/adb" <<'EOF'
 #!/usr/bin/env bash
-set -euo pipefail
-LOG_FILE="${ADB_LOG_FILE:?}"
-STATE="${ADB_STATE:-device}"
-DEVICES="${ADB_DEVICES:-emulator-5554\tdevice}"
+printf '%q ' "$@" >>"$ADB_LOG"
+printf '\n' >>"$ADB_LOG"
 
-echo "adb $*" >> "$LOG_FILE"
-
-if [[ "${1:-}" == "-s" ]]; then
-  shift 2
-fi
-
-case "${1:-}" in
-  get-state)
-    if [[ "$STATE" == "none" ]]; then
-      exit 1
-    fi
-    echo "$STATE"
-    ;;
-  devices)
-    echo -e "List of devices attached\n$DEVICES\n"
-    ;;
-  shell)
-    exit 0
-    ;;
-  emu)
-    exit 0
-    ;;
-  *)
-    exit 0
-    ;;
+case "$*" in
+  *"get-state"*) printf 'device\n' ;;
+  *"getprop ro.kernel.qemu"*) printf '%s\n' "${MOCK_QEMU:-1}" ;;
+  *"getprop ro.product.model"*) printf 'Test Emulator\n' ;;
 esac
-ADB
-chmod +x "$ADB_MOCK_DIR/adb"
+EOF
+chmod +x "$TMP/adb"
 
-export PATH="$ADB_MOCK_DIR:$PATH"
-export ADB_LOG_FILE="$ADB_LOG"
+export ADB="$TMP/adb"
+export ADB_LOG="$TMP/adb.log"
 
-# help output validation
-if "$SCRIPT" --help | grep -q "Usage:"; then
-  pass "help output"
-else
-  fail "help output"
+assert_log_contains() {
+  grep -F -- "$1" "$ADB_LOG" >/dev/null || {
+    printf 'expected adb call not found: %s\n' "$1" >&2
+    cat "$ADB_LOG" >&2
+    exit 1
+  }
+}
+
+: >"$ADB_LOG"
+"$ROOT/scripts/emulator-comm" status >/dev/null
+assert_log_contains 'shell getprop ro.product.model'
+assert_log_contains 'shell getprop ro.kernel.qemu'
+
+: >"$ADB_LOG"
+"$ROOT/scripts/emulator-comm" --serial emulator-5554 dial +15551234567 >/dev/null
+assert_log_contains '-s emulator-5554 shell am start -W -a android.intent.action.CALL -d tel:+15551234567'
+
+: >"$ADB_LOG"
+"$ROOT/scripts/emulator-comm" end-call >/dev/null
+assert_log_contains 'shell input keyevent KEYCODE_ENDCALL'
+
+: >"$ADB_LOG"
+"$ROOT/scripts/emulator-comm" incoming-call 5551234 >/dev/null
+assert_log_contains 'emu gsm call 5551234'
+
+: >"$ADB_LOG"
+"$ROOT/scripts/emulator-comm" accept-call 5551234 >/dev/null
+assert_log_contains 'emu gsm accept 5551234'
+
+: >"$ADB_LOG"
+"$ROOT/scripts/emulator-comm" reject-call 5551234 >/dev/null
+assert_log_contains 'emu gsm cancel 5551234'
+
+: >"$ADB_LOG"
+"$ROOT/scripts/emulator-comm" incoming-sms 5551234 'test message' >/dev/null
+assert_log_contains 'emu sms send 5551234 test\ message'
+
+: >"$ADB_LOG"
+"$ROOT/scripts/emulator-comm" compose-sms 5551234 'hello world' >/dev/null
+assert_log_contains 'shell am start -W -a android.intent.action.SENDTO -d smsto:5551234 --es sms_body hello\ world'
+
+if MOCK_QEMU=0 "$ROOT/scripts/emulator-comm" incoming-call 5551234 >/dev/null 2>&1; then
+  printf 'physical devices must reject incoming call injection\n' >&2
+  exit 1
 fi
 
-# mocked ADB flow: status should pass on emulator
-export ADB_STATE=device
-export ADB_DEVICES='emulator-5554	device'
-if "$SCRIPT" status | grep -q "type=emulator"; then
-  pass "status emulator"
-else
-  fail "status emulator"
+if "$ROOT/scripts/emulator-comm" dial '555;rm' >/dev/null 2>&1; then
+  printf 'invalid phone numbers must be rejected\n' >&2
+  exit 1
 fi
 
-# mocked ADB flow: outgoing call
-if "$SCRIPT" call-start 12345 | grep -q "CALL_OUTGOING_STARTED"; then
-  pass "call-start"
-else
-  fail "call-start"
-fi
+ADB=missing-adb "$ROOT/scripts/emulator-comm" --help >/dev/null
 
-# physical-device restriction for incoming inject
-export ADB_DEVICES='R58M123ABC	device'
-if "$SCRIPT" call-incoming 12345 >/tmp/emc.out 2>/tmp/emc.err; then
-  fail "physical restriction should fail"
-else
-  if grep -q "UNSUPPORTED_ON_PHYSICAL_DEVICE" /tmp/emc.err; then
-    pass "physical-device restriction"
-  else
-    fail "physical-device restriction message"
-  fi
-fi
-
-# mocked incoming sms on emulator
-export ADB_DEVICES='emulator-5554	device'
-if "$SCRIPT" sms-incoming 12345 hello | grep -q "SMS_INCOMING_INJECTED"; then
-  pass "sms-incoming"
-else
-  fail "sms-incoming"
-fi
-
-if grep -q "adb" "$ADB_LOG"; then
-  pass "adb mocked flows invoked"
-else
-  fail "adb mocked flows invoked"
-fi
-
-echo "ALL TESTS PASSED"
+printf 'emulator communication tests passed\n'
