@@ -1,0 +1,4 @@
+e5c3e8ca6394f7d24cc19b0ae3977adf7f2364e7af8fd1a1a3c89e3f5488fc6e  apks/com.bash.prod/split_config.en.apk
+4239157c591f07b328dd7b8caac4b7df2e0dd79e3f97d81705d1e74ae3f552cc  apks/com.bash.prod/split_config.xxhdpi.apk
+8d4a8a301a2d10b63f9b3e4ddd04f4250341e40ee1d6c19faae13b7423016a86  apks/com.bash.prod/split_config.arm64_v8a.apk
+18a9c147f13947a32b1e3527ac93e475273f44ecc015b3d420d6b70c5c623c9b  apks/com.bash.prod/base.apk
