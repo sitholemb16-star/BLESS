@@ -1,0 +1,13 @@
+# APK packages to pull from connected device
+# Run: ./scripts/pull-apks
+# Plain APKs extracted from Samsung Cloud backup manifest
+
+# Bash social app
+com.bash.prod
+
+# Chromium WebAPKs (PWA launchers) - may vary by device
+org.chromium.webapk.a015efc14ee37adf2_v2
+org.chromium.webapk.a4b4b60e66bb41079_v2
+org.chromium.webapk.a5b263669486f1ecd_v2
+org.chromium.webapk.a97281008742e8e60_v2
+org.chromium.webapk.a9d6776a3063d6c49_v2

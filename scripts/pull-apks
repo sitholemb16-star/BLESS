@@ -1,0 +1,79 @@
+#!/usr/bin/env bash
+# pull-apks – pull installed APKs from a connected ADB device into apks/<package>/
+# Usage: ./scripts/pull-apks [--serial <SERIAL>] [<package>...]
+# If no packages given, prompts or reads from apks/packages.txt
+set -euo pipefail
+
+SERIAL="${ANDROID_SERIAL:-}"
+PACKAGES=()
+APKS_DIR="$(cd "$(dirname "$0")/.." && pwd)/apks"
+
+while [[ $# -gt 0 ]]; do
+  case "$1" in
+    --serial|-s) SERIAL="$2"; shift 2 ;;
+    --help|-h)
+      echo "Usage: $(basename "$0") [--serial <SERIAL>] [<package>...]"
+      echo ""
+      echo "Pulls APK(s) from connected ADB device into apks/<package>/"
+      echo "If no packages given, reads apks/packages.txt (one per line)."
+      exit 0 ;;
+    *) PACKAGES+=("$1"); shift ;;
+  esac
+done
+
+ADB="adb"
+[[ -n "$SERIAL" ]] && ADB="adb -s $SERIAL"
+
+# Verify device
+if ! $ADB get-state >/dev/null 2>&1; then
+  echo "ERROR: No ADB device found. Connect a device or start an emulator." >&2
+  exit 1
+fi
+
+DEVICE_SERIAL=$($ADB get-serialno 2>/dev/null)
+echo "Device: $DEVICE_SERIAL"
+
+# Load from packages.txt if none given
+if [[ ${#PACKAGES[@]} -eq 0 ]]; then
+  PKG_FILE="$APKS_DIR/packages.txt"
+  if [[ -f "$PKG_FILE" ]]; then
+    mapfile -t PACKAGES < <(grep -v '^#' "$PKG_FILE" | grep -v '^$')
+  else
+    echo "ERROR: No packages specified and $PKG_FILE not found." >&2
+    echo "Usage: $(basename "$0") <package> [<package>...]" >&2
+    exit 1
+  fi
+fi
+
+PULLED=0
+FAILED=0
+
+for PKG in "${PACKAGES[@]}"; do
+  PATHS=$($ADB shell pm path "$PKG" 2>/dev/null | tr -d '\r')
+  if [[ -z "$PATHS" ]]; then
+    echo "SKIP  $PKG (not installed on device)"
+    ((FAILED++)) || true
+    continue
+  fi
+
+  DEST="$APKS_DIR/$PKG"
+  mkdir -p "$DEST"
+  echo "Pulling $PKG..."
+
+  while IFS= read -r line; do
+    APK_PATH="${line#package:}"
+    FNAME=$(basename "$APK_PATH")
+    if $ADB pull "$APK_PATH" "$DEST/$FNAME" >/dev/null 2>&1; then
+      SIZE=$(du -sh "$DEST/$FNAME" | cut -f1)
+      echo "  ✓  $FNAME ($SIZE)"
+      ((PULLED++)) || true
+    else
+      echo "  ✗  $FNAME (pull failed)" >&2
+      ((FAILED++)) || true
+    fi
+  done <<< "$PATHS"
+done
+
+echo ""
+echo "Done: $PULLED APK(s) pulled, $FAILED skipped/failed."
+echo "APKs saved to: $APKS_DIR/"
