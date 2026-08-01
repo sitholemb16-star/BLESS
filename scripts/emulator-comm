@@ -1,0 +1,126 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+ADB="${ADB:-adb}"
+SERIAL="${ANDROID_SERIAL:-}"
+
+usage() {
+  cat <<'EOF'
+Usage: scripts/emulator-comm [--serial SERIAL] COMMAND [ARGUMENTS]
+
+Commands:
+  status
+  dial NUMBER
+  end-call
+  incoming-call NUMBER
+  accept-call NUMBER
+  reject-call NUMBER
+  compose-sms NUMBER MESSAGE
+  incoming-sms NUMBER MESSAGE
+
+Incoming call and SMS commands require an Android Emulator. Outgoing commands
+also work on a connected Android device, subject to its dialer/SMS capabilities.
+EOF
+}
+
+fail() {
+  printf 'error: %s\n' "$*" >&2
+  exit 1
+}
+
+adb_run() {
+  if [[ -n "$SERIAL" ]]; then
+    "$ADB" -s "$SERIAL" "$@"
+  else
+    "$ADB" "$@"
+  fi
+}
+
+require_adb() {
+  command -v "$ADB" >/dev/null 2>&1 || fail "adb was not found; install Android SDK Platform-Tools"
+  adb_run get-state >/dev/null 2>&1 || fail "no reachable Android device or emulator"
+}
+
+require_number() {
+  local number="${1:-}"
+  local supported_number='^[+0-9*#,;]+$'
+  [[ -n "$number" ]] || fail "a phone number is required"
+  [[ "$number" =~ $supported_number ]] || fail "phone number contains unsupported characters: $number"
+}
+
+require_emulator() {
+  local is_emulator
+  is_emulator="$(adb_run shell getprop ro.kernel.qemu | tr -d '\r')"
+  [[ "$is_emulator" == "1" ]] || fail "incoming event injection requires an Android Emulator"
+}
+
+if [[ "${1:-}" == "--serial" ]]; then
+  [[ -n "${2:-}" ]] || fail "--serial requires a value"
+  SERIAL="$2"
+  shift 2
+fi
+
+COMMAND="${1:-}"
+[[ -n "$COMMAND" ]] || {
+  usage
+  exit 2
+}
+shift
+
+if [[ "$COMMAND" == "-h" || "$COMMAND" == "--help" || "$COMMAND" == "help" ]]; then
+  usage
+  exit 0
+fi
+
+require_adb
+
+case "$COMMAND" in
+  status)
+    model="$(adb_run shell getprop ro.product.model | tr -d '\r')"
+    is_emulator="$(adb_run shell getprop ro.kernel.qemu | tr -d '\r')"
+    printf 'connected: %s (%s)\n' "${SERIAL:-default adb target}" "${model:-unknown model}"
+    if [[ "$is_emulator" == "1" ]]; then
+      printf 'incoming event injection: available\n'
+    else
+      printf 'incoming event injection: unavailable (target is not an emulator)\n'
+    fi
+    ;;
+  dial)
+    require_number "${1:-}"
+    adb_run shell am start -W -a android.intent.action.CALL -d "tel:$1"
+    ;;
+  end-call)
+    adb_run shell input keyevent KEYCODE_ENDCALL
+    ;;
+  incoming-call)
+    require_number "${1:-}"
+    require_emulator
+    adb_run emu gsm call "$1"
+    ;;
+  accept-call)
+    require_number "${1:-}"
+    require_emulator
+    adb_run emu gsm accept "$1"
+    ;;
+  reject-call)
+    require_number "${1:-}"
+    require_emulator
+    adb_run emu gsm cancel "$1"
+    ;;
+  compose-sms)
+    require_number "${1:-}"
+    [[ -n "${2:-}" ]] || fail "an SMS message is required"
+    adb_run shell am start -W -a android.intent.action.SENDTO -d "smsto:$1" --es sms_body "$2"
+    ;;
+  incoming-sms)
+    require_number "${1:-}"
+    [[ -n "${2:-}" ]] || fail "an SMS message is required"
+    require_emulator
+    adb_run emu sms send "$1" "$2"
+    ;;
+  *)
+    usage >&2
+    fail "unknown command: $COMMAND"
+    ;;
+esac

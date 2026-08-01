@@ -1,0 +1,78 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+TMP="$(mktemp -d)"
+trap 'rm -rf "$TMP"' EXIT
+
+cat >"$TMP/adb" <<'EOF'
+#!/usr/bin/env bash
+printf '%q ' "$@" >>"$ADB_LOG"
+printf '\n' >>"$ADB_LOG"
+
+case "$*" in
+  *"get-state"*) printf 'device\n' ;;
+  *"getprop ro.kernel.qemu"*) printf '%s\n' "${MOCK_QEMU:-1}" ;;
+  *"getprop ro.product.model"*) printf 'Test Emulator\n' ;;
+esac
+EOF
+chmod +x "$TMP/adb"
+
+export ADB="$TMP/adb"
+export ADB_LOG="$TMP/adb.log"
+
+assert_log_contains() {
+  grep -F -- "$1" "$ADB_LOG" >/dev/null || {
+    printf 'expected adb call not found: %s\n' "$1" >&2
+    cat "$ADB_LOG" >&2
+    exit 1
+  }
+}
+
+: >"$ADB_LOG"
+"$ROOT/scripts/emulator-comm" status >/dev/null
+assert_log_contains 'shell getprop ro.product.model'
+assert_log_contains 'shell getprop ro.kernel.qemu'
+
+: >"$ADB_LOG"
+"$ROOT/scripts/emulator-comm" --serial emulator-5554 dial +15551234567 >/dev/null
+assert_log_contains '-s emulator-5554 shell am start -W -a android.intent.action.CALL -d tel:+15551234567'
+
+: >"$ADB_LOG"
+"$ROOT/scripts/emulator-comm" end-call >/dev/null
+assert_log_contains 'shell input keyevent KEYCODE_ENDCALL'
+
+: >"$ADB_LOG"
+"$ROOT/scripts/emulator-comm" incoming-call 5551234 >/dev/null
+assert_log_contains 'emu gsm call 5551234'
+
+: >"$ADB_LOG"
+"$ROOT/scripts/emulator-comm" accept-call 5551234 >/dev/null
+assert_log_contains 'emu gsm accept 5551234'
+
+: >"$ADB_LOG"
+"$ROOT/scripts/emulator-comm" reject-call 5551234 >/dev/null
+assert_log_contains 'emu gsm cancel 5551234'
+
+: >"$ADB_LOG"
+"$ROOT/scripts/emulator-comm" incoming-sms 5551234 'test message' >/dev/null
+assert_log_contains 'emu sms send 5551234 test\ message'
+
+: >"$ADB_LOG"
+"$ROOT/scripts/emulator-comm" compose-sms 5551234 'hello world' >/dev/null
+assert_log_contains 'shell am start -W -a android.intent.action.SENDTO -d smsto:5551234 --es sms_body hello\ world'
+
+if MOCK_QEMU=0 "$ROOT/scripts/emulator-comm" incoming-call 5551234 >/dev/null 2>&1; then
+  printf 'physical devices must reject incoming call injection\n' >&2
+  exit 1
+fi
+
+if "$ROOT/scripts/emulator-comm" dial '555;rm' >/dev/null 2>&1; then
+  printf 'invalid phone numbers must be rejected\n' >&2
+  exit 1
+fi
+
+ADB=missing-adb "$ROOT/scripts/emulator-comm" --help >/dev/null
+
+printf 'emulator communication tests passed\n'

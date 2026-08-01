@@ -105,7 +105,7 @@ def main():
             print(f"    backup={backup_hash}")
             print(f"    local ={local_hash}")
 
-    if args.fail_on_mismatch and mismatched > 0:
+    if args.fail_on_mismatch and (mismatched > 0 or missing_local > 0):
         return 2
     return 0
 
