@@ -1,5 +1,45 @@
 {
-  "generated_at": "2026-08-01T12:22:22.171356+00:00",
+  "generated_at": "2026-08-01T12:59:59.717708+00:00",
+  "metadata": {
+    "smartthings_account_devices": [
+      {
+        "device_id": "bcda8380-8fa8-3287-9eae-fae84cf0d502",
+        "model_number": "SM-A135F",
+        "manufacturer": "Samsung Electronics",
+        "platform_os": "Android",
+        "platform_version": "14",
+        "first_seen": "2023-06-28",
+        "last_seen": "2025-06-05"
+      },
+      {
+        "device_id": "e19f70de-9f16-3583-90c0-e16be8371a73",
+        "model_number": "SM-A205F",
+        "manufacturer": "Samsung Electronics",
+        "platform_os": "Android",
+        "platform_version": "11",
+        "first_seen": "2020-09-15",
+        "last_seen": "2025-06-05"
+      }
+    ],
+    "galaxy_store_download_history": {
+      "record_count": 5,
+      "device_models": [
+        "SM-A205F"
+      ],
+      "content_ids": [
+        "000000805754",
+        "000000975916",
+        "000002815985",
+        "000004534350",
+        "000005632816"
+      ],
+      "has_package_mapping": false
+    },
+    "pulled_from_device": {
+      "serial": "R83WA0GJ03V",
+      "model": "SM-A042F"
+    }
+  },
   "packages": [
     {
       "package_name": "and.lhhpub.goodshunt",
@@ -7,6 +47,23 @@
       "version_code": 76,
       "is_aab": true,
       "backup_timestamp_ms": "1780214515549",
+      "pulled_from_device": {
+        "serial": "R83WA0GJ03V",
+        "model": "SM-A042F"
+      },
+      "account_device_models": [
+        "SM-A135F",
+        "SM-A205F"
+      ],
+      "galaxy_store": {
+        "account_download_history_present": true,
+        "account_download_device_models": [
+          "SM-A205F"
+        ],
+        "content_id_linkage_available": false,
+        "downloaded_via_galaxy_store": null,
+        "status": "unknown_no_package_to_content_id_mapping_in_export"
+      },
       "artifacts": [
         {
           "filename": "split_config.arm64_v8a.apk",
@@ -33,6 +90,23 @@
       "version_code": 529,
       "is_aab": true,
       "backup_timestamp_ms": "1783379887053",
+      "pulled_from_device": {
+        "serial": "R83WA0GJ03V",
+        "model": "SM-A042F"
+      },
+      "account_device_models": [
+        "SM-A135F",
+        "SM-A205F"
+      ],
+      "galaxy_store": {
+        "account_download_history_present": true,
+        "account_download_device_models": [
+          "SM-A205F"
+        ],
+        "content_id_linkage_available": false,
+        "downloaded_via_galaxy_store": null,
+        "status": "unknown_no_package_to_content_id_mapping_in_export"
+      },
       "artifacts": [
         {
           "filename": "split_config.arm64_v8a.apk",
@@ -67,6 +141,23 @@
       "version_code": 26070600,
       "is_aab": true,
       "backup_timestamp_ms": "1783475830257",
+      "pulled_from_device": {
+        "serial": "R83WA0GJ03V",
+        "model": "SM-A042F"
+      },
+      "account_device_models": [
+        "SM-A135F",
+        "SM-A205F"
+      ],
+      "galaxy_store": {
+        "account_download_history_present": true,
+        "account_download_device_models": [
+          "SM-A205F"
+        ],
+        "content_id_linkage_available": false,
+        "downloaded_via_galaxy_store": null,
+        "status": "unknown_no_package_to_content_id_mapping_in_export"
+      },
       "artifacts": [
         {
           "filename": "split_config.arm64_v8a.apk",
@@ -109,6 +200,23 @@
       "version_code": 39,
       "is_aab": true,
       "backup_timestamp_ms": "1772822287670",
+      "pulled_from_device": {
+        "serial": "R83WA0GJ03V",
+        "model": "SM-A042F"
+      },
+      "account_device_models": [
+        "SM-A135F",
+        "SM-A205F"
+      ],
+      "galaxy_store": {
+        "account_download_history_present": true,
+        "account_download_device_models": [
+          "SM-A205F"
+        ],
+        "content_id_linkage_available": false,
+        "downloaded_via_galaxy_store": null,
+        "status": "unknown_no_package_to_content_id_mapping_in_export"
+      },
       "artifacts": [
         {
           "filename": "split_config.en.apk",
@@ -143,6 +251,23 @@
       "version_code": 329,
       "is_aab": true,
       "backup_timestamp_ms": "1783630448526",
+      "pulled_from_device": {
+        "serial": "R83WA0GJ03V",
+        "model": "SM-A042F"
+      },
+      "account_device_models": [
+        "SM-A135F",
+        "SM-A205F"
+      ],
+      "galaxy_store": {
+        "account_download_history_present": true,
+        "account_download_device_models": [
+          "SM-A205F"
+        ],
+        "content_id_linkage_available": false,
+        "downloaded_via_galaxy_store": null,
+        "status": "unknown_no_package_to_content_id_mapping_in_export"
+      },
       "artifacts": [
         {
           "filename": "split_config.arm64_v8a.apk",
@@ -185,6 +310,23 @@
       "version_code": 215,
       "is_aab": true,
       "backup_timestamp_ms": "1776905847577",
+      "pulled_from_device": {
+        "serial": "R83WA0GJ03V",
+        "model": "SM-A042F"
+      },
+      "account_device_models": [
+        "SM-A135F",
+        "SM-A205F"
+      ],
+      "galaxy_store": {
+        "account_download_history_present": true,
+        "account_download_device_models": [
+          "SM-A205F"
+        ],
+        "content_id_linkage_available": false,
+        "downloaded_via_galaxy_store": null,
+        "status": "unknown_no_package_to_content_id_mapping_in_export"
+      },
       "artifacts": [
         {
           "filename": "split_config.armeabi_v7a.apk",
@@ -219,6 +361,23 @@
       "version_code": 11188,
       "is_aab": true,
       "backup_timestamp_ms": "1776824705582",
+      "pulled_from_device": {
+        "serial": "R83WA0GJ03V",
+        "model": "SM-A042F"
+      },
+      "account_device_models": [
+        "SM-A135F",
+        "SM-A205F"
+      ],
+      "galaxy_store": {
+        "account_download_history_present": true,
+        "account_download_device_models": [
+          "SM-A205F"
+        ],
+        "content_id_linkage_available": false,
+        "downloaded_via_galaxy_store": null,
+        "status": "unknown_no_package_to_content_id_mapping_in_export"
+      },
       "artifacts": [
         {
           "filename": "split_config.arm64_v8a.apk",
@@ -253,6 +412,23 @@
       "version_code": 15254,
       "is_aab": false,
       "backup_timestamp_ms": "1779022908527",
+      "pulled_from_device": {
+        "serial": "R83WA0GJ03V",
+        "model": "SM-A042F"
+      },
+      "account_device_models": [
+        "SM-A135F",
+        "SM-A205F"
+      ],
+      "galaxy_store": {
+        "account_download_history_present": true,
+        "account_download_device_models": [
+          "SM-A205F"
+        ],
+        "content_id_linkage_available": false,
+        "downloaded_via_galaxy_store": null,
+        "status": "unknown_no_package_to_content_id_mapping_in_export"
+      },
       "artifacts": [
         {
           "filename": "base.apk",
@@ -271,6 +447,23 @@
       "version_code": 29522699,
       "is_aab": true,
       "backup_timestamp_ms": "1777676322213",
+      "pulled_from_device": {
+        "serial": "R83WA0GJ03V",
+        "model": "SM-A042F"
+      },
+      "account_device_models": [
+        "SM-A135F",
+        "SM-A205F"
+      ],
+      "galaxy_store": {
+        "account_download_history_present": true,
+        "account_download_device_models": [
+          "SM-A205F"
+        ],
+        "content_id_linkage_available": false,
+        "downloaded_via_galaxy_store": null,
+        "status": "unknown_no_package_to_content_id_mapping_in_export"
+      },
       "artifacts": [
         {
           "filename": "split_config.armeabi_v7a.apk",
@@ -305,6 +498,23 @@
       "version_code": 363265241,
       "is_aab": true,
       "backup_timestamp_ms": "1769086077381",
+      "pulled_from_device": {
+        "serial": "R83WA0GJ03V",
+        "model": "SM-A042F"
+      },
+      "account_device_models": [
+        "SM-A135F",
+        "SM-A205F"
+      ],
+      "galaxy_store": {
+        "account_download_history_present": true,
+        "account_download_device_models": [
+          "SM-A205F"
+        ],
+        "content_id_linkage_available": false,
+        "downloaded_via_galaxy_store": null,
+        "status": "unknown_no_package_to_content_id_mapping_in_export"
+      },
       "artifacts": [
         {
           "filename": "split_config.armeabi_v7a.apk",
@@ -347,6 +557,23 @@
       "version_code": 19460,
       "is_aab": true,
       "backup_timestamp_ms": "1776344593607",
+      "pulled_from_device": {
+        "serial": "R83WA0GJ03V",
+        "model": "SM-A042F"
+      },
+      "account_device_models": [
+        "SM-A135F",
+        "SM-A205F"
+      ],
+      "galaxy_store": {
+        "account_download_history_present": true,
+        "account_download_device_models": [
+          "SM-A205F"
+        ],
+        "content_id_linkage_available": false,
+        "downloaded_via_galaxy_store": null,
+        "status": "unknown_no_package_to_content_id_mapping_in_export"
+      },
       "artifacts": [
         {
           "filename": "split_config.arm64_v8a.apk",
@@ -389,6 +616,23 @@
       "version_code": 467,
       "is_aab": true,
       "backup_timestamp_ms": "1768522379515",
+      "pulled_from_device": {
+        "serial": "R83WA0GJ03V",
+        "model": "SM-A042F"
+      },
+      "account_device_models": [
+        "SM-A135F",
+        "SM-A205F"
+      ],
+      "galaxy_store": {
+        "account_download_history_present": true,
+        "account_download_device_models": [
+          "SM-A205F"
+        ],
+        "content_id_linkage_available": false,
+        "downloaded_via_galaxy_store": null,
+        "status": "unknown_no_package_to_content_id_mapping_in_export"
+      },
       "artifacts": [
         {
           "filename": "split_config.armeabi_v7a.apk",
@@ -423,6 +667,23 @@
       "version_code": 12673,
       "is_aab": true,
       "backup_timestamp_ms": "1780660758426",
+      "pulled_from_device": {
+        "serial": "R83WA0GJ03V",
+        "model": "SM-A042F"
+      },
+      "account_device_models": [
+        "SM-A135F",
+        "SM-A205F"
+      ],
+      "galaxy_store": {
+        "account_download_history_present": true,
+        "account_download_device_models": [
+          "SM-A205F"
+        ],
+        "content_id_linkage_available": false,
+        "downloaded_via_galaxy_store": null,
+        "status": "unknown_no_package_to_content_id_mapping_in_export"
+      },
       "artifacts": [
         {
           "filename": "split_config.armeabi_v7a.apk",
@@ -465,6 +726,23 @@
       "version_code": 217051171,
       "is_aab": false,
       "backup_timestamp_ms": "1779022902131",
+      "pulled_from_device": {
+        "serial": "R83WA0GJ03V",
+        "model": "SM-A042F"
+      },
+      "account_device_models": [
+        "SM-A135F",
+        "SM-A205F"
+      ],
+      "galaxy_store": {
+        "account_download_history_present": true,
+        "account_download_device_models": [
+          "SM-A205F"
+        ],
+        "content_id_linkage_available": false,
+        "downloaded_via_galaxy_store": null,
+        "status": "unknown_no_package_to_content_id_mapping_in_export"
+      },
       "artifacts": [
         {
           "filename": "base.apk",
@@ -483,6 +761,23 @@
       "version_code": 42802,
       "is_aab": true,
       "backup_timestamp_ms": "1770248575249",
+      "pulled_from_device": {
+        "serial": "R83WA0GJ03V",
+        "model": "SM-A042F"
+      },
+      "account_device_models": [
+        "SM-A135F",
+        "SM-A205F"
+      ],
+      "galaxy_store": {
+        "account_download_history_present": true,
+        "account_download_device_models": [
+          "SM-A205F"
+        ],
+        "content_id_linkage_available": false,
+        "downloaded_via_galaxy_store": null,
+        "status": "unknown_no_package_to_content_id_mapping_in_export"
+      },
       "artifacts": [
         {
           "filename": "split_config.armeabi_v7a.apk",
@@ -517,6 +812,23 @@
       "version_code": 472947928,
       "is_aab": false,
       "backup_timestamp_ms": "1783915611002",
+      "pulled_from_device": {
+        "serial": "R83WA0GJ03V",
+        "model": "SM-A042F"
+      },
+      "account_device_models": [
+        "SM-A135F",
+        "SM-A205F"
+      ],
+      "galaxy_store": {
+        "account_download_history_present": true,
+        "account_download_device_models": [
+          "SM-A205F"
+        ],
+        "content_id_linkage_available": false,
+        "downloaded_via_galaxy_store": null,
+        "status": "unknown_no_package_to_content_id_mapping_in_export"
+      },
       "artifacts": [
         {
           "filename": "base.apk",
@@ -535,6 +847,23 @@
       "version_code": 968002438,
       "is_aab": true,
       "backup_timestamp_ms": "1783475854893",
+      "pulled_from_device": {
+        "serial": "R83WA0GJ03V",
+        "model": "SM-A042F"
+      },
+      "account_device_models": [
+        "SM-A135F",
+        "SM-A205F"
+      ],
+      "galaxy_store": {
+        "account_download_history_present": true,
+        "account_download_device_models": [
+          "SM-A205F"
+        ],
+        "content_id_linkage_available": false,
+        "downloaded_via_galaxy_store": null,
+        "status": "unknown_no_package_to_content_id_mapping_in_export"
+      },
       "artifacts": [
         {
           "filename": "split_config.arm64_v8a.apk",
@@ -561,6 +890,23 @@
       "version_code": 1884,
       "is_aab": true,
       "backup_timestamp_ms": "1782867961618",
+      "pulled_from_device": {
+        "serial": "R83WA0GJ03V",
+        "model": "SM-A042F"
+      },
+      "account_device_models": [
+        "SM-A135F",
+        "SM-A205F"
+      ],
+      "galaxy_store": {
+        "account_download_history_present": true,
+        "account_download_device_models": [
+          "SM-A205F"
+        ],
+        "content_id_linkage_available": false,
+        "downloaded_via_galaxy_store": null,
+        "status": "unknown_no_package_to_content_id_mapping_in_export"
+      },
       "artifacts": [
         {
           "filename": "split_config.arm64_v8a.apk",
@@ -603,6 +949,23 @@
       "version_code": 214491635,
       "is_aab": true,
       "backup_timestamp_ms": "1780414528708",
+      "pulled_from_device": {
+        "serial": "R83WA0GJ03V",
+        "model": "SM-A042F"
+      },
+      "account_device_models": [
+        "SM-A135F",
+        "SM-A205F"
+      ],
+      "galaxy_store": {
+        "account_download_history_present": true,
+        "account_download_device_models": [
+          "SM-A205F"
+        ],
+        "content_id_linkage_available": false,
+        "downloaded_via_galaxy_store": null,
+        "status": "unknown_no_package_to_content_id_mapping_in_export"
+      },
       "artifacts": [
         {
           "filename": "split_config.armeabi_v7a.apk",
@@ -645,6 +1008,23 @@
       "version_code": 876907,
       "is_aab": true,
       "backup_timestamp_ms": "1783630379134",
+      "pulled_from_device": {
+        "serial": "R83WA0GJ03V",
+        "model": "SM-A042F"
+      },
+      "account_device_models": [
+        "SM-A135F",
+        "SM-A205F"
+      ],
+      "galaxy_store": {
+        "account_download_history_present": true,
+        "account_download_device_models": [
+          "SM-A205F"
+        ],
+        "content_id_linkage_available": false,
+        "downloaded_via_galaxy_store": null,
+        "status": "unknown_no_package_to_content_id_mapping_in_export"
+      },
       "artifacts": [
         {
           "filename": "split_config.arm64_v8a.apk",
@@ -679,6 +1059,23 @@
       "version_code": 1017177,
       "is_aab": true,
       "backup_timestamp_ms": "1770378887263",
+      "pulled_from_device": {
+        "serial": "R83WA0GJ03V",
+        "model": "SM-A042F"
+      },
+      "account_device_models": [
+        "SM-A135F",
+        "SM-A205F"
+      ],
+      "galaxy_store": {
+        "account_download_history_present": true,
+        "account_download_device_models": [
+          "SM-A205F"
+        ],
+        "content_id_linkage_available": false,
+        "downloaded_via_galaxy_store": null,
+        "status": "unknown_no_package_to_content_id_mapping_in_export"
+      },
       "artifacts": [
         {
           "filename": "split_config.en.apk",
@@ -705,6 +1102,23 @@
       "version_code": 1072,
       "is_aab": false,
       "backup_timestamp_ms": "1668271845887",
+      "pulled_from_device": {
+        "serial": "R83WA0GJ03V",
+        "model": "SM-A042F"
+      },
+      "account_device_models": [
+        "SM-A135F",
+        "SM-A205F"
+      ],
+      "galaxy_store": {
+        "account_download_history_present": true,
+        "account_download_device_models": [
+          "SM-A205F"
+        ],
+        "content_id_linkage_available": false,
+        "downloaded_via_galaxy_store": null,
+        "status": "unknown_no_package_to_content_id_mapping_in_export"
+      },
       "artifacts": [
         {
           "filename": "base.apk",
@@ -723,6 +1137,23 @@
       "version_code": 933250675,
       "is_aab": true,
       "backup_timestamp_ms": "1768845355311",
+      "pulled_from_device": {
+        "serial": "R83WA0GJ03V",
+        "model": "SM-A042F"
+      },
+      "account_device_models": [
+        "SM-A135F",
+        "SM-A205F"
+      ],
+      "galaxy_store": {
+        "account_download_history_present": true,
+        "account_download_device_models": [
+          "SM-A205F"
+        ],
+        "content_id_linkage_available": false,
+        "downloaded_via_galaxy_store": null,
+        "status": "unknown_no_package_to_content_id_mapping_in_export"
+      },
       "artifacts": [
         {
           "filename": "split_config.armeabi_v7a.apk",
@@ -757,6 +1188,23 @@
       "version_code": 92654240,
       "is_aab": true,
       "backup_timestamp_ms": "1783715815957",
+      "pulled_from_device": {
+        "serial": "R83WA0GJ03V",
+        "model": "SM-A042F"
+      },
+      "account_device_models": [
+        "SM-A135F",
+        "SM-A205F"
+      ],
+      "galaxy_store": {
+        "account_download_history_present": true,
+        "account_download_device_models": [
+          "SM-A205F"
+        ],
+        "content_id_linkage_available": false,
+        "downloaded_via_galaxy_store": null,
+        "status": "unknown_no_package_to_content_id_mapping_in_export"
+      },
       "artifacts": [
         {
           "filename": "split_config.en.apk",
@@ -791,6 +1239,23 @@
       "version_code": 17165,
       "is_aab": true,
       "backup_timestamp_ms": "1780325367147",
+      "pulled_from_device": {
+        "serial": "R83WA0GJ03V",
+        "model": "SM-A042F"
+      },
+      "account_device_models": [
+        "SM-A135F",
+        "SM-A205F"
+      ],
+      "galaxy_store": {
+        "account_download_history_present": true,
+        "account_download_device_models": [
+          "SM-A205F"
+        ],
+        "content_id_linkage_available": false,
+        "downloaded_via_galaxy_store": null,
+        "status": "unknown_no_package_to_content_id_mapping_in_export"
+      },
       "artifacts": [
         {
           "filename": "split_config.armeabi_v7a.apk",
@@ -833,6 +1298,23 @@
       "version_code": 19010,
       "is_aab": true,
       "backup_timestamp_ms": "1780172795809",
+      "pulled_from_device": {
+        "serial": "R83WA0GJ03V",
+        "model": "SM-A042F"
+      },
+      "account_device_models": [
+        "SM-A135F",
+        "SM-A205F"
+      ],
+      "galaxy_store": {
+        "account_download_history_present": true,
+        "account_download_device_models": [
+          "SM-A205F"
+        ],
+        "content_id_linkage_available": false,
+        "downloaded_via_galaxy_store": null,
+        "status": "unknown_no_package_to_content_id_mapping_in_export"
+      },
       "artifacts": [
         {
           "filename": "split_config.armeabi_v7a.apk",
@@ -875,6 +1357,23 @@
       "version_code": 439665950,
       "is_aab": false,
       "backup_timestamp_ms": "1779022905111",
+      "pulled_from_device": {
+        "serial": "R83WA0GJ03V",
+        "model": "SM-A042F"
+      },
+      "account_device_models": [
+        "SM-A135F",
+        "SM-A205F"
+      ],
+      "galaxy_store": {
+        "account_download_history_present": true,
+        "account_download_device_models": [
+          "SM-A205F"
+        ],
+        "content_id_linkage_available": false,
+        "downloaded_via_galaxy_store": null,
+        "status": "unknown_no_package_to_content_id_mapping_in_export"
+      },
       "artifacts": [
         {
           "filename": "base.apk",
@@ -893,6 +1392,23 @@
       "version_code": 30740,
       "is_aab": true,
       "backup_timestamp_ms": "1761076040441",
+      "pulled_from_device": {
+        "serial": "R83WA0GJ03V",
+        "model": "SM-A042F"
+      },
+      "account_device_models": [
+        "SM-A135F",
+        "SM-A205F"
+      ],
+      "galaxy_store": {
+        "account_download_history_present": true,
+        "account_download_device_models": [
+          "SM-A205F"
+        ],
+        "content_id_linkage_available": false,
+        "downloaded_via_galaxy_store": null,
+        "status": "unknown_no_package_to_content_id_mapping_in_export"
+      },
       "artifacts": [
         {
           "filename": "split_config.en.apk",
@@ -927,6 +1443,23 @@
       "version_code": 1804,
       "is_aab": true,
       "backup_timestamp_ms": "1780082033081",
+      "pulled_from_device": {
+        "serial": "R83WA0GJ03V",
+        "model": "SM-A042F"
+      },
+      "account_device_models": [
+        "SM-A135F",
+        "SM-A205F"
+      ],
+      "galaxy_store": {
+        "account_download_history_present": true,
+        "account_download_device_models": [
+          "SM-A205F"
+        ],
+        "content_id_linkage_available": false,
+        "downloaded_via_galaxy_store": null,
+        "status": "unknown_no_package_to_content_id_mapping_in_export"
+      },
       "artifacts": [
         {
           "filename": "split_UnityDataAssetPack.apk",
@@ -993,6 +1526,23 @@
       "version_code": 100500,
       "is_aab": true,
       "backup_timestamp_ms": "1727638929051",
+      "pulled_from_device": {
+        "serial": "R83WA0GJ03V",
+        "model": "SM-A042F"
+      },
+      "account_device_models": [
+        "SM-A135F",
+        "SM-A205F"
+      ],
+      "galaxy_store": {
+        "account_download_history_present": true,
+        "account_download_device_models": [
+          "SM-A205F"
+        ],
+        "content_id_linkage_available": false,
+        "downloaded_via_galaxy_store": null,
+        "status": "unknown_no_package_to_content_id_mapping_in_export"
+      },
       "artifacts": [
         {
           "filename": "split_config.armeabi_v7a.apk",
@@ -1035,6 +1585,23 @@
       "version_code": 346,
       "is_aab": true,
       "backup_timestamp_ms": "1770248895141",
+      "pulled_from_device": {
+        "serial": "R83WA0GJ03V",
+        "model": "SM-A042F"
+      },
+      "account_device_models": [
+        "SM-A135F",
+        "SM-A205F"
+      ],
+      "galaxy_store": {
+        "account_download_history_present": true,
+        "account_download_device_models": [
+          "SM-A205F"
+        ],
+        "content_id_linkage_available": false,
+        "downloaded_via_galaxy_store": null,
+        "status": "unknown_no_package_to_content_id_mapping_in_export"
+      },
       "artifacts": [
         {
           "filename": "split_UnityDataAssetPack.apk",
@@ -1069,6 +1636,23 @@
       "version_code": 91,
       "is_aab": true,
       "backup_timestamp_ms": "1780214515553",
+      "pulled_from_device": {
+        "serial": "R83WA0GJ03V",
+        "model": "SM-A042F"
+      },
+      "account_device_models": [
+        "SM-A135F",
+        "SM-A205F"
+      ],
+      "galaxy_store": {
+        "account_download_history_present": true,
+        "account_download_device_models": [
+          "SM-A205F"
+        ],
+        "content_id_linkage_available": false,
+        "downloaded_via_galaxy_store": null,
+        "status": "unknown_no_package_to_content_id_mapping_in_export"
+      },
       "artifacts": [
         {
           "filename": "split_config.arm64_v8a.apk",
@@ -1095,6 +1679,23 @@
       "version_code": 384309618,
       "is_aab": true,
       "backup_timestamp_ms": "1783549418163",
+      "pulled_from_device": {
+        "serial": "R83WA0GJ03V",
+        "model": "SM-A042F"
+      },
+      "account_device_models": [
+        "SM-A135F",
+        "SM-A205F"
+      ],
+      "galaxy_store": {
+        "account_download_history_present": true,
+        "account_download_device_models": [
+          "SM-A205F"
+        ],
+        "content_id_linkage_available": false,
+        "downloaded_via_galaxy_store": null,
+        "status": "unknown_no_package_to_content_id_mapping_in_export"
+      },
       "artifacts": [
         {
           "filename": "split_config.xxhdpi.apk",
@@ -1161,6 +1762,23 @@
       "version_code": 1010069344,
       "is_aab": true,
       "backup_timestamp_ms": "1783789517794",
+      "pulled_from_device": {
+        "serial": "R83WA0GJ03V",
+        "model": "SM-A042F"
+      },
+      "account_device_models": [
+        "SM-A135F",
+        "SM-A205F"
+      ],
+      "galaxy_store": {
+        "account_download_history_present": true,
+        "account_download_device_models": [
+          "SM-A205F"
+        ],
+        "content_id_linkage_available": false,
+        "downloaded_via_galaxy_store": null,
+        "status": "unknown_no_package_to_content_id_mapping_in_export"
+      },
       "artifacts": [
         {
           "filename": "split_fizz.apk",
@@ -1299,6 +1917,23 @@
       "version_code": 26010004,
       "is_aab": false,
       "backup_timestamp_ms": "1775215912486",
+      "pulled_from_device": {
+        "serial": "R83WA0GJ03V",
+        "model": "SM-A042F"
+      },
+      "account_device_models": [
+        "SM-A135F",
+        "SM-A205F"
+      ],
+      "galaxy_store": {
+        "account_download_history_present": true,
+        "account_download_device_models": [
+          "SM-A205F"
+        ],
+        "content_id_linkage_available": false,
+        "downloaded_via_galaxy_store": null,
+        "status": "unknown_no_package_to_content_id_mapping_in_export"
+      },
       "artifacts": [
         {
           "filename": "base.apk",
@@ -1317,6 +1952,23 @@
       "version_code": 332502,
       "is_aab": true,
       "backup_timestamp_ms": "1783379911525",
+      "pulled_from_device": {
+        "serial": "R83WA0GJ03V",
+        "model": "SM-A042F"
+      },
+      "account_device_models": [
+        "SM-A135F",
+        "SM-A205F"
+      ],
+      "galaxy_store": {
+        "account_download_history_present": true,
+        "account_download_device_models": [
+          "SM-A205F"
+        ],
+        "content_id_linkage_available": false,
+        "downloaded_via_galaxy_store": null,
+        "status": "unknown_no_package_to_content_id_mapping_in_export"
+      },
       "artifacts": [
         {
           "filename": "split_config.arm64_v8a.apk",
@@ -1359,6 +2011,23 @@
       "version_code": 17601600,
       "is_aab": true,
       "backup_timestamp_ms": "1777675876185",
+      "pulled_from_device": {
+        "serial": "R83WA0GJ03V",
+        "model": "SM-A042F"
+      },
+      "account_device_models": [
+        "SM-A135F",
+        "SM-A205F"
+      ],
+      "galaxy_store": {
+        "account_download_history_present": true,
+        "account_download_device_models": [
+          "SM-A205F"
+        ],
+        "content_id_linkage_available": false,
+        "downloaded_via_galaxy_store": null,
+        "status": "unknown_no_package_to_content_id_mapping_in_export"
+      },
       "artifacts": [
         {
           "filename": "split_config.armeabi_v7a.apk",
@@ -1401,6 +2070,23 @@
       "version_code": 210400,
       "is_aab": true,
       "backup_timestamp_ms": "1777064906598",
+      "pulled_from_device": {
+        "serial": "R83WA0GJ03V",
+        "model": "SM-A042F"
+      },
+      "account_device_models": [
+        "SM-A135F",
+        "SM-A205F"
+      ],
+      "galaxy_store": {
+        "account_download_history_present": true,
+        "account_download_device_models": [
+          "SM-A205F"
+        ],
+        "content_id_linkage_available": false,
+        "downloaded_via_galaxy_store": null,
+        "status": "unknown_no_package_to_content_id_mapping_in_export"
+      },
       "artifacts": [
         {
           "filename": "split_config.arm64_v8a.apk",
@@ -1443,6 +2129,23 @@
       "version_code": 11202,
       "is_aab": true,
       "backup_timestamp_ms": "1770911506811",
+      "pulled_from_device": {
+        "serial": "R83WA0GJ03V",
+        "model": "SM-A042F"
+      },
+      "account_device_models": [
+        "SM-A135F",
+        "SM-A205F"
+      ],
+      "galaxy_store": {
+        "account_download_history_present": true,
+        "account_download_device_models": [
+          "SM-A205F"
+        ],
+        "content_id_linkage_available": false,
+        "downloaded_via_galaxy_store": null,
+        "status": "unknown_no_package_to_content_id_mapping_in_export"
+      },
       "artifacts": [
         {
           "filename": "split_config.armeabi_v7a.apk",
@@ -1485,6 +2188,23 @@
       "version_code": 32603014,
       "is_aab": false,
       "backup_timestamp_ms": "1769908907567",
+      "pulled_from_device": {
+        "serial": "R83WA0GJ03V",
+        "model": "SM-A042F"
+      },
+      "account_device_models": [
+        "SM-A135F",
+        "SM-A205F"
+      ],
+      "galaxy_store": {
+        "account_download_history_present": true,
+        "account_download_device_models": [
+          "SM-A205F"
+        ],
+        "content_id_linkage_available": false,
+        "downloaded_via_galaxy_store": null,
+        "status": "unknown_no_package_to_content_id_mapping_in_export"
+      },
       "artifacts": [
         {
           "filename": "base.apk",
@@ -1503,6 +2223,23 @@
       "version_code": 2005201435,
       "is_aab": true,
       "backup_timestamp_ms": "1782765116126",
+      "pulled_from_device": {
+        "serial": "R83WA0GJ03V",
+        "model": "SM-A042F"
+      },
+      "account_device_models": [
+        "SM-A135F",
+        "SM-A205F"
+      ],
+      "galaxy_store": {
+        "account_download_history_present": true,
+        "account_download_device_models": [
+          "SM-A205F"
+        ],
+        "content_id_linkage_available": false,
+        "downloaded_via_galaxy_store": null,
+        "status": "unknown_no_package_to_content_id_mapping_in_export"
+      },
       "artifacts": [
         {
           "filename": "split_config.en.apk",
@@ -1537,6 +2274,23 @@
       "version_code": 2026123685,
       "is_aab": true,
       "backup_timestamp_ms": "1783714751701",
+      "pulled_from_device": {
+        "serial": "R83WA0GJ03V",
+        "model": "SM-A042F"
+      },
+      "account_device_models": [
+        "SM-A135F",
+        "SM-A205F"
+      ],
+      "galaxy_store": {
+        "account_download_history_present": true,
+        "account_download_device_models": [
+          "SM-A205F"
+        ],
+        "content_id_linkage_available": false,
+        "downloaded_via_galaxy_store": null,
+        "status": "unknown_no_package_to_content_id_mapping_in_export"
+      },
       "artifacts": [
         {
           "filename": "split_config.arm64_v8a.apk",
@@ -1579,6 +2333,23 @@
       "version_code": 2012032351,
       "is_aab": false,
       "backup_timestamp_ms": "1779022915927",
+      "pulled_from_device": {
+        "serial": "R83WA0GJ03V",
+        "model": "SM-A042F"
+      },
+      "account_device_models": [
+        "SM-A135F",
+        "SM-A205F"
+      ],
+      "galaxy_store": {
+        "account_download_history_present": true,
+        "account_download_device_models": [
+          "SM-A205F"
+        ],
+        "content_id_linkage_available": false,
+        "downloaded_via_galaxy_store": null,
+        "status": "unknown_no_package_to_content_id_mapping_in_export"
+      },
       "artifacts": [
         {
           "filename": "base.apk",
@@ -1597,6 +2368,23 @@
       "version_code": 87,
       "is_aab": true,
       "backup_timestamp_ms": "1780757885301",
+      "pulled_from_device": {
+        "serial": "R83WA0GJ03V",
+        "model": "SM-A042F"
+      },
+      "account_device_models": [
+        "SM-A135F",
+        "SM-A205F"
+      ],
+      "galaxy_store": {
+        "account_download_history_present": true,
+        "account_download_device_models": [
+          "SM-A205F"
+        ],
+        "content_id_linkage_available": false,
+        "downloaded_via_galaxy_store": null,
+        "status": "unknown_no_package_to_content_id_mapping_in_export"
+      },
       "artifacts": [
         {
           "filename": "split_config.arm64_v8a.apk",
@@ -1639,6 +2427,23 @@
       "version_code": 234,
       "is_aab": true,
       "backup_timestamp_ms": "1782868054658",
+      "pulled_from_device": {
+        "serial": "R83WA0GJ03V",
+        "model": "SM-A042F"
+      },
+      "account_device_models": [
+        "SM-A135F",
+        "SM-A205F"
+      ],
+      "galaxy_store": {
+        "account_download_history_present": true,
+        "account_download_device_models": [
+          "SM-A205F"
+        ],
+        "content_id_linkage_available": false,
+        "downloaded_via_galaxy_store": null,
+        "status": "unknown_no_package_to_content_id_mapping_in_export"
+      },
       "artifacts": [
         {
           "filename": "split_config.arm64_v8a.apk",
@@ -1673,6 +2478,23 @@
       "version_code": 3855,
       "is_aab": true,
       "backup_timestamp_ms": "1780214515561",
+      "pulled_from_device": {
+        "serial": "R83WA0GJ03V",
+        "model": "SM-A042F"
+      },
+      "account_device_models": [
+        "SM-A135F",
+        "SM-A205F"
+      ],
+      "galaxy_store": {
+        "account_download_history_present": true,
+        "account_download_device_models": [
+          "SM-A205F"
+        ],
+        "content_id_linkage_available": false,
+        "downloaded_via_galaxy_store": null,
+        "status": "unknown_no_package_to_content_id_mapping_in_export"
+      },
       "artifacts": [
         {
           "filename": "split_config.xxhdpi.apk",
@@ -1699,6 +2521,23 @@
       "version_code": 440190101,
       "is_aab": false,
       "backup_timestamp_ms": "1656184181785",
+      "pulled_from_device": {
+        "serial": "R83WA0GJ03V",
+        "model": "SM-A042F"
+      },
+      "account_device_models": [
+        "SM-A135F",
+        "SM-A205F"
+      ],
+      "galaxy_store": {
+        "account_download_history_present": true,
+        "account_download_device_models": [
+          "SM-A205F"
+        ],
+        "content_id_linkage_available": false,
+        "downloaded_via_galaxy_store": null,
+        "status": "unknown_no_package_to_content_id_mapping_in_export"
+      },
       "artifacts": [
         {
           "filename": "base.apk",
@@ -1717,6 +2556,23 @@
       "version_code": 452,
       "is_aab": false,
       "backup_timestamp_ms": "1783287613325",
+      "pulled_from_device": {
+        "serial": "R83WA0GJ03V",
+        "model": "SM-A042F"
+      },
+      "account_device_models": [
+        "SM-A135F",
+        "SM-A205F"
+      ],
+      "galaxy_store": {
+        "account_download_history_present": true,
+        "account_download_device_models": [
+          "SM-A205F"
+        ],
+        "content_id_linkage_available": false,
+        "downloaded_via_galaxy_store": null,
+        "status": "unknown_no_package_to_content_id_mapping_in_export"
+      },
       "artifacts": [
         {
           "filename": "base.apk",
@@ -1735,6 +2591,23 @@
       "version_code": 312500000,
       "is_aab": false,
       "backup_timestamp_ms": "1770199597717",
+      "pulled_from_device": {
+        "serial": "R83WA0GJ03V",
+        "model": "SM-A042F"
+      },
+      "account_device_models": [
+        "SM-A135F",
+        "SM-A205F"
+      ],
+      "galaxy_store": {
+        "account_download_history_present": true,
+        "account_download_device_models": [
+          "SM-A205F"
+        ],
+        "content_id_linkage_available": false,
+        "downloaded_via_galaxy_store": null,
+        "status": "unknown_no_package_to_content_id_mapping_in_export"
+      },
       "artifacts": [
         {
           "filename": "base.apk",
@@ -1753,6 +2626,23 @@
       "version_code": 312351900,
       "is_aab": false,
       "backup_timestamp_ms": "1770189481694",
+      "pulled_from_device": {
+        "serial": "R83WA0GJ03V",
+        "model": "SM-A042F"
+      },
+      "account_device_models": [
+        "SM-A135F",
+        "SM-A205F"
+      ],
+      "galaxy_store": {
+        "account_download_history_present": true,
+        "account_download_device_models": [
+          "SM-A205F"
+        ],
+        "content_id_linkage_available": false,
+        "downloaded_via_galaxy_store": null,
+        "status": "unknown_no_package_to_content_id_mapping_in_export"
+      },
       "artifacts": [
         {
           "filename": "base.apk",
@@ -1771,6 +2661,23 @@
       "version_code": 312502000,
       "is_aab": false,
       "backup_timestamp_ms": "1770199606501",
+      "pulled_from_device": {
+        "serial": "R83WA0GJ03V",
+        "model": "SM-A042F"
+      },
+      "account_device_models": [
+        "SM-A135F",
+        "SM-A205F"
+      ],
+      "galaxy_store": {
+        "account_download_history_present": true,
+        "account_download_device_models": [
+          "SM-A205F"
+        ],
+        "content_id_linkage_available": false,
+        "downloaded_via_galaxy_store": null,
+        "status": "unknown_no_package_to_content_id_mapping_in_export"
+      },
       "artifacts": [
         {
           "filename": "base.apk",
@@ -1789,6 +2696,23 @@
       "version_code": 450020000,
       "is_aab": false,
       "backup_timestamp_ms": "1781264375979",
+      "pulled_from_device": {
+        "serial": "R83WA0GJ03V",
+        "model": "SM-A042F"
+      },
+      "account_device_models": [
+        "SM-A135F",
+        "SM-A205F"
+      ],
+      "galaxy_store": {
+        "account_download_history_present": true,
+        "account_download_device_models": [
+          "SM-A205F"
+        ],
+        "content_id_linkage_available": false,
+        "downloaded_via_galaxy_store": null,
+        "status": "unknown_no_package_to_content_id_mapping_in_export"
+      },
       "artifacts": [
         {
           "filename": "base.apk",
@@ -1807,6 +2731,23 @@
       "version_code": 310512303,
       "is_aab": false,
       "backup_timestamp_ms": "1782561621688",
+      "pulled_from_device": {
+        "serial": "R83WA0GJ03V",
+        "model": "SM-A042F"
+      },
+      "account_device_models": [
+        "SM-A135F",
+        "SM-A205F"
+      ],
+      "galaxy_store": {
+        "account_download_history_present": true,
+        "account_download_device_models": [
+          "SM-A205F"
+        ],
+        "content_id_linkage_available": false,
+        "downloaded_via_galaxy_store": null,
+        "status": "unknown_no_package_to_content_id_mapping_in_export"
+      },
       "artifacts": [
         {
           "filename": "base.apk",
@@ -1825,6 +2766,23 @@
       "version_code": 310506303,
       "is_aab": false,
       "backup_timestamp_ms": "1782561534352",
+      "pulled_from_device": {
+        "serial": "R83WA0GJ03V",
+        "model": "SM-A042F"
+      },
+      "account_device_models": [
+        "SM-A135F",
+        "SM-A205F"
+      ],
+      "galaxy_store": {
+        "account_download_history_present": true,
+        "account_download_device_models": [
+          "SM-A205F"
+        ],
+        "content_id_linkage_available": false,
+        "downloaded_via_galaxy_store": null,
+        "status": "unknown_no_package_to_content_id_mapping_in_export"
+      },
       "artifacts": [
         {
           "filename": "base.apk",
@@ -1843,6 +2801,23 @@
       "version_code": 220502000,
       "is_aab": false,
       "backup_timestamp_ms": "1782561800104",
+      "pulled_from_device": {
+        "serial": "R83WA0GJ03V",
+        "model": "SM-A042F"
+      },
+      "account_device_models": [
+        "SM-A135F",
+        "SM-A205F"
+      ],
+      "galaxy_store": {
+        "account_download_history_present": true,
+        "account_download_device_models": [
+          "SM-A205F"
+        ],
+        "content_id_linkage_available": false,
+        "downloaded_via_galaxy_store": null,
+        "status": "unknown_no_package_to_content_id_mapping_in_export"
+      },
       "artifacts": [
         {
           "filename": "base.apk",
@@ -1861,6 +2836,23 @@
       "version_code": 230809000,
       "is_aab": false,
       "backup_timestamp_ms": "1768510358951",
+      "pulled_from_device": {
+        "serial": "R83WA0GJ03V",
+        "model": "SM-A042F"
+      },
+      "account_device_models": [
+        "SM-A135F",
+        "SM-A205F"
+      ],
+      "galaxy_store": {
+        "account_download_history_present": true,
+        "account_download_device_models": [
+          "SM-A205F"
+        ],
+        "content_id_linkage_available": false,
+        "downloaded_via_galaxy_store": null,
+        "status": "unknown_no_package_to_content_id_mapping_in_export"
+      },
       "artifacts": [
         {
           "filename": "base.apk",
@@ -1879,6 +2871,23 @@
       "version_code": 3665,
       "is_aab": false,
       "backup_timestamp_ms": "1782561586432",
+      "pulled_from_device": {
+        "serial": "R83WA0GJ03V",
+        "model": "SM-A042F"
+      },
+      "account_device_models": [
+        "SM-A135F",
+        "SM-A205F"
+      ],
+      "galaxy_store": {
+        "account_download_history_present": true,
+        "account_download_device_models": [
+          "SM-A205F"
+        ],
+        "content_id_linkage_available": false,
+        "downloaded_via_galaxy_store": null,
+        "status": "unknown_no_package_to_content_id_mapping_in_export"
+      },
       "artifacts": [
         {
           "filename": "base.apk",
@@ -1897,6 +2906,23 @@
       "version_code": 360102000,
       "is_aab": false,
       "backup_timestamp_ms": "1776109631018",
+      "pulled_from_device": {
+        "serial": "R83WA0GJ03V",
+        "model": "SM-A042F"
+      },
+      "account_device_models": [
+        "SM-A135F",
+        "SM-A205F"
+      ],
+      "galaxy_store": {
+        "account_download_history_present": true,
+        "account_download_device_models": [
+          "SM-A205F"
+        ],
+        "content_id_linkage_available": false,
+        "downloaded_via_galaxy_store": null,
+        "status": "unknown_no_package_to_content_id_mapping_in_export"
+      },
       "artifacts": [
         {
           "filename": "base.apk",
@@ -1915,6 +2941,23 @@
       "version_code": 3079002,
       "is_aab": true,
       "backup_timestamp_ms": "1780758335081",
+      "pulled_from_device": {
+        "serial": "R83WA0GJ03V",
+        "model": "SM-A042F"
+      },
+      "account_device_models": [
+        "SM-A135F",
+        "SM-A205F"
+      ],
+      "galaxy_store": {
+        "account_download_history_present": true,
+        "account_download_device_models": [
+          "SM-A205F"
+        ],
+        "content_id_linkage_available": false,
+        "downloaded_via_galaxy_store": null,
+        "status": "unknown_no_package_to_content_id_mapping_in_export"
+      },
       "artifacts": [
         {
           "filename": "split_config.arm64_v8a.apk",
@@ -1949,6 +2992,23 @@
       "version_code": 40010,
       "is_aab": true,
       "backup_timestamp_ms": "1767245255397",
+      "pulled_from_device": {
+        "serial": "R83WA0GJ03V",
+        "model": "SM-A042F"
+      },
+      "account_device_models": [
+        "SM-A135F",
+        "SM-A205F"
+      ],
+      "galaxy_store": {
+        "account_download_history_present": true,
+        "account_download_device_models": [
+          "SM-A205F"
+        ],
+        "content_id_linkage_available": false,
+        "downloaded_via_galaxy_store": null,
+        "status": "unknown_no_package_to_content_id_mapping_in_export"
+      },
       "artifacts": [
         {
           "filename": "split_config.armeabi_v7a.apk",
@@ -1983,6 +3043,23 @@
       "version_code": 9400002,
       "is_aab": false,
       "backup_timestamp_ms": "1770189481854",
+      "pulled_from_device": {
+        "serial": "R83WA0GJ03V",
+        "model": "SM-A042F"
+      },
+      "account_device_models": [
+        "SM-A135F",
+        "SM-A205F"
+      ],
+      "galaxy_store": {
+        "account_download_history_present": true,
+        "account_download_device_models": [
+          "SM-A205F"
+        ],
+        "content_id_linkage_available": false,
+        "downloaded_via_galaxy_store": null,
+        "status": "unknown_no_package_to_content_id_mapping_in_export"
+      },
       "artifacts": [
         {
           "filename": "base.apk",
@@ -2001,6 +3078,23 @@
       "version_code": 8732101,
       "is_aab": true,
       "backup_timestamp_ms": "1777078578969",
+      "pulled_from_device": {
+        "serial": "R83WA0GJ03V",
+        "model": "SM-A042F"
+      },
+      "account_device_models": [
+        "SM-A135F",
+        "SM-A205F"
+      ],
+      "galaxy_store": {
+        "account_download_history_present": true,
+        "account_download_device_models": [
+          "SM-A205F"
+        ],
+        "content_id_linkage_available": false,
+        "downloaded_via_galaxy_store": null,
+        "status": "unknown_no_package_to_content_id_mapping_in_export"
+      },
       "artifacts": [
         {
           "filename": "split_config.armeabi_v7a.apk",
@@ -2059,6 +3153,23 @@
       "version_code": 7092989,
       "is_aab": true,
       "backup_timestamp_ms": "1782737995261",
+      "pulled_from_device": {
+        "serial": "R83WA0GJ03V",
+        "model": "SM-A042F"
+      },
+      "account_device_models": [
+        "SM-A135F",
+        "SM-A205F"
+      ],
+      "galaxy_store": {
+        "account_download_history_present": true,
+        "account_download_device_models": [
+          "SM-A205F"
+        ],
+        "content_id_linkage_available": false,
+        "downloaded_via_galaxy_store": null,
+        "status": "unknown_no_package_to_content_id_mapping_in_export"
+      },
       "artifacts": [
         {
           "filename": "split_config.arm64_v8a.apk",
@@ -2101,6 +3212,23 @@
       "version_code": 43,
       "is_aab": true,
       "backup_timestamp_ms": "1776603772807",
+      "pulled_from_device": {
+        "serial": "R83WA0GJ03V",
+        "model": "SM-A042F"
+      },
+      "account_device_models": [
+        "SM-A135F",
+        "SM-A205F"
+      ],
+      "galaxy_store": {
+        "account_download_history_present": true,
+        "account_download_device_models": [
+          "SM-A205F"
+        ],
+        "content_id_linkage_available": false,
+        "downloaded_via_galaxy_store": null,
+        "status": "unknown_no_package_to_content_id_mapping_in_export"
+      },
       "artifacts": [
         {
           "filename": "split_config.armeabi_v7a.apk",
@@ -2143,6 +3271,23 @@
       "version_code": 285022,
       "is_aab": true,
       "backup_timestamp_ms": "1777676296377",
+      "pulled_from_device": {
+        "serial": "R83WA0GJ03V",
+        "model": "SM-A042F"
+      },
+      "account_device_models": [
+        "SM-A135F",
+        "SM-A205F"
+      ],
+      "galaxy_store": {
+        "account_download_history_present": true,
+        "account_download_device_models": [
+          "SM-A205F"
+        ],
+        "content_id_linkage_available": false,
+        "downloaded_via_galaxy_store": null,
+        "status": "unknown_no_package_to_content_id_mapping_in_export"
+      },
       "artifacts": [
         {
           "filename": "split_bloops_dynamic_sdk.apk",
@@ -2201,6 +3346,23 @@
       "version_code": 140785734,
       "is_aab": true,
       "backup_timestamp_ms": "1776905795081",
+      "pulled_from_device": {
+        "serial": "R83WA0GJ03V",
+        "model": "SM-A042F"
+      },
+      "account_device_models": [
+        "SM-A135F",
+        "SM-A205F"
+      ],
+      "galaxy_store": {
+        "account_download_history_present": true,
+        "account_download_device_models": [
+          "SM-A205F"
+        ],
+        "content_id_linkage_available": false,
+        "downloaded_via_galaxy_store": null,
+        "status": "unknown_no_package_to_content_id_mapping_in_export"
+      },
       "artifacts": [
         {
           "filename": "split_config.armeabi_v7a.apk",
@@ -2243,6 +3405,23 @@
       "version_code": 363,
       "is_aab": true,
       "backup_timestamp_ms": "1782738605473",
+      "pulled_from_device": {
+        "serial": "R83WA0GJ03V",
+        "model": "SM-A042F"
+      },
+      "account_device_models": [
+        "SM-A135F",
+        "SM-A205F"
+      ],
+      "galaxy_store": {
+        "account_download_history_present": true,
+        "account_download_device_models": [
+          "SM-A205F"
+        ],
+        "content_id_linkage_available": false,
+        "downloaded_via_galaxy_store": null,
+        "status": "unknown_no_package_to_content_id_mapping_in_export"
+      },
       "artifacts": [
         {
           "filename": "split_config.arm64_v8a.apk",
@@ -2277,6 +3456,23 @@
       "version_code": 102566,
       "is_aab": true,
       "backup_timestamp_ms": "1777080112241",
+      "pulled_from_device": {
+        "serial": "R83WA0GJ03V",
+        "model": "SM-A042F"
+      },
+      "account_device_models": [
+        "SM-A135F",
+        "SM-A205F"
+      ],
+      "galaxy_store": {
+        "account_download_history_present": true,
+        "account_download_device_models": [
+          "SM-A205F"
+        ],
+        "content_id_linkage_available": false,
+        "downloaded_via_galaxy_store": null,
+        "status": "unknown_no_package_to_content_id_mapping_in_export"
+      },
       "artifacts": [
         {
           "filename": "split_UnityDataAssetPack.apk",
@@ -2311,6 +3507,23 @@
       "version_code": 345020075,
       "is_aab": true,
       "backup_timestamp_ms": "1783119361257",
+      "pulled_from_device": {
+        "serial": "R83WA0GJ03V",
+        "model": "SM-A042F"
+      },
+      "account_device_models": [
+        "SM-A135F",
+        "SM-A205F"
+      ],
+      "galaxy_store": {
+        "account_download_history_present": true,
+        "account_download_device_models": [
+          "SM-A205F"
+        ],
+        "content_id_linkage_available": false,
+        "downloaded_via_galaxy_store": null,
+        "status": "unknown_no_package_to_content_id_mapping_in_export"
+      },
       "artifacts": [
         {
           "filename": "split_config.arm64_v8a.apk",
@@ -2353,6 +3566,23 @@
       "version_code": 253,
       "is_aab": true,
       "backup_timestamp_ms": "1780392178217",
+      "pulled_from_device": {
+        "serial": "R83WA0GJ03V",
+        "model": "SM-A042F"
+      },
+      "account_device_models": [
+        "SM-A135F",
+        "SM-A205F"
+      ],
+      "galaxy_store": {
+        "account_download_history_present": true,
+        "account_download_device_models": [
+          "SM-A205F"
+        ],
+        "content_id_linkage_available": false,
+        "downloaded_via_galaxy_store": null,
+        "status": "unknown_no_package_to_content_id_mapping_in_export"
+      },
       "artifacts": [
         {
           "filename": "split_config.arm64_v8a.apk",
@@ -2395,6 +3625,23 @@
       "version_code": 2604006,
       "is_aab": true,
       "backup_timestamp_ms": "1770248500977",
+      "pulled_from_device": {
+        "serial": "R83WA0GJ03V",
+        "model": "SM-A042F"
+      },
+      "account_device_models": [
+        "SM-A135F",
+        "SM-A205F"
+      ],
+      "galaxy_store": {
+        "account_download_history_present": true,
+        "account_download_device_models": [
+          "SM-A205F"
+        ],
+        "content_id_linkage_available": false,
+        "downloaded_via_galaxy_store": null,
+        "status": "unknown_no_package_to_content_id_mapping_in_export"
+      },
       "artifacts": [
         {
           "filename": "split_config.armeabi_v7a.apk",
@@ -2445,6 +3692,23 @@
       "version_code": 43,
       "is_aab": true,
       "backup_timestamp_ms": "1746384709599",
+      "pulled_from_device": {
+        "serial": "R83WA0GJ03V",
+        "model": "SM-A042F"
+      },
+      "account_device_models": [
+        "SM-A135F",
+        "SM-A205F"
+      ],
+      "galaxy_store": {
+        "account_download_history_present": true,
+        "account_download_device_models": [
+          "SM-A205F"
+        ],
+        "content_id_linkage_available": false,
+        "downloaded_via_galaxy_store": null,
+        "status": "unknown_no_package_to_content_id_mapping_in_export"
+      },
       "artifacts": [
         {
           "filename": "split_config.armeabi_v7a.apk",
@@ -2487,6 +3751,23 @@
       "version_code": 294014,
       "is_aab": true,
       "backup_timestamp_ms": "1783475922773",
+      "pulled_from_device": {
+        "serial": "R83WA0GJ03V",
+        "model": "SM-A042F"
+      },
+      "account_device_models": [
+        "SM-A135F",
+        "SM-A205F"
+      ],
+      "galaxy_store": {
+        "account_download_history_present": true,
+        "account_download_device_models": [
+          "SM-A205F"
+        ],
+        "content_id_linkage_available": false,
+        "downloaded_via_galaxy_store": null,
+        "status": "unknown_no_package_to_content_id_mapping_in_export"
+      },
       "artifacts": [
         {
           "filename": "split_BarcodeScanner.apk",
@@ -2585,6 +3866,23 @@
       "version_code": 112185364,
       "is_aab": true,
       "backup_timestamp_ms": "1783550037231",
+      "pulled_from_device": {
+        "serial": "R83WA0GJ03V",
+        "model": "SM-A042F"
+      },
+      "account_device_models": [
+        "SM-A135F",
+        "SM-A205F"
+      ],
+      "galaxy_store": {
+        "account_download_history_present": true,
+        "account_download_device_models": [
+          "SM-A205F"
+        ],
+        "content_id_linkage_available": false,
+        "downloaded_via_galaxy_store": null,
+        "status": "unknown_no_package_to_content_id_mapping_in_export"
+      },
       "artifacts": [
         {
           "filename": "split_GooglePaySdk.apk",
@@ -2643,6 +3941,23 @@
       "version_code": 280,
       "is_aab": true,
       "backup_timestamp_ms": "1782746141962",
+      "pulled_from_device": {
+        "serial": "R83WA0GJ03V",
+        "model": "SM-A042F"
+      },
+      "account_device_models": [
+        "SM-A135F",
+        "SM-A205F"
+      ],
+      "galaxy_store": {
+        "account_download_history_present": true,
+        "account_download_device_models": [
+          "SM-A205F"
+        ],
+        "content_id_linkage_available": false,
+        "downloaded_via_galaxy_store": null,
+        "status": "unknown_no_package_to_content_id_mapping_in_export"
+      },
       "artifacts": [
         {
           "filename": "split_config.arm64_v8a.apk",
@@ -2685,6 +4000,23 @@
       "version_code": 262107501,
       "is_aab": true,
       "backup_timestamp_ms": "1780660908146",
+      "pulled_from_device": {
+        "serial": "R83WA0GJ03V",
+        "model": "SM-A042F"
+      },
+      "account_device_models": [
+        "SM-A135F",
+        "SM-A205F"
+      ],
+      "galaxy_store": {
+        "account_download_history_present": true,
+        "account_download_device_models": [
+          "SM-A205F"
+        ],
+        "content_id_linkage_available": false,
+        "downloaded_via_galaxy_store": null,
+        "status": "unknown_no_package_to_content_id_mapping_in_export"
+      },
       "artifacts": [
         {
           "filename": "split_config.armeabi_v7a.apk",
@@ -2735,6 +4067,23 @@
       "version_code": 2652,
       "is_aab": true,
       "backup_timestamp_ms": "1777676222481",
+      "pulled_from_device": {
+        "serial": "R83WA0GJ03V",
+        "model": "SM-A042F"
+      },
+      "account_device_models": [
+        "SM-A135F",
+        "SM-A205F"
+      ],
+      "galaxy_store": {
+        "account_download_history_present": true,
+        "account_download_device_models": [
+          "SM-A205F"
+        ],
+        "content_id_linkage_available": false,
+        "downloaded_via_galaxy_store": null,
+        "status": "unknown_no_package_to_content_id_mapping_in_export"
+      },
       "artifacts": [
         {
           "filename": "split_config.armeabi_v7a.apk",
@@ -2785,6 +4134,23 @@
       "version_code": 4230,
       "is_aab": true,
       "backup_timestamp_ms": "1782863745507",
+      "pulled_from_device": {
+        "serial": "R83WA0GJ03V",
+        "model": "SM-A042F"
+      },
+      "account_device_models": [
+        "SM-A135F",
+        "SM-A205F"
+      ],
+      "galaxy_store": {
+        "account_download_history_present": true,
+        "account_download_device_models": [
+          "SM-A205F"
+        ],
+        "content_id_linkage_available": false,
+        "downloaded_via_galaxy_store": null,
+        "status": "unknown_no_package_to_content_id_mapping_in_export"
+      },
       "artifacts": [
         {
           "filename": "split_config.arm64_v8a.apk",
@@ -2843,6 +4209,23 @@
       "version_code": 800746,
       "is_aab": true,
       "backup_timestamp_ms": "1783287710125",
+      "pulled_from_device": {
+        "serial": "R83WA0GJ03V",
+        "model": "SM-A042F"
+      },
+      "account_device_models": [
+        "SM-A135F",
+        "SM-A205F"
+      ],
+      "galaxy_store": {
+        "account_download_history_present": true,
+        "account_download_device_models": [
+          "SM-A205F"
+        ],
+        "content_id_linkage_available": false,
+        "downloaded_via_galaxy_store": null,
+        "status": "unknown_no_package_to_content_id_mapping_in_export"
+      },
       "artifacts": [
         {
           "filename": "split_config.arm64_v8a.apk",
@@ -2885,6 +4268,23 @@
       "version_code": 253,
       "is_aab": true,
       "backup_timestamp_ms": "1782738737037",
+      "pulled_from_device": {
+        "serial": "R83WA0GJ03V",
+        "model": "SM-A042F"
+      },
+      "account_device_models": [
+        "SM-A135F",
+        "SM-A205F"
+      ],
+      "galaxy_store": {
+        "account_download_history_present": true,
+        "account_download_device_models": [
+          "SM-A205F"
+        ],
+        "content_id_linkage_available": false,
+        "downloaded_via_galaxy_store": null,
+        "status": "unknown_no_package_to_content_id_mapping_in_export"
+      },
       "artifacts": [
         {
           "filename": "split_config.en.apk",
@@ -2919,6 +4319,23 @@
       "version_code": 2968,
       "is_aab": true,
       "backup_timestamp_ms": "1783549756583",
+      "pulled_from_device": {
+        "serial": "R83WA0GJ03V",
+        "model": "SM-A042F"
+      },
+      "account_device_models": [
+        "SM-A135F",
+        "SM-A205F"
+      ],
+      "galaxy_store": {
+        "account_download_history_present": true,
+        "account_download_device_models": [
+          "SM-A205F"
+        ],
+        "content_id_linkage_available": false,
+        "downloaded_via_galaxy_store": null,
+        "status": "unknown_no_package_to_content_id_mapping_in_export"
+      },
       "artifacts": [
         {
           "filename": "split_config.arm64_v8a.apk",
@@ -2953,6 +4370,23 @@
       "version_code": 0,
       "is_aab": false,
       "backup_timestamp_ms": "1780888338665",
+      "pulled_from_device": {
+        "serial": "R83WA0GJ03V",
+        "model": "SM-A042F"
+      },
+      "account_device_models": [
+        "SM-A135F",
+        "SM-A205F"
+      ],
+      "galaxy_store": {
+        "account_download_history_present": true,
+        "account_download_device_models": [
+          "SM-A205F"
+        ],
+        "content_id_linkage_available": false,
+        "downloaded_via_galaxy_store": null,
+        "status": "unknown_no_package_to_content_id_mapping_in_export"
+      },
       "artifacts": [],
       "all_hashes_verified": false
     },
@@ -2962,6 +4396,23 @@
       "version_code": 638,
       "is_aab": true,
       "backup_timestamp_ms": "1782664534327",
+      "pulled_from_device": {
+        "serial": "R83WA0GJ03V",
+        "model": "SM-A042F"
+      },
+      "account_device_models": [
+        "SM-A135F",
+        "SM-A205F"
+      ],
+      "galaxy_store": {
+        "account_download_history_present": true,
+        "account_download_device_models": [
+          "SM-A205F"
+        ],
+        "content_id_linkage_available": false,
+        "downloaded_via_galaxy_store": null,
+        "status": "unknown_no_package_to_content_id_mapping_in_export"
+      },
       "artifacts": [
         {
           "filename": "split_config.arm64_v8a.apk",
@@ -3004,6 +4455,23 @@
       "version_code": 1,
       "is_aab": false,
       "backup_timestamp_ms": "1666808635047",
+      "pulled_from_device": {
+        "serial": "R83WA0GJ03V",
+        "model": "SM-A042F"
+      },
+      "account_device_models": [
+        "SM-A135F",
+        "SM-A205F"
+      ],
+      "galaxy_store": {
+        "account_download_history_present": true,
+        "account_download_device_models": [
+          "SM-A205F"
+        ],
+        "content_id_linkage_available": false,
+        "downloaded_via_galaxy_store": null,
+        "status": "unknown_no_package_to_content_id_mapping_in_export"
+      },
       "artifacts": [
         {
           "filename": "base.apk",
@@ -3022,6 +4490,23 @@
       "version_code": 1,
       "is_aab": false,
       "backup_timestamp_ms": "1770189481210",
+      "pulled_from_device": {
+        "serial": "R83WA0GJ03V",
+        "model": "SM-A042F"
+      },
+      "account_device_models": [
+        "SM-A135F",
+        "SM-A205F"
+      ],
+      "galaxy_store": {
+        "account_download_history_present": true,
+        "account_download_device_models": [
+          "SM-A205F"
+        ],
+        "content_id_linkage_available": false,
+        "downloaded_via_galaxy_store": null,
+        "status": "unknown_no_package_to_content_id_mapping_in_export"
+      },
       "artifacts": [
         {
           "filename": "base.apk",
@@ -3040,6 +4525,23 @@
       "version_code": 1,
       "is_aab": false,
       "backup_timestamp_ms": "1770189479710",
+      "pulled_from_device": {
+        "serial": "R83WA0GJ03V",
+        "model": "SM-A042F"
+      },
+      "account_device_models": [
+        "SM-A135F",
+        "SM-A205F"
+      ],
+      "galaxy_store": {
+        "account_download_history_present": true,
+        "account_download_device_models": [
+          "SM-A205F"
+        ],
+        "content_id_linkage_available": false,
+        "downloaded_via_galaxy_store": null,
+        "status": "unknown_no_package_to_content_id_mapping_in_export"
+      },
       "artifacts": [
         {
           "filename": "base.apk",
@@ -3058,6 +4560,23 @@
       "version_code": 2,
       "is_aab": false,
       "backup_timestamp_ms": "1738527929217",
+      "pulled_from_device": {
+        "serial": "R83WA0GJ03V",
+        "model": "SM-A042F"
+      },
+      "account_device_models": [
+        "SM-A135F",
+        "SM-A205F"
+      ],
+      "galaxy_store": {
+        "account_download_history_present": true,
+        "account_download_device_models": [
+          "SM-A205F"
+        ],
+        "content_id_linkage_available": false,
+        "downloaded_via_galaxy_store": null,
+        "status": "unknown_no_package_to_content_id_mapping_in_export"
+      },
       "artifacts": [
         {
           "filename": "base.apk",
@@ -3076,6 +4595,23 @@
       "version_code": 1,
       "is_aab": false,
       "backup_timestamp_ms": "1666292608205",
+      "pulled_from_device": {
+        "serial": "R83WA0GJ03V",
+        "model": "SM-A042F"
+      },
+      "account_device_models": [
+        "SM-A135F",
+        "SM-A205F"
+      ],
+      "galaxy_store": {
+        "account_download_history_present": true,
+        "account_download_device_models": [
+          "SM-A205F"
+        ],
+        "content_id_linkage_available": false,
+        "downloaded_via_galaxy_store": null,
+        "status": "unknown_no_package_to_content_id_mapping_in_export"
+      },
       "artifacts": [
         {
           "filename": "base.apk",
@@ -3094,6 +4630,23 @@
       "version_code": 67502,
       "is_aab": true,
       "backup_timestamp_ms": "1778792028985",
+      "pulled_from_device": {
+        "serial": "R83WA0GJ03V",
+        "model": "SM-A042F"
+      },
+      "account_device_models": [
+        "SM-A135F",
+        "SM-A205F"
+      ],
+      "galaxy_store": {
+        "account_download_history_present": true,
+        "account_download_device_models": [
+          "SM-A205F"
+        ],
+        "content_id_linkage_available": false,
+        "downloaded_via_galaxy_store": null,
+        "status": "unknown_no_package_to_content_id_mapping_in_export"
+      },
       "artifacts": [
         {
           "filename": "split_config.arm64_v8a.apk",
@@ -3136,6 +4689,23 @@
       "version_code": 3093,
       "is_aab": true,
       "backup_timestamp_ms": "1768256183507",
+      "pulled_from_device": {
+        "serial": "R83WA0GJ03V",
+        "model": "SM-A042F"
+      },
+      "account_device_models": [
+        "SM-A135F",
+        "SM-A205F"
+      ],
+      "galaxy_store": {
+        "account_download_history_present": true,
+        "account_download_device_models": [
+          "SM-A205F"
+        ],
+        "content_id_linkage_available": false,
+        "downloaded_via_galaxy_store": null,
+        "status": "unknown_no_package_to_content_id_mapping_in_export"
+      },
       "artifacts": [
         {
           "filename": "split_config.armeabi_v7a.apk",
@@ -3170,6 +4740,23 @@
       "version_code": 1914,
       "is_aab": true,
       "backup_timestamp_ms": "1783716055013",
+      "pulled_from_device": {
+        "serial": "R83WA0GJ03V",
+        "model": "SM-A042F"
+      },
+      "account_device_models": [
+        "SM-A135F",
+        "SM-A205F"
+      ],
+      "galaxy_store": {
+        "account_download_history_present": true,
+        "account_download_device_models": [
+          "SM-A205F"
+        ],
+        "content_id_linkage_available": false,
+        "downloaded_via_galaxy_store": null,
+        "status": "unknown_no_package_to_content_id_mapping_in_export"
+      },
       "artifacts": [
         {
           "filename": "split_config.arm64_v8a.apk",
@@ -3204,6 +4791,23 @@
       "version_code": 6700020,
       "is_aab": true,
       "backup_timestamp_ms": "1777090391438",
+      "pulled_from_device": {
+        "serial": "R83WA0GJ03V",
+        "model": "SM-A042F"
+      },
+      "account_device_models": [
+        "SM-A135F",
+        "SM-A205F"
+      ],
+      "galaxy_store": {
+        "account_download_history_present": true,
+        "account_download_device_models": [
+          "SM-A205F"
+        ],
+        "content_id_linkage_available": false,
+        "downloaded_via_galaxy_store": null,
+        "status": "unknown_no_package_to_content_id_mapping_in_export"
+      },
       "artifacts": [
         {
           "filename": "split_config.arm64_v8a.apk",
@@ -3270,6 +4874,23 @@
       "version_code": 0,
       "is_aab": false,
       "backup_timestamp_ms": "1780888338045",
+      "pulled_from_device": {
+        "serial": "R83WA0GJ03V",
+        "model": "SM-A042F"
+      },
+      "account_device_models": [
+        "SM-A135F",
+        "SM-A205F"
+      ],
+      "galaxy_store": {
+        "account_download_history_present": true,
+        "account_download_device_models": [
+          "SM-A205F"
+        ],
+        "content_id_linkage_available": false,
+        "downloaded_via_galaxy_store": null,
+        "status": "unknown_no_package_to_content_id_mapping_in_export"
+      },
       "artifacts": [],
       "all_hashes_verified": false
     },
@@ -3279,6 +4900,23 @@
       "version_code": 402,
       "is_aab": false,
       "backup_timestamp_ms": "1769205985009",
+      "pulled_from_device": {
+        "serial": "R83WA0GJ03V",
+        "model": "SM-A042F"
+      },
+      "account_device_models": [
+        "SM-A135F",
+        "SM-A205F"
+      ],
+      "galaxy_store": {
+        "account_download_history_present": true,
+        "account_download_device_models": [
+          "SM-A205F"
+        ],
+        "content_id_linkage_available": false,
+        "downloaded_via_galaxy_store": null,
+        "status": "unknown_no_package_to_content_id_mapping_in_export"
+      },
       "artifacts": [
         {
           "filename": "base.apk",
@@ -3297,6 +4935,23 @@
       "version_code": 6309,
       "is_aab": true,
       "backup_timestamp_ms": "1782738137229",
+      "pulled_from_device": {
+        "serial": "R83WA0GJ03V",
+        "model": "SM-A042F"
+      },
+      "account_device_models": [
+        "SM-A135F",
+        "SM-A205F"
+      ],
+      "galaxy_store": {
+        "account_download_history_present": true,
+        "account_download_device_models": [
+          "SM-A205F"
+        ],
+        "content_id_linkage_available": false,
+        "downloaded_via_galaxy_store": null,
+        "status": "unknown_no_package_to_content_id_mapping_in_export"
+      },
       "artifacts": [
         {
           "filename": "split_config.arm64_v8a.apk",
@@ -3331,6 +4986,23 @@
       "version_code": 37,
       "is_aab": true,
       "backup_timestamp_ms": "1770189480806",
+      "pulled_from_device": {
+        "serial": "R83WA0GJ03V",
+        "model": "SM-A042F"
+      },
+      "account_device_models": [
+        "SM-A135F",
+        "SM-A205F"
+      ],
+      "galaxy_store": {
+        "account_download_history_present": true,
+        "account_download_device_models": [
+          "SM-A205F"
+        ],
+        "content_id_linkage_available": false,
+        "downloaded_via_galaxy_store": null,
+        "status": "unknown_no_package_to_content_id_mapping_in_export"
+      },
       "artifacts": [
         {
           "filename": "split_config.en.apk",
@@ -3365,6 +5037,23 @@
       "version_code": 1880230,
       "is_aab": true,
       "backup_timestamp_ms": "1783436338506",
+      "pulled_from_device": {
+        "serial": "R83WA0GJ03V",
+        "model": "SM-A042F"
+      },
+      "account_device_models": [
+        "SM-A135F",
+        "SM-A205F"
+      ],
+      "galaxy_store": {
+        "account_download_history_present": true,
+        "account_download_device_models": [
+          "SM-A205F"
+        ],
+        "content_id_linkage_available": false,
+        "downloaded_via_galaxy_store": null,
+        "status": "unknown_no_package_to_content_id_mapping_in_export"
+      },
       "artifacts": [
         {
           "filename": "split_config.arm64_v8a.apk",
@@ -3399,6 +5088,23 @@
       "version_code": 285,
       "is_aab": true,
       "backup_timestamp_ms": "1782738596989",
+      "pulled_from_device": {
+        "serial": "R83WA0GJ03V",
+        "model": "SM-A042F"
+      },
+      "account_device_models": [
+        "SM-A135F",
+        "SM-A205F"
+      ],
+      "galaxy_store": {
+        "account_download_history_present": true,
+        "account_download_device_models": [
+          "SM-A205F"
+        ],
+        "content_id_linkage_available": false,
+        "downloaded_via_galaxy_store": null,
+        "status": "unknown_no_package_to_content_id_mapping_in_export"
+      },
       "artifacts": [
         {
           "filename": "split_config.arm64_v8a.apk",
@@ -3441,6 +5147,23 @@
       "version_code": 2026031801,
       "is_aab": true,
       "backup_timestamp_ms": "1783667208089",
+      "pulled_from_device": {
+        "serial": "R83WA0GJ03V",
+        "model": "SM-A042F"
+      },
+      "account_device_models": [
+        "SM-A135F",
+        "SM-A205F"
+      ],
+      "galaxy_store": {
+        "account_download_history_present": true,
+        "account_download_device_models": [
+          "SM-A205F"
+        ],
+        "content_id_linkage_available": false,
+        "downloaded_via_galaxy_store": null,
+        "status": "unknown_no_package_to_content_id_mapping_in_export"
+      },
       "artifacts": [
         {
           "filename": "split_config.arm64_v8a.apk",
@@ -3483,6 +5206,23 @@
       "version_code": 135,
       "is_aab": true,
       "backup_timestamp_ms": "1778009676982",
+      "pulled_from_device": {
+        "serial": "R83WA0GJ03V",
+        "model": "SM-A042F"
+      },
+      "account_device_models": [
+        "SM-A135F",
+        "SM-A205F"
+      ],
+      "galaxy_store": {
+        "account_download_history_present": true,
+        "account_download_device_models": [
+          "SM-A205F"
+        ],
+        "content_id_linkage_available": false,
+        "downloaded_via_galaxy_store": null,
+        "status": "unknown_no_package_to_content_id_mapping_in_export"
+      },
       "artifacts": [
         {
           "filename": "split_config.arm64_v8a.apk",
@@ -3525,6 +5265,23 @@
       "version_code": 300005119,
       "is_aab": true,
       "backup_timestamp_ms": "1782738058113",
+      "pulled_from_device": {
+        "serial": "R83WA0GJ03V",
+        "model": "SM-A042F"
+      },
+      "account_device_models": [
+        "SM-A135F",
+        "SM-A205F"
+      ],
+      "galaxy_store": {
+        "account_download_history_present": true,
+        "account_download_device_models": [
+          "SM-A205F"
+        ],
+        "content_id_linkage_available": false,
+        "downloaded_via_galaxy_store": null,
+        "status": "unknown_no_package_to_content_id_mapping_in_export"
+      },
       "artifacts": [
         {
           "filename": "split_config.arm64_v8a.apk",
@@ -3567,6 +5324,23 @@
       "version_code": 1783525297,
       "is_aab": true,
       "backup_timestamp_ms": "1783902040765",
+      "pulled_from_device": {
+        "serial": "R83WA0GJ03V",
+        "model": "SM-A042F"
+      },
+      "account_device_models": [
+        "SM-A135F",
+        "SM-A205F"
+      ],
+      "galaxy_store": {
+        "account_download_history_present": true,
+        "account_download_device_models": [
+          "SM-A205F"
+        ],
+        "content_id_linkage_available": false,
+        "downloaded_via_galaxy_store": null,
+        "status": "unknown_no_package_to_content_id_mapping_in_export"
+      },
       "artifacts": [
         {
           "filename": "split_config.arm64_v8a.apk",
@@ -3609,6 +5383,23 @@
       "version_code": 325,
       "is_aab": true,
       "backup_timestamp_ms": "1782738464357",
+      "pulled_from_device": {
+        "serial": "R83WA0GJ03V",
+        "model": "SM-A042F"
+      },
+      "account_device_models": [
+        "SM-A135F",
+        "SM-A205F"
+      ],
+      "galaxy_store": {
+        "account_download_history_present": true,
+        "account_download_device_models": [
+          "SM-A205F"
+        ],
+        "content_id_linkage_available": false,
+        "downloaded_via_galaxy_store": null,
+        "status": "unknown_no_package_to_content_id_mapping_in_export"
+      },
       "artifacts": [
         {
           "filename": "split_config.arm64_v8a.apk",
@@ -3651,6 +5442,23 @@
       "version_code": 3294,
       "is_aab": false,
       "backup_timestamp_ms": "1781678841253",
+      "pulled_from_device": {
+        "serial": "R83WA0GJ03V",
+        "model": "SM-A042F"
+      },
+      "account_device_models": [
+        "SM-A135F",
+        "SM-A205F"
+      ],
+      "galaxy_store": {
+        "account_download_history_present": true,
+        "account_download_device_models": [
+          "SM-A205F"
+        ],
+        "content_id_linkage_available": false,
+        "downloaded_via_galaxy_store": null,
+        "status": "unknown_no_package_to_content_id_mapping_in_export"
+      },
       "artifacts": [
         {
           "filename": "base.apk",
@@ -3669,6 +5477,23 @@
       "version_code": 8,
       "is_aab": false,
       "backup_timestamp_ms": "1770189481414",
+      "pulled_from_device": {
+        "serial": "R83WA0GJ03V",
+        "model": "SM-A042F"
+      },
+      "account_device_models": [
+        "SM-A135F",
+        "SM-A205F"
+      ],
+      "galaxy_store": {
+        "account_download_history_present": true,
+        "account_download_device_models": [
+          "SM-A205F"
+        ],
+        "content_id_linkage_available": false,
+        "downloaded_via_galaxy_store": null,
+        "status": "unknown_no_package_to_content_id_mapping_in_export"
+      },
       "artifacts": [
         {
           "filename": "base.apk",
@@ -3687,6 +5512,23 @@
       "version_code": 8,
       "is_aab": true,
       "backup_timestamp_ms": "1764622651521",
+      "pulled_from_device": {
+        "serial": "R83WA0GJ03V",
+        "model": "SM-A042F"
+      },
+      "account_device_models": [
+        "SM-A135F",
+        "SM-A205F"
+      ],
+      "galaxy_store": {
+        "account_download_history_present": true,
+        "account_download_device_models": [
+          "SM-A205F"
+        ],
+        "content_id_linkage_available": false,
+        "downloaded_via_galaxy_store": null,
+        "status": "unknown_no_package_to_content_id_mapping_in_export"
+      },
       "artifacts": [
         {
           "filename": "split_config.armeabi_v7a.apk",

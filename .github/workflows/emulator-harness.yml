@@ -3,10 +3,6 @@ name: Emulator Harness Validation
 on:
   push:
     branches: [main, sitholemb16-star-emulator-call-comm]
-    paths:
-      - 'scripts/**'
-      - 'tests/**'
-      - 'apks/**'
   pull_request:
     branches: [main]
   workflow_dispatch:
@@ -27,9 +23,22 @@ jobs:
       - name: Verify LFS APK hashes
         run: |
           if [ -f apks/SHA256SUMS.txt ]; then
-            shasum -a 256 -c apks/SHA256SUMS.txt && echo "APK hash check PASSED" || echo "APK hash check FAILED"
+            shasum -a 256 -c apks/SHA256SUMS.txt
+            echo "APK hash check PASSED"
           else
             echo "No SHA256SUMS.txt — skipping hash check"
+          fi
+
+      - name: Verify CSV FILE_LIST hashes (if manifests present)
+        run: |
+          shopt -s nullglob
+          csvs=(apks/manifests/*.csv)
+          if [ ${#csvs[@]} -gt 0 ] && [ -f apks/SHA256SUMS.txt ]; then
+            python3 tools/app_inventory/verify_hashes_against_csv.py \
+              --csv "${csvs[@]}" \
+              --sums apks/SHA256SUMS.txt
+          else
+            echo "No CSV manifests in apks/manifests — skipping FILE_LIST hash verification"
           fi
 
       - name: Bash syntax check — emulator-comm
@@ -43,6 +52,14 @@ jobs:
           if [ -f scripts/pull-apks ]; then
             bash -n scripts/pull-apks && echo "SYNTAX OK: scripts/pull-apks"
           fi
+
+      - name: Bash syntax check — S25 emulator scripts
+        run: |
+          for script in scripts/setup-s25-avd scripts/launch-s25 scripts/install-apks-to-emulator; do
+            if [ -f "$script" ]; then
+              bash -n "$script" && echo "SYNTAX OK: $script"
+            fi
+          done
 
       - name: Run harness tests (mocked ADB)
         run: |
