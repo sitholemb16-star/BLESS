@@ -21,7 +21,7 @@ def timestamp_key(value):
     try:
         return int(datetime.fromisoformat(text.replace('Z', '+00:00')).timestamp() * 1000)
     except ValueError:
-        return text
+        return None
 
 
 def snapshot_is_newer(current_value, candidate_value):
@@ -138,8 +138,6 @@ def load_csvs(paths):
                     app['backup_files'] = list(parsed_files)
                 elif ts == app.get('backup_timestamp', ''):
                     merge_unique_files(app['backup_files'], parsed_files)
-                elif not app['backup_files']:
-                    app['backup_files'] = list(parsed_files)
     return apps
 
 

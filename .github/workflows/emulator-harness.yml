@@ -23,7 +23,15 @@ jobs:
       - name: Verify LFS APK hashes
         run: |
           if [ -f apks/SHA256SUMS.txt ]; then
-            if ! shasum -a 256 -c apks/SHA256SUMS.txt; then
+            if command -v sha256sum >/dev/null 2>&1; then
+              verifier='sha256sum -c'
+            elif command -v shasum >/dev/null 2>&1; then
+              verifier='shasum -a 256 -c'
+            else
+              echo "No checksum verifier found (need sha256sum or shasum)." >&2
+              exit 1
+            fi
+            if ! $verifier apks/SHA256SUMS.txt; then
               echo "APK hash check FAILED" >&2
               exit 1
             fi

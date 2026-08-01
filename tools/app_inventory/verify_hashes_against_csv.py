@@ -50,6 +50,11 @@ def load_expected(csv_paths):
                         continue
                     for item in file_list:
                         if not isinstance(item, dict):
+                            invalid_rows += 1
+                            print(
+                                f"WARN: non-object FILE_LIST entry in {path}:{index}",
+                                file=sys.stderr,
+                            )
                             continue
                         item_type = item.get("type")
                         if item_type not in ("apk", "apks"):
