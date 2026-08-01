@@ -17,12 +17,12 @@ done
 SDK_ROOT="/Volumes/Secure AI Coding Tools/Android/sdk"
 export PATH="$SDK_ROOT/platform-tools:$PATH"
 
-ADB="adb -s $SERIAL"
+ADB=(adb -s "$SERIAL")
 
 # Wait for emulator to be fully booted
 echo "Waiting for emulator $SERIAL to finish booting..."
-adb -s "$SERIAL" wait-for-device
-until [[ "$($ADB shell getprop sys.boot_completed 2>/dev/null | tr -d '\r')" == "1" ]]; do
+"${ADB[@]}" wait-for-device
+until [[ "$("${ADB[@]}" shell getprop sys.boot_completed 2>/dev/null | tr -d '\r')" == "1" ]]; do
   sleep 3
   echo "  still booting..."
 done
@@ -37,16 +37,19 @@ for pkg_dir in "$APKS_DIR"/*/; do
   [[ "$pkg" == "SHA256SUMS.txt" ]] && continue
   [[ "$pkg" == "provenance.json" ]] && continue
 
-  mapfile -t apk_files < <(find "$pkg_dir" -name "*.apk" | sort)
-  [[ ${#apk_files[@]} -eq 0 ]] && { ((SKIPPED++)); continue; }
+  apk_files=()
+  while IFS= read -r apk_path; do
+    apk_files+=("$apk_path")
+  done < <(find "$pkg_dir" -name "*.apk" | sort)
+  [[ ${#apk_files[@]} -eq 0 ]] && { ((SKIPPED+=1)); continue; }
 
   echo -n "Installing $pkg (${#apk_files[@]} APK(s))... "
-  if $ADB install-multiple -r -t "${apk_files[@]}" >/dev/null 2>&1; then
+  if "${ADB[@]}" install-multiple -r -t "${apk_files[@]}" >/dev/null 2>&1; then
     echo "✓"
-    ((PASSED++))
+    ((PASSED+=1))
   else
     echo "FAIL"
-    ((FAILED++))
+    ((FAILED+=1))
   fi
 done
 

@@ -8,6 +8,7 @@ import argparse
 import csv
 import json
 import os
+import sys
 from datetime import datetime, timezone
 
 def load_sums(path):
@@ -28,31 +29,73 @@ def load_csvs(paths):
     apps = {}
     for path in paths:
         with open(path, encoding='utf-8-sig') as f:
-            for row in csv.DictReader(f):
+            for index, row in enumerate(csv.DictReader(f), start=2):
+                item_data_raw = row.get('ITEM_DATA', '{}')
                 try:
-                    meta = json.loads(row.get('ITEM_DATA', '{}'))
-                    pkg = meta.get('package_name', '')
-                    if not pkg:
+                    meta = json.loads(item_data_raw)
+                except json.JSONDecodeError as exc:
+                    print(
+                        f"WARN: Skipping malformed ITEM_DATA in {path}:{index}: {exc}",
+                        file=sys.stderr,
+                    )
+                    continue
+                pkg = str(meta.get('package_name', '')).strip()
+                if not pkg:
+                    continue
+
+                file_list_raw = row.get('FILE_LIST', '[]')
+                try:
+                    file_list = json.loads(file_list_raw)
+                except json.JSONDecodeError as exc:
+                    print(
+                        f"WARN: Skipping malformed FILE_LIST in {path}:{index}: {exc}",
+                        file=sys.stderr,
+                    )
+                    continue
+                if not isinstance(file_list, list):
+                    print(
+                        f"WARN: Skipping non-list FILE_LIST in {path}:{index}",
+                        file=sys.stderr,
+                    )
+                    continue
+
+                parsed_files = []
+                for item in file_list:
+                    if not isinstance(item, dict):
                         continue
-                    file_list = json.loads(row.get('FILE_LIST', '[]'))
+                    item_type = item.get('type')
+                    if item_type not in ('apk', 'apks'):
+                        continue
+                    item_path = item.get('path')
+                    if not item_path:
+                        print(
+                            f"WARN: Skipping FILE_LIST entry without path in {path}:{index}",
+                            file=sys.stderr,
+                        )
+                        continue
+                    parsed_files.append(
+                        {
+                            'filename': os.path.basename(item_path),
+                            'backup_hash': item.get('hash', ''),
+                            'size': item.get('size', 0),
+                            'type': item_type,
+                        }
+                    )
+
+                if pkg not in apps:
                     apps[pkg] = {
                         'package_name': pkg,
                         'app_name': meta.get('app_name', ''),
                         'version_code': meta.get('version_code'),
                         'is_aab': meta.get('is_aab', True),
                         'backup_timestamp': row.get('TIMESTAMP', ''),
-                        'backup_files': [
-                            {
-                                'filename': os.path.basename(f['path']),
-                                'backup_hash': f.get('hash', ''),
-                                'size': f.get('size', 0),
-                                'type': f.get('type', ''),
-                            }
-                            for f in file_list if f.get('type') in ('apk', 'apks')
-                        ]
+                        'backup_files': [],
                     }
-                except (json.JSONDecodeError, KeyError, TypeError, ValueError):
-                    continue
+
+                app = apps[pkg]
+                app['backup_files'].extend(parsed_files)
+                if row.get('TIMESTAMP'):
+                    app['backup_timestamp'] = max(app['backup_timestamp'], row.get('TIMESTAMP', ''))
     return apps
 
 
@@ -252,7 +295,9 @@ def main():
         pulled_device=pulled_device,
     )
 
-    os.makedirs(os.path.dirname(args.out), exist_ok=True)
+    out_dir = os.path.dirname(args.out)
+    if out_dir:
+        os.makedirs(out_dir, exist_ok=True)
     with open(args.out, 'w') as f:
         json.dump(result, f, indent=2)
     print(f"Written {len(result['packages'])} package records to {args.out}")

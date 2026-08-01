@@ -4,9 +4,21 @@ set -euo pipefail
 REPO_ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 APKS_DIR="$REPO_ROOT/apks"
 OUT="$APKS_DIR/SHA256SUMS.txt"
+
+if ! find "$APKS_DIR" -type f \( -name "*.apk" -o -name "*.apks" \) -print -quit | grep -q .; then
+  : > "$OUT"
+  echo "No APK/APKS files found under $APKS_DIR"
+  echo "Manifest written: $OUT"
+  exit 0
+fi
+
 find "$APKS_DIR" -type f \( -name "*.apk" -o -name "*.apks" \) -print0 \
-  | xargs -0 shasum -a 256 \
+  | sort -z \
+  | while IFS= read -r -d '' apk_file; do
+      shasum -a 256 "$apk_file"
+    done \
   | sed "s|$REPO_ROOT/||" \
   > "$OUT"
+
 echo "Manifest written: $OUT"
 cat "$OUT"
