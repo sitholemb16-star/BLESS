@@ -1,0 +1,68 @@
+#!/usr/bin/env bash
+# setup-s25-avd — Create a Galaxy S25-equivalent AVD on the external volume
+# Storage: 128GB data partition (sparse — actual disk use grows from ~2GB)
+# Target: Android 15 (API 35), arm64-v8a, Google Play Store
+set -euo pipefail
+
+EXTERNAL="/Volumes/Secure AI Coding Tools"
+SDK_ROOT="$EXTERNAL/Android/sdk"
+AVD_HOME="$EXTERNAL/avd"
+AVD_NAME="Galaxy_S25"
+SYSIMG="system-images;android-35;google_apis_playstore;arm64-v8a"
+JAVA_HOME="/usr/local/opt/openjdk"
+
+export JAVA_HOME
+export ANDROID_SDK_ROOT="$SDK_ROOT"
+export ANDROID_AVD_HOME="$AVD_HOME"
+export PATH="$JAVA_HOME/bin:$SDK_ROOT/cmdline-tools/latest/bin:$SDK_ROOT/platform-tools:$SDK_ROOT/emulator:$PATH"
+
+# ── 1) Install system image if missing
+if [[ ! -d "$SDK_ROOT/system-images/android-35/google_apis_playstore/arm64-v8a" ]]; then
+  echo "Installing system image (android-35 / google_apis_playstore / arm64-v8a)..."
+  yes | sdkmanager --sdk_root="$SDK_ROOT" "$SYSIMG"
+else
+  echo "System image already installed."
+fi
+
+# ── 2) Create AVD dir
+mkdir -p "$AVD_HOME"
+
+# ── 3) Delete existing AVD if present
+if [[ -d "$AVD_HOME/$AVD_NAME.avd" ]]; then
+  echo "Removing existing AVD $AVD_NAME..."
+  avdmanager delete avd -n "$AVD_NAME" 2>/dev/null || rm -rf "$AVD_HOME/$AVD_NAME.avd" "$AVD_HOME/$AVD_NAME.ini"
+fi
+
+# ── 4) Create the AVD (pixel_9_pro = 6.3" 1080×2424, closest to S25 6.2")
+echo "Creating AVD: $AVD_NAME..."
+echo "no" | avdmanager create avd \
+  -n "$AVD_NAME" \
+  -k "$SYSIMG" \
+  -d "pixel_9_pro" \
+  --sdcard 128M \
+  --path "$AVD_HOME/$AVD_NAME.avd"
+
+# ── 5) Patch hardware config for S25 profile
+CFG="$AVD_HOME/$AVD_NAME.avd/config.ini"
+cat >> "$CFG" << 'HW'
+# Galaxy S25 hardware overrides
+hw.ramSize=8192
+hw.cpu.ncore=4
+hw.lcd.width=1080
+hw.lcd.height=2340
+hw.lcd.density=416
+hw.sensor.accelerometer=yes
+hw.sensor.gyroscope=yes
+hw.sensor.light=yes
+hw.sensor.proximity=yes
+hw.camera.back=virtualscene
+hw.camera.front=emulated
+hw.gps=yes
+hw.keyboard=yes
+disk.dataPartition.size=128G
+HW
+
+echo "✓ AVD '$AVD_NAME' created at: $AVD_HOME/$AVD_NAME.avd"
+echo "  Config: $CFG"
+echo ""
+echo "Launch with:  ./scripts/launch-s25"
