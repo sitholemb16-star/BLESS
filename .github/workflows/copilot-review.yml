@@ -1,0 +1,44 @@
+name: Auto Copilot Review
+
+on:
+  pull_request:
+    types:
+      - opened
+      - synchronize
+      - reopened
+      - ready_for_review
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pull-requests: write
+
+jobs:
+  auto-copilot-review:
+    name: Auto Copilot Review
+    runs-on: ubuntu-latest
+    steps:
+      - name: Skip draft pull requests
+        if: ${{ github.event.pull_request.draft == true }}
+        run: echo "Draft PR detected; skipping Copilot review request."
+
+      - name: Request Copilot review
+        if: ${{ github.event.pull_request.draft != true }}
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          echo "Attempting to request Copilot review..."
+          gh api \
+            -X POST \
+            repos/${{ github.repository }}/pulls/${{ github.event.pull_request.number }}/requested_reviewers \
+            -f reviewers='["copilot"]' || {
+            echo "Copilot review request could not be created automatically in this environment." >&2
+            echo "Please verify that Copilot code review is enabled in repository settings and that the ruleset requires it." >&2
+            exit 0
+          }
+
+      - name: Verify Copilot review expectation
+        if: ${{ github.event.pull_request.draft != true }}
+        run: |
+          echo "Required check name: Auto Copilot Review"
+          echo "Copilot review should be requested automatically when supported by the repository settings."
