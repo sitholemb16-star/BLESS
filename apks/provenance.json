@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-08-01T12:03:21.147187+00:00",
+  "generated_at": "2026-08-01T12:22:22.171356+00:00",
   "packages": [
     {
       "package_name": "and.lhhpub.goodshunt",
@@ -521,10 +521,10 @@
         {
           "filename": "base.apk",
           "backup_hash_sha256": "1654b2429cd7c736f6be1e3785a702e1e2657589716e4e368d676ef5a5f06eca",
-          "pulled_hash_sha256": null,
+          "pulled_hash_sha256": "918bdf6f990f81329dfb069ca9e59a6b53afbbff61203776a36aa78d74e59152",
           "size_bytes": 151562496,
           "type": "apk",
-          "hash_match": null
+          "hash_match": false
         }
       ],
       "all_hashes_verified": false
@@ -539,21 +539,21 @@
         {
           "filename": "split_config.arm64_v8a.apk",
           "backup_hash_sha256": "19aef950f44ea124720e349c084176dfc3ff078c8e880aeeb2ed9959eaea4920",
-          "pulled_hash_sha256": null,
+          "pulled_hash_sha256": "19aef950f44ea124720e349c084176dfc3ff078c8e880aeeb2ed9959eaea4920",
           "size_bytes": 194936066,
           "type": "apks",
-          "hash_match": null
+          "hash_match": true
         },
         {
           "filename": "base.apk",
           "backup_hash_sha256": "3a00d988d286a843e74e3c8c50d61c8feeb47aa788c60505b0d3af99c8123b04",
-          "pulled_hash_sha256": null,
+          "pulled_hash_sha256": "3a00d988d286a843e74e3c8c50d61c8feeb47aa788c60505b0d3af99c8123b04",
           "size_bytes": 86851281,
           "type": "apk",
-          "hash_match": null
+          "hash_match": true
         }
       ],
-      "all_hashes_verified": false
+      "all_hashes_verified": true
     },
     {
       "package_name": "com.gloo.familycard",
@@ -615,10 +615,10 @@
         {
           "filename": "split_config.en.apk",
           "backup_hash_sha256": "ef708643177d65a5a2ebddccbb1c2ac464012613f20cac5c487ad1c8cbd20e53",
-          "pulled_hash_sha256": null,
+          "pulled_hash_sha256": "a5da17c9d9c5c319e573bb3cd96b5346a61e067da01c1814adfefd19a3b2ec9a",
           "size_bytes": 512210,
           "type": "apks",
-          "hash_match": null
+          "hash_match": false
         },
         {
           "filename": "split_config.xxhdpi.apk",
@@ -631,10 +631,10 @@
         {
           "filename": "base.apk",
           "backup_hash_sha256": "c7e791b97c7246744532b213c98a47162a0cf1a76ba601f802d1dea6848dd20d",
-          "pulled_hash_sha256": null,
+          "pulled_hash_sha256": "06c0d3f77f4543d7e1c87dcec47701fd1649af2ccb71b25009a7ee72769b4890",
           "size_bytes": 35984106,
           "type": "apk",
-          "hash_match": null
+          "hash_match": false
         }
       ],
       "all_hashes_verified": false
@@ -845,10 +845,10 @@
         {
           "filename": "split_config.en.apk",
           "backup_hash_sha256": "d6ff7fc0a111c70305b9325cc1c19577f9eaf6ffe5549fa8bf1310d4e6a86900",
-          "pulled_hash_sha256": null,
+          "pulled_hash_sha256": "c7c7a73322570b52f3b1ef23adb018db1577c30269c450af1be895af6090528a",
           "size_bytes": 20690,
           "type": "apks",
-          "hash_match": null
+          "hash_match": false
         },
         {
           "filename": "split_config.xxhdpi.apk",
