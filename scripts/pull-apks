@@ -49,7 +49,7 @@ PULLED=0
 FAILED=0
 
 for PKG in "${PACKAGES[@]}"; do
-  PATHS=$($ADB shell pm path "$PKG" 2>/dev/null | tr -d '\r')
+  PATHS=$($ADB shell pm path "$PKG" 2>/dev/null | tr -d '\r' || true)
   if [[ -z "$PATHS" ]]; then
     echo "SKIP  $PKG (not installed on device)"
     ((FAILED++)) || true

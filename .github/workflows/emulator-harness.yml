@@ -27,8 +27,7 @@ jobs:
       - name: Verify LFS APK hashes
         run: |
           if [ -f apks/SHA256SUMS.txt ]; then
-            cd apks
-            shasum -a 256 -c SHA256SUMS.txt && echo "APK hash check PASSED" || echo "APK hash check FAILED"
+            shasum -a 256 -c apks/SHA256SUMS.txt && echo "APK hash check PASSED" || echo "APK hash check FAILED"
           else
             echo "No SHA256SUMS.txt — skipping hash check"
           fi

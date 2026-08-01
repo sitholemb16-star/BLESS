@@ -33,6 +33,32 @@ npm run lint
 npm test
 ```
 
+## Device APK Provenance Workflow
+
+Pull APKs directly from the connected phone over ADB, then regenerate the integrity and provenance artifacts.
+
+### Pull packages from the phone
+```bash
+./scripts/pull-apks --serial R83WA0GJ03V
+```
+
+The package list lives in `apks/packages.txt`. The script skips packages that are no longer installed on the device.
+
+### Regenerate hashes
+```bash
+./scripts/hash-apks
+```
+
+### Build provenance JSON from Samsung backup manifests
+```bash
+python3 tools/app_inventory/merge_csv_with_hashes.py \
+  --csv <APP_manifest_1.csv> <APP_manifest_2.csv> \
+  --sums apks/SHA256SUMS.txt \
+  --out apks/provenance.json
+```
+
+The resulting `apks/provenance.json` links backup metadata to pulled local APK hashes.
+
 ## Security Notes
 - Never commit secrets, API keys, or tokens.
 - Use environment variables or GitHub Secrets for sensitive values.
