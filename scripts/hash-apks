@@ -1,11 +1,12 @@
 #!/usr/bin/env bash
 # hash-apks – generate SHA256SUMS.txt manifest for all APKs in apks/
 set -euo pipefail
-APKS_DIR="$(cd "$(dirname "$0")/.." && pwd)/apks"
+REPO_ROOT="$(cd "$(dirname "$0")/.." && pwd)"
+APKS_DIR="$REPO_ROOT/apks"
 OUT="$APKS_DIR/SHA256SUMS.txt"
 find "$APKS_DIR" -type f \( -name "*.apk" -o -name "*.apks" \) -print0 \
   | xargs -0 shasum -a 256 \
-  | sed "s|$PWD/||g" \
+  | sed "s|$REPO_ROOT/||" \
   > "$OUT"
 echo "Manifest written: $OUT"
 cat "$OUT"
