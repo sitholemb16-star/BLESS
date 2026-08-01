@@ -10,6 +10,8 @@ trap 'rm -rf "$tmpdir"' EXIT
 cat > "$tmpdir/good.csv" <<'CSV'
 TIMESTAMP,ITEM_DATA,FILE_LIST
 1700000000000,"{""package_name"":""com.example.app"",""app_name"":""Example App"",""version_code"":101,""is_aab"":false}","[{""path"":""base.apk"",""hash"":""aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"",""size"":1,""type"":""apk""}]"
+1700000000002,"{""package_name"":""com.example.app"",""app_name"":""Example App"",""version_code"":102,""is_aab"":false}","[{""path"":""base.apk"",""hash"":""bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"",""size"":1,""type"":""apk""}]"
+1700000000003,"{""package_name"":""com.example.app"",""app_name"":""Example App"",""version_code"":103,""is_aab"":false}","[{""path"":""base.apk"",""hash"":"""",""size"":1,""type"":""apk""}]"
 CSV
 
 cat > "$tmpdir/bad.csv" <<'CSV'
@@ -42,5 +44,12 @@ if python3 tools/app_inventory/verify_hashes_against_csv.py \
   echo "Expected strict verification to fail on malformed rows" >&2
   exit 1
 fi
+
+summary_out="$tmpdir/summary.txt"
+python3 tools/app_inventory/verify_hashes_against_csv.py \
+  --csv "$tmpdir/good.csv" \
+  --sums "$tmpdir/sums.txt" > "$summary_out"
+grep -q "expected_artifacts: 3" "$summary_out"
+grep -q "missing_backup:     1" "$summary_out"
 
 echo "provenance pipeline tests passed"
