@@ -1,0 +1,46 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+REPO_ROOT="$(cd "$(dirname "$0")/.." && pwd)"
+cd "$REPO_ROOT"
+
+tmpdir="$(mktemp -d)"
+trap 'rm -rf "$tmpdir"' EXIT
+
+cat > "$tmpdir/good.csv" <<'CSV'
+TIMESTAMP,ITEM_DATA,FILE_LIST
+1700000000000,"{""package_name"":""com.example.app"",""app_name"":""Example App"",""version_code"":101,""is_aab"":false}","[{""path"":""base.apk"",""hash"":""aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"",""size"":1,""type"":""apk""}]"
+CSV
+
+cat > "$tmpdir/bad.csv" <<'CSV'
+TIMESTAMP,ITEM_DATA,FILE_LIST
+1700000000001,"{""package_name"":""com.example.bad""",""[{""path"":""missing.apk"",""hash"":""bbbb"",""size"":1,""type"":""apk""}]"
+CSV
+
+cat > "$tmpdir/sums.txt" <<'SUMS'
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa  apks/com.example.app/base.apk
+SUMS
+
+python3 tools/app_inventory/merge_csv_with_hashes.py \
+  --csv "$tmpdir/good.csv" "$tmpdir/bad.csv" \
+  --sums "$tmpdir/sums.txt" \
+  --out "$tmpdir/provenance.json" >/dev/null
+
+python3 - "$tmpdir/provenance.json" <<'PY'
+import json
+import sys
+with open(sys.argv[1], "r", encoding="utf-8") as f:
+    doc = json.load(f)
+assert isinstance(doc.get("packages"), list)
+assert any(p.get("package_name") == "com.example.app" for p in doc["packages"])
+PY
+
+if python3 tools/app_inventory/verify_hashes_against_csv.py \
+  --csv "$tmpdir/good.csv" "$tmpdir/bad.csv" \
+  --sums "$tmpdir/sums.txt" \
+  --fail-on-mismatch >/dev/null 2>&1; then
+  echo "Expected strict verification to fail on malformed rows" >&2
+  exit 1
+fi
+
+echo "provenance pipeline tests passed"

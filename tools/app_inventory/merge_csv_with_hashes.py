@@ -94,8 +94,14 @@ def load_csvs(paths):
 
                 app = apps[pkg]
                 app['backup_files'].extend(parsed_files)
-                if row.get('TIMESTAMP'):
-                    app['backup_timestamp'] = max(app['backup_timestamp'], row.get('TIMESTAMP', ''))
+                ts = row.get('TIMESTAMP', '')
+                if ts and ts >= app.get('backup_timestamp', ''):
+                    # Keep package-level metadata aligned with the latest snapshot
+                    # when the same package appears across multiple manifests.
+                    app['app_name'] = meta.get('app_name', app.get('app_name', ''))
+                    app['version_code'] = meta.get('version_code')
+                    app['is_aab'] = meta.get('is_aab', app.get('is_aab', True))
+                    app['backup_timestamp'] = ts
     return apps
 
 

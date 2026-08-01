@@ -31,28 +31,51 @@ def load_sums(path):
 
 def load_expected(csv_paths):
     expected = {}
+    invalid_rows = 0
     for path in csv_paths:
         with open(path, encoding="utf-8-sig") as f:
-            for row in csv.DictReader(f):
+            for index, row in enumerate(csv.DictReader(f), start=2):
                 try:
                     meta = json.loads(row.get("ITEM_DATA", "{}"))
                     pkg = meta.get("package_name")
                     if not pkg:
                         continue
                     file_list = json.loads(row.get("FILE_LIST", "[]"))
+                    if not isinstance(file_list, list):
+                        invalid_rows += 1
+                        print(
+                            f"WARN: non-list FILE_LIST in {path}:{index}",
+                            file=sys.stderr,
+                        )
+                        continue
                     for item in file_list:
+                        if not isinstance(item, dict):
+                            continue
                         item_type = item.get("type")
                         if item_type not in ("apk", "apks"):
                             continue
-                        rel = f"apks/{pkg}/{item['path'].split('/')[-1]}"
+                        item_path = item.get("path")
+                        if not item_path:
+                            invalid_rows += 1
+                            print(
+                                f"WARN: FILE_LIST entry missing path in {path}:{index}",
+                                file=sys.stderr,
+                            )
+                            continue
+                        rel = f"apks/{pkg}/{item_path.split('/')[-1]}"
                         expected[rel] = {
                             "backup_hash": item.get("hash", ""),
                             "package_name": pkg,
                             "type": item_type,
                         }
                 except (json.JSONDecodeError, KeyError, TypeError, ValueError):
+                    invalid_rows += 1
+                    print(
+                        f"WARN: malformed row in {path}:{index}",
+                        file=sys.stderr,
+                    )
                     continue
-    return expected
+    return expected, invalid_rows
 
 
 def main():
@@ -67,7 +90,7 @@ def main():
     args = ap.parse_args()
 
     sums = load_sums(args.sums)
-    expected = load_expected(args.csv)
+    expected, invalid_rows = load_expected(args.csv)
 
     matched = 0
     mismatched = 0
@@ -97,6 +120,7 @@ def main():
     print(f"  mismatched:         {mismatched}")
     print(f"  missing_local:      {missing_local}")
     print(f"  missing_backup:     {missing_backup}")
+    print(f"  invalid_rows:       {invalid_rows}")
 
     if mismatch_rows:
         print("\nTop mismatches:")
@@ -105,7 +129,7 @@ def main():
             print(f"    backup={backup_hash}")
             print(f"    local ={local_hash}")
 
-    if args.fail_on_mismatch and (mismatched > 0 or missing_local > 0):
+    if args.fail_on_mismatch and (mismatched > 0 or missing_local > 0 or invalid_rows > 0):
         return 2
     return 0
 
