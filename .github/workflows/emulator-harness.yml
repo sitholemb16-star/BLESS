@@ -73,3 +73,13 @@ jobs:
             echo "ERROR: tests/emulator-comm-test is required for this workflow." >&2
             exit 1
           fi
+
+      - name: Run provenance pipeline tests
+        run: |
+          if [ -f tests/provenance-pipeline-test ]; then
+            chmod +x tests/provenance-pipeline-test
+            tests/provenance-pipeline-test
+          else
+            echo "ERROR: tests/provenance-pipeline-test is required for this workflow." >&2
+            exit 1
+          fi

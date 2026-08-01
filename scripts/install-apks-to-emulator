@@ -55,3 +55,7 @@ done
 
 echo ""
 echo "Done: $PASSED installed, $FAILED failed, $SKIPPED skipped"
+
+if (( FAILED > 0 )); then
+  exit 1
+fi

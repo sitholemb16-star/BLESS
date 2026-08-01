@@ -55,7 +55,12 @@ SKIPPED=0
 FAILED=0
 
 for PKG in "${PACKAGES[@]}"; do
-  PATHS=$("${ADB[@]}" shell pm path "$PKG" 2>/dev/null | tr -d '\r' || true)
+  if ! PM_PATH_RAW=$("${ADB[@]}" shell pm path "$PKG" 2>/dev/null); then
+    echo "FAIL  $PKG (pm path query failed)" >&2
+    ((FAILED+=1))
+    continue
+  fi
+  PATHS=$(printf '%s' "$PM_PATH_RAW" | tr -d '\r')
   if [[ -z "$PATHS" ]]; then
     echo "SKIP  $PKG (not installed on device)"
     ((SKIPPED+=1))
