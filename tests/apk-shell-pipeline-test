@@ -1,0 +1,73 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+REPO_ROOT="$(cd "$(dirname "$0")/.." && pwd)"
+cd "$REPO_ROOT"
+
+tmpdir="$(mktemp -d)"
+cleanup() {
+  rm -rf "$tmpdir"
+  rm -rf "$REPO_ROOT/apks/com.example.shelltest"
+  if [[ -f "$tmpdir/original-SHA256SUMS.txt" ]]; then
+    cp "$tmpdir/original-SHA256SUMS.txt" "$REPO_ROOT/apks/SHA256SUMS.txt"
+  fi
+}
+trap cleanup EXIT
+
+cp apks/SHA256SUMS.txt "$tmpdir/original-SHA256SUMS.txt"
+
+mockbin="$tmpdir/mockbin"
+mkdir -p "$mockbin"
+cat > "$mockbin/adb" <<'SH'
+#!/usr/bin/env bash
+set -euo pipefail
+
+serial=""
+if [[ "${1:-}" == "-s" ]]; then
+  serial="${2:-}"
+  shift 2
+fi
+
+case "${1:-}" in
+  get-state)
+    echo "device"
+    ;;
+  get-serialno)
+    echo "${serial:-MOCK_SERIAL}"
+    ;;
+  wait-for-device)
+    ;;
+  shell)
+    shift
+    if [[ "${1:-}" == "pm" && "${2:-}" == "path" ]]; then
+      pkg="${3:-}"
+      if [[ "$pkg" == "com.example.shelltest" ]]; then
+        echo "package:/data/app/$pkg/base.apk"
+      fi
+    elif [[ "${1:-}" == "getprop" && "${2:-}" == "sys.boot_completed" ]]; then
+      echo "1"
+    fi
+    ;;
+  pull)
+    src="${2:-}"
+    dest="${3:-}"
+    mkdir -p "$(dirname "$dest")"
+    printf 'mock-apk:%s\n' "$src" > "$dest"
+    ;;
+  install-multiple)
+    ;;
+  *)
+    echo "Unsupported adb invocation: $*" >&2
+    exit 1
+    ;;
+esac
+SH
+chmod +x "$mockbin/adb"
+
+PATH="$mockbin:$PATH" ./scripts/pull-apks --serial emulator-5554 com.example.shelltest >/dev/null
+test -f apks/com.example.shelltest/base.apk
+
+./scripts/hash-apks >/dev/null
+grep -q 'apks/com.example.shelltest/base.apk' apks/SHA256SUMS.txt
+
+echo "apk shell pipeline tests passed"

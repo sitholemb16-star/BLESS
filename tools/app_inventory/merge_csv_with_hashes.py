@@ -11,6 +11,40 @@ import os
 import sys
 from datetime import datetime, timezone
 
+
+def timestamp_key(value):
+    text = str(value or '').strip()
+    if not text:
+        return None
+    if text.isdigit():
+        return int(text)
+    try:
+        return int(datetime.fromisoformat(text.replace('Z', '+00:00')).timestamp() * 1000)
+    except ValueError:
+        return text
+
+
+def snapshot_is_newer(current_value, candidate_value):
+    current_key = timestamp_key(current_value)
+    candidate_key = timestamp_key(candidate_value)
+
+    if candidate_key is None:
+        return False
+    if current_key is None:
+        return True
+    return candidate_key > current_key
+
+
+def merge_unique_files(existing_files, incoming_files):
+    seen = {(item.get('filename'), item.get('type')) for item in existing_files}
+    for item in incoming_files:
+        key = (item.get('filename'), item.get('type'))
+        if key in seen:
+            continue
+        existing_files.append(item)
+        seen.add(key)
+
+
 def load_sums(path):
     sums = {}
     with open(path) as f:
@@ -93,15 +127,19 @@ def load_csvs(paths):
                     }
 
                 app = apps[pkg]
-                app['backup_files'].extend(parsed_files)
                 ts = row.get('TIMESTAMP', '')
-                if ts and ts >= app.get('backup_timestamp', ''):
+                if snapshot_is_newer(app.get('backup_timestamp', ''), ts):
                     # Keep package-level metadata aligned with the latest snapshot
                     # when the same package appears across multiple manifests.
                     app['app_name'] = meta.get('app_name', app.get('app_name', ''))
                     app['version_code'] = meta.get('version_code')
                     app['is_aab'] = meta.get('is_aab', app.get('is_aab', True))
                     app['backup_timestamp'] = ts
+                    app['backup_files'] = list(parsed_files)
+                elif ts == app.get('backup_timestamp', ''):
+                    merge_unique_files(app['backup_files'], parsed_files)
+                elif not app['backup_files']:
+                    app['backup_files'] = list(parsed_files)
     return apps
 
 
