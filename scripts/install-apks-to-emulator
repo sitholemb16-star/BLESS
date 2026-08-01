@@ -15,7 +15,9 @@ while [[ $# -gt 0 ]]; do
 done
 
 SDK_ROOT="/Volumes/Secure AI Coding Tools/Android/sdk"
-export PATH="$SDK_ROOT/platform-tools:$PATH"
+if ! command -v adb >/dev/null 2>&1; then
+  export PATH="$SDK_ROOT/platform-tools:$PATH"
+fi
 
 ADB=(adb -s "$SERIAL")
 

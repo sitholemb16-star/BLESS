@@ -6,11 +6,11 @@ cd "$REPO_ROOT"
 
 tmpdir="$(mktemp -d)"
 cleanup() {
-  rm -rf "$tmpdir"
-  rm -rf "$REPO_ROOT/apks/com.example.shelltest"
   if [[ -f "$tmpdir/original-SHA256SUMS.txt" ]]; then
     cp "$tmpdir/original-SHA256SUMS.txt" "$REPO_ROOT/apks/SHA256SUMS.txt"
   fi
+  rm -rf "$REPO_ROOT/apks/com.example.shelltest"
+  rm -rf "$tmpdir"
 }
 trap cleanup EXIT
 
@@ -21,6 +21,10 @@ mkdir -p "$mockbin"
 cat > "$mockbin/adb" <<'SH'
 #!/usr/bin/env bash
 set -euo pipefail
+
+if [[ -n "${ADB_LOG:-}" ]]; then
+  printf '%s\n' "$*" >> "$ADB_LOG"
+fi
 
 serial=""
 if [[ "${1:-}" == "-s" ]]; then
@@ -55,6 +59,9 @@ case "${1:-}" in
     printf 'mock-apk:%s\n' "$src" > "$dest"
     ;;
   install-multiple)
+    if [[ "${FAIL_INSTALL:-0}" == "1" ]]; then
+      exit 1
+    fi
     ;;
   *)
     echo "Unsupported adb invocation: $*" >&2
@@ -69,5 +76,16 @@ test -f apks/com.example.shelltest/base.apk
 
 ./scripts/hash-apks >/dev/null
 grep -q 'apks/com.example.shelltest/base.apk' apks/SHA256SUMS.txt
+
+adb_log="$tmpdir/adb-calls.log"
+PATH="$mockbin:$PATH" ADB_LOG="$adb_log" ./scripts/install-apks-to-emulator --serial emulator-5554 >/dev/null
+grep -q -- 'wait-for-device' "$adb_log"
+grep -q -- 'shell getprop sys.boot_completed' "$adb_log"
+grep -q -- 'install-multiple -r -t' "$adb_log"
+
+if PATH="$mockbin:$PATH" FAIL_INSTALL=1 ./scripts/install-apks-to-emulator --serial emulator-5554 >/dev/null 2>&1; then
+  echo "Expected install-apks-to-emulator to fail when adb install-multiple fails" >&2
+  exit 1
+fi
 
 echo "apk shell pipeline tests passed"
