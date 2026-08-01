@@ -1,14 +1,15 @@
 #!/usr/bin/env bash
-# setup-s25-avd — Create a Galaxy S25-equivalent AVD on the external volume
-# Storage: 128GB data partition (sparse — actual disk use grows from ~2GB)
-# Target: Android 15 (API 35), arm64-v8a, Google Play Store
+# setup-s25-avd — Create a Galaxy S25-equivalent AVD on external storage
+# Storage: 128GB data partition (sparse — actual disk use grows gradually)
+# Targets: Android 14/15 system images (API 34 + 35), AVD uses API 35.
 set -euo pipefail
 
 EXTERNAL="/Volumes/Secure AI Coding Tools"
 SDK_ROOT="$EXTERNAL/Android/sdk"
-AVD_HOME="$EXTERNAL/avd"
-AVD_NAME="Galaxy_S25"
-SYSIMG="system-images;android-35;google_apis_playstore;arm64-v8a"
+AVD_HOME="/Volumes/VOLUME 1/2027 Final Drafts.sparsebundle/android-avd"
+AVD_NAME="Galaxy-S25-128GB"
+SYSIMG_35="system-images;android-35;google_apis_playstore;arm64-v8a"
+SYSIMG_34="system-images;android-34;google_apis_playstore;arm64-v8a"
 JAVA_HOME="/usr/local/opt/openjdk"
 
 export JAVA_HOME
@@ -16,12 +17,19 @@ export ANDROID_SDK_ROOT="$SDK_ROOT"
 export ANDROID_AVD_HOME="$AVD_HOME"
 export PATH="$JAVA_HOME/bin:$SDK_ROOT/cmdline-tools/latest/bin:$SDK_ROOT/platform-tools:$SDK_ROOT/emulator:$PATH"
 
-# ── 1) Install system image if missing
-if [[ ! -d "$SDK_ROOT/system-images/android-35/google_apis_playstore/arm64-v8a" ]]; then
-  echo "Installing system image (android-35 / google_apis_playstore / arm64-v8a)..."
-  yes | sdkmanager --sdk_root="$SDK_ROOT" "$SYSIMG"
+# ── 1) Install system images if missing
+if [[ ! -f "$SDK_ROOT/system-images/android-35/google_apis_playstore/arm64-v8a/source.properties" ]]; then
+  echo "Installing API 35 Play Store arm64 system image..."
+  yes | sdkmanager --sdk_root="$SDK_ROOT" "$SYSIMG_35"
 else
-  echo "System image already installed."
+  echo "API 35 system image already installed."
+fi
+
+if [[ ! -f "$SDK_ROOT/system-images/android-34/google_apis_playstore/arm64-v8a/source.properties" ]]; then
+  echo "Installing API 34 Play Store arm64 system image..."
+  yes | sdkmanager --sdk_root="$SDK_ROOT" "$SYSIMG_34"
+else
+  echo "API 34 system image already installed."
 fi
 
 # ── 2) Create AVD dir
@@ -37,30 +45,30 @@ fi
 echo "Creating AVD: $AVD_NAME..."
 echo "no" | avdmanager create avd \
   -n "$AVD_NAME" \
-  -k "$SYSIMG" \
+  -k "$SYSIMG_35" \
   -d "pixel_9_pro" \
   --sdcard 128M \
   --path "$AVD_HOME/$AVD_NAME.avd"
 
 # ── 5) Patch hardware config for S25 profile
 CFG="$AVD_HOME/$AVD_NAME.avd/config.ini"
-cat >> "$CFG" << 'HW'
-# Galaxy S25 hardware overrides
-hw.ramSize=8192
-hw.cpu.ncore=4
-hw.lcd.width=1080
-hw.lcd.height=2340
-hw.lcd.density=416
-hw.sensor.accelerometer=yes
-hw.sensor.gyroscope=yes
-hw.sensor.light=yes
-hw.sensor.proximity=yes
-hw.camera.back=virtualscene
-hw.camera.front=emulated
-hw.gps=yes
-hw.keyboard=yes
-disk.dataPartition.size=128G
-HW
+{
+  echo "# Galaxy S25 hardware overrides"
+  echo "hw.ramSize=8192"
+  echo "hw.cpu.ncore=4"
+  echo "hw.lcd.width=1080"
+  echo "hw.lcd.height=2340"
+  echo "hw.lcd.density=416"
+  echo "hw.sensor.accelerometer=yes"
+  echo "hw.sensor.gyroscope=yes"
+  echo "hw.sensor.light=yes"
+  echo "hw.sensor.proximity=yes"
+  echo "hw.camera.back=virtualscene"
+  echo "hw.camera.front=emulated"
+  echo "hw.gps=yes"
+  echo "hw.keyboard=yes"
+  echo "disk.dataPartition.size=128G"
+} >> "$CFG"
 
 echo "✓ AVD '$AVD_NAME' created at: $AVD_HOME/$AVD_NAME.avd"
 echo "  Config: $CFG"

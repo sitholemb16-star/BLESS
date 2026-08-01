@@ -5,8 +5,8 @@ set -euo pipefail
 
 EXTERNAL="/Volumes/Secure AI Coding Tools"
 SDK_ROOT="$EXTERNAL/Android/sdk"
-AVD_HOME="$EXTERNAL/avd"
-AVD_NAME="Galaxy_S25"
+AVD_HOME="/Volumes/VOLUME 1/2027 Final Drafts.sparsebundle/android-avd"
+AVD_NAME="Galaxy-S25-128GB"
 JAVA_HOME="/usr/local/opt/openjdk"
 
 export JAVA_HOME
