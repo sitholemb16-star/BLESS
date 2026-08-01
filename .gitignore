@@ -21,3 +21,6 @@ rad.json
 *.flf
 #Test results file
 TestResults.xml
+
+# Generated provenance output can include account/device identifiers.
+apks/provenance.json

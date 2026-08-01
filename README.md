@@ -57,7 +57,8 @@ python3 tools/app_inventory/merge_csv_with_hashes.py \
   --out apks/provenance.json
 ```
 
-The resulting `apks/provenance.json` links backup metadata to pulled local APK hashes.
+The resulting `apks/provenance.json` links backup metadata to pulled local APK hashes.  
+It is treated as generated local evidence and is git-ignored by default.
 
 ### Verify against CSV FILE_LIST hashes
 ```bash
@@ -93,6 +94,42 @@ Install pulled APK set into the running emulator:
 - Use environment variables or GitHub Secrets for sensitive values.
 - Keep dependency installs lockfile-based (`package-lock.json` or `yarn.lock`).
 - Use pinned GitHub Actions with full commit SHA.
+
+## Signed Commit Enforcement (main branch)
+
+`main` is protected by an active ruleset that requires:
+- signed commits
+- pull request approval (1)
+- required checks: `API Tests`, `Auto Copilot Review`
+
+### 1) Check local signing configuration
+```bash
+git config --get commit.gpgsign
+git config --get user.signingkey
+git config --get gpg.format
+```
+
+Expected:
+- `commit.gpgsign=true`
+- `user.signingkey` set
+- `gpg.format=ssh` (SSH signing) or `openpgp` (GPG signing)
+
+### 2) Verify `git commit -S` works locally
+```bash
+git checkout -b test-protection
+echo "test enforcement" > test.txt
+git add test.txt
+git commit -S -m "Test branch protection enforcement"
+git push -u origin test-protection
+```
+
+If commit signing fails here, fix local GPG/SSH signing first.
+
+### 3) Verify enforcement in PR
+Open a PR from `test-protection` to `main` and confirm:
+- signed commit is recognized
+- required checks appear and pass (`API Tests`, `Auto Copilot Review`)
+- merge remains blocked until policy requirements are satisfied
 
 ## Contributing
 This repository is maintained by the owner. Contributions should follow repository security and workflow policies.
