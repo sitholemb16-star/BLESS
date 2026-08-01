@@ -1,17 +1,99 @@
 # APK packages to pull from the USB-connected device.
-# Source: Samsung Cloud backup manifests attached to this session.
+# Sources: Samsung Cloud backup manifests (APP_1784239533045.csv, APP_1784239532891.csv,
+#           APPLICATION_BACKUP_INDEX.csv) — merged full list, non-APK entries excluded.
 # Run: ./scripts/pull-apks --serial R83WA0GJ03V
 
+# ── Third-party apps ──────────────────────────────────────────────────────────
+and.lhhpub.goodshunt
+bank.discovery.banking.production.release
+capitec.acuity.mobile.prod
+com.SignMaker.signature.pdf.docs
+com.azmobile.card.design.invitation.maker
+com.awfs.coordination
+com.barclays.absa.banking
 com.bash.prod
+com.canva.editor
+com.colpit.diamondcoming.isavemoney
+com.crrepa.band.volkano
+com.d6.schools
+com.disneyplus.mea
 com.dstvmobile.android
+com.einnovation.temu
 com.facebook.katana
+com.facebook.stella
+com.gloo.familycard
+com.google.android.apps.docs
+com.google.android.apps.kids.familylink
+com.google.android.apps.kids.familylinkhelper
 com.google.android.apps.kids.familylinkmanager
+com.google.android.apps.walletnfcrel
+com.google.android.apps.youtube.music
+com.google.android.contactkeys
+com.google.android.safetycore
 com.google.android.videos
+com.greetingsisland.sam
+com.hitappsgames.wordsolitaire
+com.holy.bible.hbs
+com.homagames.studio.allinhole
+com.horus.sandy.jam
+com.instagram.android
+com.instagram.lite
+com.king.farmheroessaga
 com.kfc.sa
+com.lemon.lvoverseas
+com.linkedin.android
+com.media720.games2020.two.player.offline.games
 com.microsoft.office.outlook
+com.microsoft.office.word
+com.microsoft.teams
 com.mrd.food
+com.mtnapp
+com.netshort.abroad
+com.newleaf.app.android.victor
 com.opera.max.oem
 com.rsupport.rs.activity.rsupport.aas2
+com.sbg.mobile.phone
+com.scaleup.chatai
+com.showmax.app
+com.sinyee.babybus.gameworld.design.home.friends.fun.life.story
+com.sirma.mobile.bible.android
+com.sms.color.messenger.messages
+com.snapchat.android
+com.spotify.music
+com.superbalist.android
+com.tocaboca.tocalifeworld
+com.totalbattle
+com.transcribe.audio.to.text
+com.truecaller
+com.tunecho.music
+com.ubercab
+com.ubercab.eats
+com.webafrica.app
+com.whatsapp
+com.zzkko
+ee.mtakso.client
+fi.android.takealot
+io.flatcircle.runwaysaleandroid
+live.shorttv.apps
+me.bazaart.app
+org.telegram.messenger
+sinet.startup.inDriver
+us.zoom.videomeetings
+za.co.dischem
+za.co.fnb.connect.itt
+za.co.lancet.Mobile
+za.co.makro.shopping
+za.co.nedbank
+za.co.outsurance
+za.co.payflex.app.payflex_app
+za.co.pnp.smartshopper
+za.co.shoprite.sixty60
+za.co.spar2u
+za.com.mrp
+za.stylephasehome
+za.stylephasehomeapp
+
+# ── Samsung system packages ────────────────────────────────────────────────────
 com.samsung.SMT.lang_en_gb_l02
 com.samsung.SMT.lang_en_us_f00
 com.samsung.SMT.lang_fr_fr_l01
@@ -22,14 +104,10 @@ com.samsung.android.nmt.apps.t2t.languagepack.enfr
 com.samsung.android.service.stplatform
 com.samsung.ecomm.global.gbr
 com.samsung.sree
-com.showmax.app
-lockscreen
+
+# ── Chromium WebAPKs ──────────────────────────────────────────────────────────
 org.chromium.webapk.a015efc14ee37adf2_v2
 org.chromium.webapk.a4b4b60e66bb41079_v2
 org.chromium.webapk.a5b263669486f1ecd_v2
 org.chromium.webapk.a97281008742e8e60_v2
 org.chromium.webapk.a9d6776a3063d6c49_v2
-wallpaper
-za.co.dischem
-za.com.mrp
-za.stylephasehome
