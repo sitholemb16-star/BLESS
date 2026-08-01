@@ -30,7 +30,7 @@ def load_sums(path):
 
 
 def load_expected(csv_paths):
-    expected = {}
+    expected = []
     invalid_rows = 0
     for path in csv_paths:
         with open(path, encoding="utf-8-sig") as f:
@@ -63,11 +63,14 @@ def load_expected(csv_paths):
                             )
                             continue
                         rel = f"apks/{pkg}/{item_path.split('/')[-1]}"
-                        expected[rel] = {
-                            "backup_hash": item.get("hash", ""),
-                            "package_name": pkg,
-                            "type": item_type,
-                        }
+                        expected.append(
+                            {
+                                "rel_path": rel,
+                                "backup_hash": item.get("hash", ""),
+                                "package_name": pkg,
+                                "type": item_type,
+                            }
+                        )
                 except (json.JSONDecodeError, KeyError, TypeError, ValueError):
                     invalid_rows += 1
                     print(
@@ -98,7 +101,8 @@ def main():
     missing_backup = 0
     mismatch_rows = []
 
-    for rel_path, exp in expected.items():
+    for exp in expected:
+        rel_path = exp["rel_path"]
         backup_hash = exp["backup_hash"]
         local_hash = sums.get(rel_path)
         if local_hash is None:
@@ -129,7 +133,9 @@ def main():
             print(f"    backup={backup_hash}")
             print(f"    local ={local_hash}")
 
-    if args.fail_on_mismatch and (mismatched > 0 or missing_local > 0 or invalid_rows > 0):
+    if args.fail_on_mismatch and (
+        mismatched > 0 or missing_local > 0 or missing_backup > 0 or invalid_rows > 0
+    ):
         return 2
     return 0
 
