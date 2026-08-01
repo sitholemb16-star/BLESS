@@ -1,0 +1,40 @@
+#!/usr/bin/env bash
+# launch-s25 — Start the Galaxy S25 AVD from the external volume
+# Usage: ./scripts/launch-s25 [--headless] [extra emulator flags...]
+set -euo pipefail
+
+EXTERNAL="/Volumes/Secure AI Coding Tools"
+SDK_ROOT="$EXTERNAL/Android/sdk"
+AVD_HOME="$EXTERNAL/avd"
+AVD_NAME="Galaxy_S25"
+JAVA_HOME="/usr/local/opt/openjdk"
+
+export JAVA_HOME
+export ANDROID_SDK_ROOT="$SDK_ROOT"
+export ANDROID_AVD_HOME="$AVD_HOME"
+export PATH="$JAVA_HOME/bin:$SDK_ROOT/platform-tools:$SDK_ROOT/emulator:$PATH"
+
+EMU="$SDK_ROOT/emulator/emulator"
+if [[ ! -x "$EMU" ]]; then
+  echo "ERROR: emulator binary not found at $EMU"
+  echo "Run ./scripts/setup-s25-avd first."
+  exit 1
+fi
+
+HEADLESS=0
+EXTRA_FLAGS=()
+for arg in "$@"; do
+  case "$arg" in
+    --headless) HEADLESS=1 ;;
+    *) EXTRA_FLAGS+=("$arg") ;;
+  esac
+done
+
+FLAGS=(-avd "$AVD_NAME" -dns-server 8.8.8.8 -no-snapshot-save)
+[[ $HEADLESS -eq 1 ]] && FLAGS+=(-no-window -no-audio)
+
+echo "Starting $AVD_NAME emulator..."
+echo "  SDK:  $SDK_ROOT"
+echo "  AVD:  $AVD_HOME/$AVD_NAME.avd"
+echo ""
+exec "$EMU" "${FLAGS[@]}" "${EXTRA_FLAGS[@]}"

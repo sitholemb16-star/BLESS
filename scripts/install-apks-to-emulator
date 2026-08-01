@@ -1,0 +1,54 @@
+#!/usr/bin/env bash
+# install-apks-to-emulator — Install all pulled APKs into the running S25 emulator
+# Usage: ./scripts/install-apks-to-emulator [--serial emulator-5554]
+set -euo pipefail
+
+REPO_ROOT="$(cd "$(dirname "$0")/.." && pwd)"
+APKS_DIR="$REPO_ROOT/apks"
+SERIAL="${ANDROID_SERIAL:-emulator-5554}"
+
+while [[ $# -gt 0 ]]; do
+  case "$1" in
+    --serial|-s) SERIAL="$2"; shift 2 ;;
+    *) echo "Unknown arg: $1"; exit 1 ;;
+  esac
+done
+
+SDK_ROOT="/Volumes/Secure AI Coding Tools/Android/sdk"
+export PATH="$SDK_ROOT/platform-tools:$PATH"
+
+ADB="adb -s $SERIAL"
+
+# Wait for emulator to be fully booted
+echo "Waiting for emulator $SERIAL to finish booting..."
+adb -s "$SERIAL" wait-for-device
+until [[ "$($ADB shell getprop sys.boot_completed 2>/dev/null | tr -d '\r')" == "1" ]]; do
+  sleep 3
+  echo "  still booting..."
+done
+echo "  Emulator ready."
+
+PASSED=0; FAILED=0; SKIPPED=0
+
+for pkg_dir in "$APKS_DIR"/*/; do
+  pkg="$(basename "$pkg_dir")"
+  # Skip non-package dirs
+  [[ "$pkg" == "packages.txt" ]] && continue
+  [[ "$pkg" == "SHA256SUMS.txt" ]] && continue
+  [[ "$pkg" == "provenance.json" ]] && continue
+
+  mapfile -t apk_files < <(find "$pkg_dir" -name "*.apk" | sort)
+  [[ ${#apk_files[@]} -eq 0 ]] && { ((SKIPPED++)); continue; }
+
+  echo -n "Installing $pkg (${#apk_files[@]} APK(s))... "
+  if $ADB install-multiple -r -t "${apk_files[@]}" >/dev/null 2>&1; then
+    echo "✓"
+    ((PASSED++))
+  else
+    echo "FAIL"
+    ((FAILED++))
+  fi
+done
+
+echo ""
+echo "Done: $PASSED installed, $FAILED failed, $SKIPPED skipped"
