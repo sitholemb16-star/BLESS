@@ -1,0 +1,3727 @@
+{
+  "generated_at": "2026-08-01T12:03:21.147187+00:00",
+  "packages": [
+    {
+      "package_name": "and.lhhpub.goodshunt",
+      "app_name": "Goods Hunt",
+      "version_code": 76,
+      "is_aab": true,
+      "backup_timestamp_ms": "1780214515549",
+      "artifacts": [
+        {
+          "filename": "split_config.arm64_v8a.apk",
+          "backup_hash_sha256": "0b27706ebb5e1ceff158ee3a9f05e29abedefcd64830b94666e71566e6f4420b",
+          "pulled_hash_sha256": null,
+          "size_bytes": 47074111,
+          "type": "apks",
+          "hash_match": null
+        },
+        {
+          "filename": "base.apk",
+          "backup_hash_sha256": "fda547c405f0efc94f24c007bfac8e7d7478e9000120d55c491301cdf3b1d62b",
+          "pulled_hash_sha256": null,
+          "size_bytes": 224447173,
+          "type": "apk",
+          "hash_match": null
+        }
+      ],
+      "all_hashes_verified": false
+    },
+    {
+      "package_name": "bank.discovery.banking.production.release",
+      "app_name": "Discovery Bank",
+      "version_code": 529,
+      "is_aab": true,
+      "backup_timestamp_ms": "1783379887053",
+      "artifacts": [
+        {
+          "filename": "split_config.arm64_v8a.apk",
+          "backup_hash_sha256": "dcdf32862497ed76e6d11619047e96aae4b7f84ddf80e952a3552c60fa9bd0e4",
+          "pulled_hash_sha256": "dcdf32862497ed76e6d11619047e96aae4b7f84ddf80e952a3552c60fa9bd0e4",
+          "size_bytes": 216129177,
+          "type": "apks",
+          "hash_match": true
+        },
+        {
+          "filename": "split_config.xxhdpi.apk",
+          "backup_hash_sha256": "0a2d591253d3c6c5ed98aa61ba1ddc837616da13942458d2e4f67f84ba674e07",
+          "pulled_hash_sha256": null,
+          "size_bytes": 1374481,
+          "type": "apks",
+          "hash_match": null
+        },
+        {
+          "filename": "base.apk",
+          "backup_hash_sha256": "dfb833b2b7407e766f61cd0726fed283577a845204e7768f81ddff9ea3d48d30",
+          "pulled_hash_sha256": "dfb833b2b7407e766f61cd0726fed283577a845204e7768f81ddff9ea3d48d30",
+          "size_bytes": 158981236,
+          "type": "apk",
+          "hash_match": true
+        }
+      ],
+      "all_hashes_verified": false
+    },
+    {
+      "package_name": "capitec.acuity.mobile.prod",
+      "app_name": "Capitec",
+      "version_code": 26070600,
+      "is_aab": true,
+      "backup_timestamp_ms": "1783475830257",
+      "artifacts": [
+        {
+          "filename": "split_config.arm64_v8a.apk",
+          "backup_hash_sha256": "f5cbe24567b75c35c7fb54a839a643513bb6ff028e1b67eb04cd91def148be54",
+          "pulled_hash_sha256": "d89e398daf96414df9d95597a89652156ff5b9445caa040544edfef4f57a953f",
+          "size_bytes": 22230734,
+          "type": "apks",
+          "hash_match": false
+        },
+        {
+          "filename": "split_config.en.apk",
+          "backup_hash_sha256": "d837ff2099feb1aa5a189b5355849fd9768b96c476c036f53b9149e9e4f8746d",
+          "pulled_hash_sha256": "b3e0a97e0ae28dfca16ab529fcaab9515bb8854e035c5f16e976f6c36e1df890",
+          "size_bytes": 74137,
+          "type": "apks",
+          "hash_match": false
+        },
+        {
+          "filename": "split_config.xxhdpi.apk",
+          "backup_hash_sha256": "1d82b407cbab5eec3839bae29c9437bd95dc5fbe1aaf81e9538719e6838682a7",
+          "pulled_hash_sha256": null,
+          "size_bytes": 366869,
+          "type": "apks",
+          "hash_match": null
+        },
+        {
+          "filename": "base.apk",
+          "backup_hash_sha256": "bb8371197da220e60a5f12e3e3321f4c352ff4d9830605ddacd50ee7b536d3ee",
+          "pulled_hash_sha256": "99e5909cfadd10ca1d0a6cb06f96ec5440bad253706d98f3f0c8d813716c1709",
+          "size_bytes": 77608143,
+          "type": "apk",
+          "hash_match": false
+        }
+      ],
+      "all_hashes_verified": false
+    },
+    {
+      "package_name": "com.SignMaker.signature.pdf.docs",
+      "app_name": "Doc Signature",
+      "version_code": 39,
+      "is_aab": true,
+      "backup_timestamp_ms": "1772822287670",
+      "artifacts": [
+        {
+          "filename": "split_config.en.apk",
+          "backup_hash_sha256": "573d6bf5b6a21b6f33f0b2afea4b80d2442b668d0a4638891a02849f5762eee6",
+          "pulled_hash_sha256": null,
+          "size_bytes": 29081,
+          "type": "apks",
+          "hash_match": null
+        },
+        {
+          "filename": "split_config.xxhdpi.apk",
+          "backup_hash_sha256": "3c19c9867a744a5af4d5218d3fb6cb2aba82191034f5789f8b1fb38102d6502e",
+          "pulled_hash_sha256": null,
+          "size_bytes": 235145,
+          "type": "apks",
+          "hash_match": null
+        },
+        {
+          "filename": "base.apk",
+          "backup_hash_sha256": "5e8ee3b96dbb28e8f34086035775d11a683884c7923d13fb94c78f537fbf8097",
+          "pulled_hash_sha256": null,
+          "size_bytes": 25083746,
+          "type": "apk",
+          "hash_match": null
+        }
+      ],
+      "all_hashes_verified": false
+    },
+    {
+      "package_name": "com.awfs.coordination",
+      "app_name": "Woolworths",
+      "version_code": 329,
+      "is_aab": true,
+      "backup_timestamp_ms": "1783630448526",
+      "artifacts": [
+        {
+          "filename": "split_config.arm64_v8a.apk",
+          "backup_hash_sha256": "85c0312909026403acaa100e5d78b1cad63eba93547e7c8e4fe4d9b71bb2e9cc",
+          "pulled_hash_sha256": null,
+          "size_bytes": 1008374,
+          "type": "apks",
+          "hash_match": null
+        },
+        {
+          "filename": "split_config.en.apk",
+          "backup_hash_sha256": "4c704319661c1868275602292085714e131674da13ee634366bf5e684c869435",
+          "pulled_hash_sha256": null,
+          "size_bytes": 217497,
+          "type": "apks",
+          "hash_match": null
+        },
+        {
+          "filename": "split_config.xxhdpi.apk",
+          "backup_hash_sha256": "952d3a7381aa03672778798495eb1a1594edbf3b133bc1dbfc62746d1cc5fa64",
+          "pulled_hash_sha256": null,
+          "size_bytes": 50244027,
+          "type": "apks",
+          "hash_match": null
+        },
+        {
+          "filename": "base.apk",
+          "backup_hash_sha256": "3b38b617b248ae31eff38048fc7a89bf9f3a50875664645fe08ecd3022b98da6",
+          "pulled_hash_sha256": null,
+          "size_bytes": 110003088,
+          "type": "apk",
+          "hash_match": null
+        }
+      ],
+      "all_hashes_verified": false
+    },
+    {
+      "package_name": "com.azmobile.card.design.invitation.maker",
+      "app_name": "Invites4U",
+      "version_code": 215,
+      "is_aab": true,
+      "backup_timestamp_ms": "1776905847577",
+      "artifacts": [
+        {
+          "filename": "split_config.armeabi_v7a.apk",
+          "backup_hash_sha256": "51df6f6ddb7318014c488b4e584198c233f6e21e35fc68fc5916ebda638e885c",
+          "pulled_hash_sha256": null,
+          "size_bytes": 8779123,
+          "type": "apks",
+          "hash_match": null
+        },
+        {
+          "filename": "split_config.xxhdpi.apk",
+          "backup_hash_sha256": "c28f3aa1f982ef1a030f3a9d50107d5bb161d5e1d2d53a2a844bd5fc90d674ac",
+          "pulled_hash_sha256": null,
+          "size_bytes": 214471,
+          "type": "apks",
+          "hash_match": null
+        },
+        {
+          "filename": "base.apk",
+          "backup_hash_sha256": "2414efbb5260cb5efe11aec21f303d3f979cfe921782325be867c8bf9293dda4",
+          "pulled_hash_sha256": null,
+          "size_bytes": 63394630,
+          "type": "apk",
+          "hash_match": null
+        }
+      ],
+      "all_hashes_verified": false
+    },
+    {
+      "package_name": "com.barclays.absa.banking",
+      "app_name": "Absa Banking",
+      "version_code": 11188,
+      "is_aab": true,
+      "backup_timestamp_ms": "1776824705582",
+      "artifacts": [
+        {
+          "filename": "split_config.arm64_v8a.apk",
+          "backup_hash_sha256": "f46cbc070ac479fc27e50682b5f5746732366365cc3c962530f631d2f2a0bf4f",
+          "pulled_hash_sha256": "5fc31783445fa9e3f1796edc869526c6aed65682a1533da1e621826469e4400c",
+          "size_bytes": 16615100,
+          "type": "apks",
+          "hash_match": false
+        },
+        {
+          "filename": "split_config.xxhdpi.apk",
+          "backup_hash_sha256": "6a362523a59da0054545d6acba0dae1dea3e56b4b161bfe36c7ca9a717ed18fe",
+          "pulled_hash_sha256": null,
+          "size_bytes": 904826,
+          "type": "apks",
+          "hash_match": null
+        },
+        {
+          "filename": "base.apk",
+          "backup_hash_sha256": "f35bdeaead933020e3c2020e141ce438162e1a7c4cb16900f0c1e65543dc2c28",
+          "pulled_hash_sha256": "10e5cb3f2ed3353ebbe2edad0d0c705ee5708095a9130739d5d6b1a3d18be802",
+          "size_bytes": 95677777,
+          "type": "apk",
+          "hash_match": false
+        }
+      ],
+      "all_hashes_verified": false
+    },
+    {
+      "package_name": "com.bash.prod",
+      "app_name": "Bash",
+      "version_code": 15254,
+      "is_aab": false,
+      "backup_timestamp_ms": "1779022908527",
+      "artifacts": [
+        {
+          "filename": "base.apk",
+          "backup_hash_sha256": "e30248fee5b8386734cc0eb46e9765c27bda0696b841deafd5893ff27ed61c9a",
+          "pulled_hash_sha256": "18a9c147f13947a32b1e3527ac93e475273f44ecc015b3d420d6b70c5c623c9b",
+          "size_bytes": 80198,
+          "type": "apk",
+          "hash_match": false
+        }
+      ],
+      "all_hashes_verified": false
+    },
+    {
+      "package_name": "com.canva.editor",
+      "app_name": "Canva",
+      "version_code": 29522699,
+      "is_aab": true,
+      "backup_timestamp_ms": "1777676322213",
+      "artifacts": [
+        {
+          "filename": "split_config.armeabi_v7a.apk",
+          "backup_hash_sha256": "6caf8a8a540a3bd3cd4dc3ca2e94ae60a390756cb93ebd0d7784b085f4537fc6",
+          "pulled_hash_sha256": "a25f14c7b64eaf80dcffe634fe8369b524d1315e5ef75b4a2a5c31aef7cabc81",
+          "size_bytes": 557732,
+          "type": "apks",
+          "hash_match": false
+        },
+        {
+          "filename": "split_config.xxhdpi.apk",
+          "backup_hash_sha256": "1bdc77d0b02f4097eb1956c17c0f391575c9e41e023c781a6ac97bb1a2543ea7",
+          "pulled_hash_sha256": "99a807ca224882736b1072e70a6cbcd8f87aa9a76c525a2a0c7aa3a12148feba",
+          "size_bytes": 1001050,
+          "type": "apks",
+          "hash_match": false
+        },
+        {
+          "filename": "base.apk",
+          "backup_hash_sha256": "c4c91650a59def511aa2086e512e70c41261be17363a99d1ad64b49e9871aa84",
+          "pulled_hash_sha256": "68567e8eb422fb8c8d5228678d692069f8c4eb124d8b9653dc7cd86c0aac1a3e",
+          "size_bytes": 27900447,
+          "type": "apk",
+          "hash_match": false
+        }
+      ],
+      "all_hashes_verified": false
+    },
+    {
+      "package_name": "com.colpit.diamondcoming.isavemoney",
+      "app_name": "iSaveMoney",
+      "version_code": 363265241,
+      "is_aab": true,
+      "backup_timestamp_ms": "1769086077381",
+      "artifacts": [
+        {
+          "filename": "split_config.armeabi_v7a.apk",
+          "backup_hash_sha256": "6a20bfb9c7e7401c7589d98ddd750cb5aec6df8388c943a7c60deb3dd0b92158",
+          "pulled_hash_sha256": null,
+          "size_bytes": 557596,
+          "type": "apks",
+          "hash_match": null
+        },
+        {
+          "filename": "split_config.en.apk",
+          "backup_hash_sha256": "af63acb551401fcd421d6cd65de13211331a594ce7de810648cf8ce3ad9ce532",
+          "pulled_hash_sha256": null,
+          "size_bytes": 41710,
+          "type": "apks",
+          "hash_match": null
+        },
+        {
+          "filename": "split_config.xxhdpi.apk",
+          "backup_hash_sha256": "f45f4ee44d8376bf2865176248f14c24b84414bf329d55eb220c9c1216227aa5",
+          "pulled_hash_sha256": null,
+          "size_bytes": 170992,
+          "type": "apks",
+          "hash_match": null
+        },
+        {
+          "filename": "base.apk",
+          "backup_hash_sha256": "48eb6639eab271795b6479855318792799ddd0b958ed28154825f3a68f63de26",
+          "pulled_hash_sha256": null,
+          "size_bytes": 30692069,
+          "type": "apk",
+          "hash_match": null
+        }
+      ],
+      "all_hashes_verified": false
+    },
+    {
+      "package_name": "com.crrepa.band.volkano",
+      "app_name": "Volkano Fit",
+      "version_code": 19460,
+      "is_aab": true,
+      "backup_timestamp_ms": "1776344593607",
+      "artifacts": [
+        {
+          "filename": "split_config.arm64_v8a.apk",
+          "backup_hash_sha256": "8f220218144668fe5447dde5cc5352ae4f80d39da72ad7d8249303e1f7aec340",
+          "pulled_hash_sha256": "8f220218144668fe5447dde5cc5352ae4f80d39da72ad7d8249303e1f7aec340",
+          "size_bytes": 43306113,
+          "type": "apks",
+          "hash_match": true
+        },
+        {
+          "filename": "split_config.en.apk",
+          "backup_hash_sha256": "419f318d0a773a45d65e05611575a92a681df00f465dcc4c3badd6d8042c068d",
+          "pulled_hash_sha256": "419f318d0a773a45d65e05611575a92a681df00f465dcc4c3badd6d8042c068d",
+          "size_bytes": 147865,
+          "type": "apks",
+          "hash_match": true
+        },
+        {
+          "filename": "split_config.xxhdpi.apk",
+          "backup_hash_sha256": "0fb3da994f4e1a355041835b1e8fdbafc854609cd572ee221625423112880ebf",
+          "pulled_hash_sha256": "0fb3da994f4e1a355041835b1e8fdbafc854609cd572ee221625423112880ebf",
+          "size_bytes": 10846084,
+          "type": "apks",
+          "hash_match": true
+        },
+        {
+          "filename": "base.apk",
+          "backup_hash_sha256": "4dd18a309a2f2aa4e28917dbb2eff7b7eaf897f532a1ccee92da2d3e18b46fdd",
+          "pulled_hash_sha256": "4dd18a309a2f2aa4e28917dbb2eff7b7eaf897f532a1ccee92da2d3e18b46fdd",
+          "size_bytes": 99428036,
+          "type": "apk",
+          "hash_match": true
+        }
+      ],
+      "all_hashes_verified": true
+    },
+    {
+      "package_name": "com.d6.schools",
+      "app_name": "School",
+      "version_code": 467,
+      "is_aab": true,
+      "backup_timestamp_ms": "1768522379515",
+      "artifacts": [
+        {
+          "filename": "split_config.armeabi_v7a.apk",
+          "backup_hash_sha256": "a05e0ef75e71ff2cc0ec5991d8f8140cb6ac79395ae984464ec4192e51d48613",
+          "pulled_hash_sha256": null,
+          "size_bytes": 16823,
+          "type": "apks",
+          "hash_match": null
+        },
+        {
+          "filename": "split_config.xxhdpi.apk",
+          "backup_hash_sha256": "d3a1f8ef1d6210dca5ec86dd2f018369f3838b1d7d644a83558ab3316b64937b",
+          "pulled_hash_sha256": null,
+          "size_bytes": 1968123,
+          "type": "apks",
+          "hash_match": null
+        },
+        {
+          "filename": "base.apk",
+          "backup_hash_sha256": "e4cd6032eec206ad57efd3aeaba69416926e640b79e7f1f44e04f9775edb9dcd",
+          "pulled_hash_sha256": null,
+          "size_bytes": 111374929,
+          "type": "apk",
+          "hash_match": null
+        }
+      ],
+      "all_hashes_verified": false
+    },
+    {
+      "package_name": "com.disneyplus.mea",
+      "app_name": "Disney+",
+      "version_code": 12673,
+      "is_aab": true,
+      "backup_timestamp_ms": "1780660758426",
+      "artifacts": [
+        {
+          "filename": "split_config.armeabi_v7a.apk",
+          "backup_hash_sha256": "9e47d631097d921be4ee2edcbfbc77c5125ca0a3d54f99ba8916c1c2cbc0c336",
+          "pulled_hash_sha256": null,
+          "size_bytes": 4838436,
+          "type": "apks",
+          "hash_match": null
+        },
+        {
+          "filename": "split_config.en.apk",
+          "backup_hash_sha256": "e33972592af75f3ee17a4b39cd51ef205765ea625da338d97033239e53bdfd42",
+          "pulled_hash_sha256": null,
+          "size_bytes": 119193,
+          "type": "apks",
+          "hash_match": null
+        },
+        {
+          "filename": "split_config.xxhdpi.apk",
+          "backup_hash_sha256": "cac9d52c903b69519af44d1188e4718e9a061ec7723ccce3755ac55592f16f98",
+          "pulled_hash_sha256": null,
+          "size_bytes": 816010,
+          "type": "apks",
+          "hash_match": null
+        },
+        {
+          "filename": "base.apk",
+          "backup_hash_sha256": "d22e7ad4f3fa867b53c6bcc65a9af20f6fbc348adbbf32227ffa553250c9b781",
+          "pulled_hash_sha256": null,
+          "size_bytes": 77918802,
+          "type": "apk",
+          "hash_match": null
+        }
+      ],
+      "all_hashes_verified": false
+    },
+    {
+      "package_name": "com.dstvmobile.android",
+      "app_name": "DStv Stream",
+      "version_code": 217051171,
+      "is_aab": false,
+      "backup_timestamp_ms": "1779022902131",
+      "artifacts": [
+        {
+          "filename": "base.apk",
+          "backup_hash_sha256": "14eaf77b505c4a88264bf138ad8cc51c4bc5705a3aa0ef8685658fe4d58e3e75",
+          "pulled_hash_sha256": null,
+          "size_bytes": 75650,
+          "type": "apk",
+          "hash_match": null
+        }
+      ],
+      "all_hashes_verified": false
+    },
+    {
+      "package_name": "com.einnovation.temu",
+      "app_name": "Temu",
+      "version_code": 42802,
+      "is_aab": true,
+      "backup_timestamp_ms": "1770248575249",
+      "artifacts": [
+        {
+          "filename": "split_config.armeabi_v7a.apk",
+          "backup_hash_sha256": "aec8362ffb85baeb532192cca871195687e7d0bc2feefe2f3b1d0d14faea5808",
+          "pulled_hash_sha256": null,
+          "size_bytes": 5215941,
+          "type": "apks",
+          "hash_match": null
+        },
+        {
+          "filename": "split_config.xxhdpi.apk",
+          "backup_hash_sha256": "31f4ed11b707f3d98fdaf2a4c96e3192512a663a114ab4c22483c6787dfdc6c6",
+          "pulled_hash_sha256": null,
+          "size_bytes": 33454,
+          "type": "apks",
+          "hash_match": null
+        },
+        {
+          "filename": "base.apk",
+          "backup_hash_sha256": "4fc9bc6d3a1884248ce67edaad06be01208ed2441fd1de42158dd56618f29854",
+          "pulled_hash_sha256": null,
+          "size_bytes": 41769852,
+          "type": "apk",
+          "hash_match": null
+        }
+      ],
+      "all_hashes_verified": false
+    },
+    {
+      "package_name": "com.facebook.katana",
+      "app_name": "Facebook",
+      "version_code": 472947928,
+      "is_aab": false,
+      "backup_timestamp_ms": "1783915611002",
+      "artifacts": [
+        {
+          "filename": "base.apk",
+          "backup_hash_sha256": "1654b2429cd7c736f6be1e3785a702e1e2657589716e4e368d676ef5a5f06eca",
+          "pulled_hash_sha256": null,
+          "size_bytes": 151562496,
+          "type": "apk",
+          "hash_match": null
+        }
+      ],
+      "all_hashes_verified": false
+    },
+    {
+      "package_name": "com.facebook.stella",
+      "app_name": "Meta AI",
+      "version_code": 968002438,
+      "is_aab": true,
+      "backup_timestamp_ms": "1783475854893",
+      "artifacts": [
+        {
+          "filename": "split_config.arm64_v8a.apk",
+          "backup_hash_sha256": "19aef950f44ea124720e349c084176dfc3ff078c8e880aeeb2ed9959eaea4920",
+          "pulled_hash_sha256": null,
+          "size_bytes": 194936066,
+          "type": "apks",
+          "hash_match": null
+        },
+        {
+          "filename": "base.apk",
+          "backup_hash_sha256": "3a00d988d286a843e74e3c8c50d61c8feeb47aa788c60505b0d3af99c8123b04",
+          "pulled_hash_sha256": null,
+          "size_bytes": 86851281,
+          "type": "apk",
+          "hash_match": null
+        }
+      ],
+      "all_hashes_verified": false
+    },
+    {
+      "package_name": "com.gloo.familycard",
+      "app_name": "Spur",
+      "version_code": 1884,
+      "is_aab": true,
+      "backup_timestamp_ms": "1782867961618",
+      "artifacts": [
+        {
+          "filename": "split_config.arm64_v8a.apk",
+          "backup_hash_sha256": "dcab3fa744b2a8a238c6195388fc6cdd1bc8682abbe70850768979f1830c236c",
+          "pulled_hash_sha256": null,
+          "size_bytes": 30036703,
+          "type": "apks",
+          "hash_match": null
+        },
+        {
+          "filename": "split_config.en.apk",
+          "backup_hash_sha256": "ba557cb7ba140d11ca05b52fbedc0cf1f889a8aa27e6be1f5f30693412549f2c",
+          "pulled_hash_sha256": null,
+          "size_bytes": 41369,
+          "type": "apks",
+          "hash_match": null
+        },
+        {
+          "filename": "split_config.xxhdpi.apk",
+          "backup_hash_sha256": "07e555551898e756abe8db96459f067a832262ea9cf690e5e011d7c86d47f009",
+          "pulled_hash_sha256": null,
+          "size_bytes": 286211,
+          "type": "apks",
+          "hash_match": null
+        },
+        {
+          "filename": "base.apk",
+          "backup_hash_sha256": "a7a1da5a4d9324f6a3178e0f277ece03a914f82e572846f84fed5e3684396ce8",
+          "pulled_hash_sha256": null,
+          "size_bytes": 36432319,
+          "type": "apk",
+          "hash_match": null
+        }
+      ],
+      "all_hashes_verified": false
+    },
+    {
+      "package_name": "com.google.android.apps.docs",
+      "app_name": "Drive",
+      "version_code": 214491635,
+      "is_aab": true,
+      "backup_timestamp_ms": "1780414528708",
+      "artifacts": [
+        {
+          "filename": "split_config.armeabi_v7a.apk",
+          "backup_hash_sha256": "977b5ad2a5f5f16c1229f151c2d7fb8c83deee10d01bda1a981d3c6b91380966",
+          "pulled_hash_sha256": null,
+          "size_bytes": 13521729,
+          "type": "apks",
+          "hash_match": null
+        },
+        {
+          "filename": "split_config.en.apk",
+          "backup_hash_sha256": "ef708643177d65a5a2ebddccbb1c2ac464012613f20cac5c487ad1c8cbd20e53",
+          "pulled_hash_sha256": null,
+          "size_bytes": 512210,
+          "type": "apks",
+          "hash_match": null
+        },
+        {
+          "filename": "split_config.xxhdpi.apk",
+          "backup_hash_sha256": "a4aeef63f99909e6d4add7d68705f0a846c6784fa421521225943a284d39b10b",
+          "pulled_hash_sha256": null,
+          "size_bytes": 1832900,
+          "type": "apks",
+          "hash_match": null
+        },
+        {
+          "filename": "base.apk",
+          "backup_hash_sha256": "c7e791b97c7246744532b213c98a47162a0cf1a76ba601f802d1dea6848dd20d",
+          "pulled_hash_sha256": null,
+          "size_bytes": 35984106,
+          "type": "apk",
+          "hash_match": null
+        }
+      ],
+      "all_hashes_verified": false
+    },
+    {
+      "package_name": "com.google.android.apps.kids.familylink",
+      "app_name": "Family Link",
+      "version_code": 876907,
+      "is_aab": true,
+      "backup_timestamp_ms": "1783630379134",
+      "artifacts": [
+        {
+          "filename": "split_config.arm64_v8a.apk",
+          "backup_hash_sha256": "405c20070d8f7ca32f0fe9b7d5810667cbf3898a98e8924f13a2d61d5f70cacd",
+          "pulled_hash_sha256": null,
+          "size_bytes": 15557021,
+          "type": "apks",
+          "hash_match": null
+        },
+        {
+          "filename": "split_config.en.apk",
+          "backup_hash_sha256": "6011ebe315262fff44c0999f84267c5f52169717e37902adff46ec1aaf350748",
+          "pulled_hash_sha256": null,
+          "size_bytes": 254162,
+          "type": "apks",
+          "hash_match": null
+        },
+        {
+          "filename": "base.apk",
+          "backup_hash_sha256": "38bc18ef116f3b1fc7adac29d7fd27d84511ea6e7800ca809ab7b57fb50fb628",
+          "pulled_hash_sha256": null,
+          "size_bytes": 13062985,
+          "type": "apk",
+          "hash_match": null
+        }
+      ],
+      "all_hashes_verified": false
+    },
+    {
+      "package_name": "com.google.android.apps.kids.familylinkhelper",
+      "app_name": "Parental controls",
+      "version_code": 1017177,
+      "is_aab": true,
+      "backup_timestamp_ms": "1770378887263",
+      "artifacts": [
+        {
+          "filename": "split_config.en.apk",
+          "backup_hash_sha256": "bab6818bb186f8398826caf31e0ab10644c584f49b9e93253289720302f27100",
+          "pulled_hash_sha256": null,
+          "size_bytes": 33177,
+          "type": "apks",
+          "hash_match": null
+        },
+        {
+          "filename": "base.apk",
+          "backup_hash_sha256": "ee68af0f0c1da11db8c17e24ecbfee333c295bfabee022fdd0337dbf1a6e6ca1",
+          "pulled_hash_sha256": null,
+          "size_bytes": 2800541,
+          "type": "apk",
+          "hash_match": null
+        }
+      ],
+      "all_hashes_verified": false
+    },
+    {
+      "package_name": "com.google.android.apps.kids.familylinkmanager",
+      "app_name": "Family Link Manager",
+      "version_code": 1072,
+      "is_aab": false,
+      "backup_timestamp_ms": "1668271845887",
+      "artifacts": [
+        {
+          "filename": "base.apk",
+          "backup_hash_sha256": "31fb37dd4e7d5e37b355db2d08de90f2b533b6cf5f2c417c81f21c54240088dd",
+          "pulled_hash_sha256": null,
+          "size_bytes": 9839159,
+          "type": "apk",
+          "hash_match": null
+        }
+      ],
+      "all_hashes_verified": false
+    },
+    {
+      "package_name": "com.google.android.apps.walletnfcrel",
+      "app_name": "Google\u00a0Wallet",
+      "version_code": 933250675,
+      "is_aab": true,
+      "backup_timestamp_ms": "1768845355311",
+      "artifacts": [
+        {
+          "filename": "split_config.armeabi_v7a.apk",
+          "backup_hash_sha256": "30748d3aa085f4099b85e4eb19664323a54d406b76d749a42ebc19bd67df1900",
+          "pulled_hash_sha256": null,
+          "size_bytes": 975448,
+          "type": "apks",
+          "hash_match": null
+        },
+        {
+          "filename": "split_config.xxhdpi.apk",
+          "backup_hash_sha256": "facc9114b9cf421edb89e22dd22aad7d9071b800e5237e86c53d0ed214313650",
+          "pulled_hash_sha256": null,
+          "size_bytes": 444039,
+          "type": "apks",
+          "hash_match": null
+        },
+        {
+          "filename": "base.apk",
+          "backup_hash_sha256": "d874edd31602248fc67e91f892851d77696b587e03280a905ddad05b28d12db3",
+          "pulled_hash_sha256": "a5ac50b7381d415c85c4825e967bd4ea01210dd2e7d3ea9654a2e954d7de7a19",
+          "size_bytes": 34510805,
+          "type": "apk",
+          "hash_match": false
+        }
+      ],
+      "all_hashes_verified": false
+    },
+    {
+      "package_name": "com.google.android.apps.youtube.music",
+      "app_name": "YouTube Music",
+      "version_code": 92654240,
+      "is_aab": true,
+      "backup_timestamp_ms": "1783715815957",
+      "artifacts": [
+        {
+          "filename": "split_config.en.apk",
+          "backup_hash_sha256": "474706b8ce608096f190b61e21582fc6fd35a954115dbaccb61d08124b342b27",
+          "pulled_hash_sha256": "0af84826c99453731c8f22f5c689d4d114b3acd791ba05f8f07fef7b550b4cb5",
+          "size_bytes": 254162,
+          "type": "apks",
+          "hash_match": false
+        },
+        {
+          "filename": "split_config.xxhdpi.apk",
+          "backup_hash_sha256": "e8373f52e3e08e4efe102f70be1259b837f1e9ae16862a3fd46d9bf006d1d471",
+          "pulled_hash_sha256": null,
+          "size_bytes": 622184,
+          "type": "apks",
+          "hash_match": null
+        },
+        {
+          "filename": "base.apk",
+          "backup_hash_sha256": "6357a8034920546da4bc3b8d727d4610074063e7350e5d166bc0b2ebc282b35d",
+          "pulled_hash_sha256": "4b187ca0fb89ec72145214e9936e469aee035f2720f535e601051a27db3f6be7",
+          "size_bytes": 77408347,
+          "type": "apk",
+          "hash_match": false
+        }
+      ],
+      "all_hashes_verified": false
+    },
+    {
+      "package_name": "com.google.android.contactkeys",
+      "app_name": "Android System Key Verifier",
+      "version_code": 17165,
+      "is_aab": true,
+      "backup_timestamp_ms": "1780325367147",
+      "artifacts": [
+        {
+          "filename": "split_config.armeabi_v7a.apk",
+          "backup_hash_sha256": "a732be8026e45be627a5627a0f8c4a580f2f13e725347d5d3bf1c2cc6c1464b7",
+          "pulled_hash_sha256": null,
+          "size_bytes": 82337,
+          "type": "apks",
+          "hash_match": null
+        },
+        {
+          "filename": "split_config.en.apk",
+          "backup_hash_sha256": "3ab29a3bc31ab784d438ee1e5839e17458e727380c68614f312f58f78e6cfe3b",
+          "pulled_hash_sha256": "bd4cf47956d3e7dca3c1848c05ef5903fe4ae0e4d26226c4a7b04d0da9c9766c",
+          "size_bytes": 53458,
+          "type": "apks",
+          "hash_match": false
+        },
+        {
+          "filename": "split_config.xxhdpi.apk",
+          "backup_hash_sha256": "223b5bf99436bbcc928d8820b9cf3c87332b22f450ae8b99a809de14d0f68ec0",
+          "pulled_hash_sha256": null,
+          "size_bytes": 68760,
+          "type": "apks",
+          "hash_match": null
+        },
+        {
+          "filename": "base.apk",
+          "backup_hash_sha256": "cdc5c9f211b42de364d2c15bf6e5a00f5cf8afe8841947ea9a4cb1ee0ddf9f12",
+          "pulled_hash_sha256": "d67bed730fbac0252b3326ea1b6e53677bef520c3bb71b588f8f0fbce2c8a208",
+          "size_bytes": 9877477,
+          "type": "apk",
+          "hash_match": false
+        }
+      ],
+      "all_hashes_verified": false
+    },
+    {
+      "package_name": "com.google.android.safetycore",
+      "app_name": "Android System SafetyCore",
+      "version_code": 19010,
+      "is_aab": true,
+      "backup_timestamp_ms": "1780172795809",
+      "artifacts": [
+        {
+          "filename": "split_config.armeabi_v7a.apk",
+          "backup_hash_sha256": "61a7c4aa3bd01fe72843a527e66f7b759c2ad0dd538f56ec86d96111b581dac1",
+          "pulled_hash_sha256": null,
+          "size_bytes": 7491815,
+          "type": "apks",
+          "hash_match": null
+        },
+        {
+          "filename": "split_config.en.apk",
+          "backup_hash_sha256": "d6ff7fc0a111c70305b9325cc1c19577f9eaf6ffe5549fa8bf1310d4e6a86900",
+          "pulled_hash_sha256": null,
+          "size_bytes": 20690,
+          "type": "apks",
+          "hash_match": null
+        },
+        {
+          "filename": "split_config.xxhdpi.apk",
+          "backup_hash_sha256": "635b412c8181acd36213ba64da81d42d0c9a3e9b1a0080571a01c65c7252c7b5",
+          "pulled_hash_sha256": null,
+          "size_bytes": 16650,
+          "type": "apks",
+          "hash_match": null
+        },
+        {
+          "filename": "base.apk",
+          "backup_hash_sha256": "9ab60f5c13553b1a595154afaaa126214c53a3be48ac7234cbe9d7ee7423ecf8",
+          "pulled_hash_sha256": "83740ca21f9893b88687ba67880fd9d7ec73fbca71db7ee27cb7b73dcfed2371",
+          "size_bytes": 5223298,
+          "type": "apk",
+          "hash_match": false
+        }
+      ],
+      "all_hashes_verified": false
+    },
+    {
+      "package_name": "com.google.android.videos",
+      "app_name": "Google TV",
+      "version_code": 439665950,
+      "is_aab": false,
+      "backup_timestamp_ms": "1779022905111",
+      "artifacts": [
+        {
+          "filename": "base.apk",
+          "backup_hash_sha256": "3f360faa82ec254c568163a2ea3327e1f69739fe5be6784855d46ae4f34e938d",
+          "pulled_hash_sha256": "551cb62019f93cb564a2eeca4811604e75aa82ae38b86e8d01c506f85306bf43",
+          "size_bytes": 481166,
+          "type": "apk",
+          "hash_match": false
+        }
+      ],
+      "all_hashes_verified": false
+    },
+    {
+      "package_name": "com.greetingsisland.sam",
+      "app_name": "Greetings Island",
+      "version_code": 30740,
+      "is_aab": true,
+      "backup_timestamp_ms": "1761076040441",
+      "artifacts": [
+        {
+          "filename": "split_config.en.apk",
+          "backup_hash_sha256": "3ebaeff11b28e341c937862035e09fd8ca41dc8d1a0e856dd5b97b34fb19d410",
+          "pulled_hash_sha256": null,
+          "size_bytes": 45465,
+          "type": "apks",
+          "hash_match": null
+        },
+        {
+          "filename": "split_config.xxhdpi.apk",
+          "backup_hash_sha256": "664d7e8b1cc003746f12a33467875a90b1a2d7eccd5afc0f5ca56e99c882fc6b",
+          "pulled_hash_sha256": null,
+          "size_bytes": 109603,
+          "type": "apks",
+          "hash_match": null
+        },
+        {
+          "filename": "base.apk",
+          "backup_hash_sha256": "d779a7538648a5f02abba0cc02c740a76ecc6040bc4f60b332edcc4563956f44",
+          "pulled_hash_sha256": null,
+          "size_bytes": 36453355,
+          "type": "apk",
+          "hash_match": null
+        }
+      ],
+      "all_hashes_verified": false
+    },
+    {
+      "package_name": "com.hitappsgames.wordsolitaire",
+      "app_name": "Solitaire Associations: Journey",
+      "version_code": 1804,
+      "is_aab": true,
+      "backup_timestamp_ms": "1780082033081",
+      "artifacts": [
+        {
+          "filename": "split_UnityDataAssetPack.apk",
+          "backup_hash_sha256": "ecd3b19608a47538bb7d9909fe194073de0ef410e29fe1d50cfcd002a823026b",
+          "pulled_hash_sha256": null,
+          "size_bytes": 16733,
+          "type": "apks",
+          "hash_match": null
+        },
+        {
+          "filename": "split_UnityDataAssetPack.config.astc.apk",
+          "backup_hash_sha256": "e477ca01fb73c79a66f8f5dbe33482974a0a01a1a3b9ed51d337948d0bdab16e",
+          "pulled_hash_sha256": null,
+          "size_bytes": 6585051,
+          "type": "apks",
+          "hash_match": null
+        },
+        {
+          "filename": "split_UnityStreamingAssetsPack.apk",
+          "backup_hash_sha256": "a2001b985ace5412bf098f724bdc5ea07712793d3fbe97ca7e9b3308087ba477",
+          "pulled_hash_sha256": null,
+          "size_bytes": 101825575,
+          "type": "apks",
+          "hash_match": null
+        },
+        {
+          "filename": "split_UnityTextureCompressionsAssetPack.apk",
+          "backup_hash_sha256": "4a1602f3ad56470647387f2a8efded3e06aaabdd83ab5e4b0de8cacd9a34b051",
+          "pulled_hash_sha256": null,
+          "size_bytes": 16733,
+          "type": "apks",
+          "hash_match": null
+        },
+        {
+          "filename": "split_UnityTextureCompressionsAssetPack.config.astc.apk",
+          "backup_hash_sha256": "4e13742293f6662cd978f2679d9842434218484ce65cd597a2521e88e0d3f705",
+          "pulled_hash_sha256": null,
+          "size_bytes": 1057434,
+          "type": "apks",
+          "hash_match": null
+        },
+        {
+          "filename": "split_config.arm64_v8a.apk",
+          "backup_hash_sha256": "5e3b3e32e4d7e1cf2228f85e0aaa0e864623afc07d21d59512cc70efaaea01ba",
+          "pulled_hash_sha256": null,
+          "size_bytes": 36616404,
+          "type": "apks",
+          "hash_match": null
+        },
+        {
+          "filename": "base.apk",
+          "backup_hash_sha256": "30fb62d1845d668d87e7ed89090fdd75dc74d7d8fe27d8fcf0389bac62d22e12",
+          "pulled_hash_sha256": null,
+          "size_bytes": 137850381,
+          "type": "apk",
+          "hash_match": null
+        }
+      ],
+      "all_hashes_verified": false
+    },
+    {
+      "package_name": "com.holy.bible.hbs",
+      "app_name": "Holy Bible Study",
+      "version_code": 100500,
+      "is_aab": true,
+      "backup_timestamp_ms": "1727638929051",
+      "artifacts": [
+        {
+          "filename": "split_config.armeabi_v7a.apk",
+          "backup_hash_sha256": "beecf43ee43fb2bc0a7bf4a640a10ebaec2240a3cec447a1424fb78235768582",
+          "pulled_hash_sha256": null,
+          "size_bytes": 1016884,
+          "type": "apks",
+          "hash_match": null
+        },
+        {
+          "filename": "split_config.en.apk",
+          "backup_hash_sha256": "3e2a55cf3868d55940cabb2944b249096d1867cd86c695cd125935cb85085902",
+          "pulled_hash_sha256": null,
+          "size_bytes": 61849,
+          "type": "apks",
+          "hash_match": null
+        },
+        {
+          "filename": "split_config.xxhdpi.apk",
+          "backup_hash_sha256": "f8007ac5212d80c617962a2f963d7c80105fd261a59c8e1919c7439c250260ef",
+          "pulled_hash_sha256": null,
+          "size_bytes": 189014,
+          "type": "apks",
+          "hash_match": null
+        },
+        {
+          "filename": "base.apk",
+          "backup_hash_sha256": "abd1da8ac4c365318b94c97104bd3adbd15f3c574e5086866997fe21ad715be6",
+          "pulled_hash_sha256": null,
+          "size_bytes": 30744387,
+          "type": "apk",
+          "hash_match": null
+        }
+      ],
+      "all_hashes_verified": false
+    },
+    {
+      "package_name": "com.homagames.studio.allinhole",
+      "app_name": "All in Hole",
+      "version_code": 346,
+      "is_aab": true,
+      "backup_timestamp_ms": "1770248895141",
+      "artifacts": [
+        {
+          "filename": "split_UnityDataAssetPack.apk",
+          "backup_hash_sha256": "2dda35e5c5f023ca0a66b2916de63f11d79c00aa6066b690e711c5a304a906d8",
+          "pulled_hash_sha256": null,
+          "size_bytes": 357873462,
+          "type": "apks",
+          "hash_match": null
+        },
+        {
+          "filename": "split_config.armeabi_v7a.apk",
+          "backup_hash_sha256": "bfc272ff7554654fddf44833fccdf968b93c1513e4c7fa6edc35852ba616e3e8",
+          "pulled_hash_sha256": null,
+          "size_bytes": 33548036,
+          "type": "apks",
+          "hash_match": null
+        },
+        {
+          "filename": "base.apk",
+          "backup_hash_sha256": "8f0118954a1e31abae5ed1f95c3a5394d3a4a05075c41bf4d2e664968e709694",
+          "pulled_hash_sha256": null,
+          "size_bytes": 64637721,
+          "type": "apk",
+          "hash_match": null
+        }
+      ],
+      "all_hashes_verified": false
+    },
+    {
+      "package_name": "com.horus.sandy.jam",
+      "app_name": "Sandy Jam",
+      "version_code": 91,
+      "is_aab": true,
+      "backup_timestamp_ms": "1780214515553",
+      "artifacts": [
+        {
+          "filename": "split_config.arm64_v8a.apk",
+          "backup_hash_sha256": "b518c9adff7ef6608bd2573909e76e53db787c3cbd72e02611e4252000de036a",
+          "pulled_hash_sha256": null,
+          "size_bytes": 38373532,
+          "type": "apks",
+          "hash_match": null
+        },
+        {
+          "filename": "base.apk",
+          "backup_hash_sha256": "2627c7424f7abaca1dcdf9d2189a350adad380f152ce06d806394a9add4cdc58",
+          "pulled_hash_sha256": null,
+          "size_bytes": 156400594,
+          "type": "apk",
+          "hash_match": null
+        }
+      ],
+      "all_hashes_verified": false
+    },
+    {
+      "package_name": "com.instagram.android",
+      "app_name": "Instagram",
+      "version_code": 384309618,
+      "is_aab": true,
+      "backup_timestamp_ms": "1783549418163",
+      "artifacts": [
+        {
+          "filename": "split_config.xxhdpi.apk",
+          "backup_hash_sha256": "9e6d6d186e32d75f618b8be742c4da1f12a1a713866bcac6d7dafe6ee1085a56",
+          "pulled_hash_sha256": null,
+          "size_bytes": 7329019,
+          "type": "apks",
+          "hash_match": null
+        },
+        {
+          "filename": "split_executorch.apk",
+          "backup_hash_sha256": "29cfa982f142965cb1cd38cb3f70a9f8ae2a79a142c8a93e01f0f285eac3c095",
+          "pulled_hash_sha256": null,
+          "size_bytes": 1753382,
+          "type": "apks",
+          "hash_match": null
+        },
+        {
+          "filename": "split_heliumcore.apk",
+          "backup_hash_sha256": "8a16bef0dc5d47dc520386b23ba95ea967cfcddd42fd0fe93e87576bcd4b30ab",
+          "pulled_hash_sha256": null,
+          "size_bytes": 15533264,
+          "type": "apks",
+          "hash_match": null
+        },
+        {
+          "filename": "split_heliumiab.apk",
+          "backup_hash_sha256": "ef9f07fa0c62c75435481c274e9af99e8bc808ef95ba09de3a07d0c8d8513962",
+          "pulled_hash_sha256": null,
+          "size_bytes": 146592132,
+          "type": "apks",
+          "hash_match": null
+        },
+        {
+          "filename": "split_pytorch.apk",
+          "backup_hash_sha256": "d0bfbb7ee90f6e8471934a256d867623acb06285675d8a20758255bfcf5c4565",
+          "pulled_hash_sha256": null,
+          "size_bytes": 16679,
+          "type": "apks",
+          "hash_match": null
+        },
+        {
+          "filename": "split_supmediastreamcontroller.apk",
+          "backup_hash_sha256": "f4c0038f905f60254254c609f0092e6f003ce86c3f337c99844f44a64d96e865",
+          "pulled_hash_sha256": null,
+          "size_bytes": 184821,
+          "type": "apks",
+          "hash_match": null
+        },
+        {
+          "filename": "base.apk",
+          "backup_hash_sha256": "91103b590c72c0627644857175dcdb3d56f322a7708f89b45c55f763a2f6cab2",
+          "pulled_hash_sha256": null,
+          "size_bytes": 221337201,
+          "type": "apk",
+          "hash_match": null
+        }
+      ],
+      "all_hashes_verified": false
+    },
+    {
+      "package_name": "com.instagram.lite",
+      "app_name": "Instagram Lite",
+      "version_code": 1010069344,
+      "is_aab": true,
+      "backup_timestamp_ms": "1783789517794",
+      "artifacts": [
+        {
+          "filename": "split_fizz.apk",
+          "backup_hash_sha256": "e51810258161f9eac6408167a88071cdda5e9833227fd65789704cec07cefdee",
+          "pulled_hash_sha256": null,
+          "size_bytes": 209460,
+          "type": "apks",
+          "hash_match": null
+        },
+        {
+          "filename": "split_mnshttp.apk",
+          "backup_hash_sha256": "9a223a0d1ca5a3f13d08232b283c28d74d3f5b9a91f065ebd4e3258380015e5b",
+          "pulled_hash_sha256": null,
+          "size_bytes": 41536,
+          "type": "apks",
+          "hash_match": null
+        },
+        {
+          "filename": "split_msysinfra.apk",
+          "backup_hash_sha256": "25c3141de4dca5a5f28fd1c61b6be81dd848fc25cca29797ccc57ea876a85f18",
+          "pulled_hash_sha256": null,
+          "size_bytes": 3387976,
+          "type": "apks",
+          "hash_match": null
+        },
+        {
+          "filename": "split_rtc.apk",
+          "backup_hash_sha256": "33622c2c080707f9ea1d7dd67274ec76c4b7afd743644f968d13ea85758733c7",
+          "pulled_hash_sha256": null,
+          "size_bytes": 3447732,
+          "type": "apks",
+          "hash_match": null
+        },
+        {
+          "filename": "split_s_boost_msysinfra.apk",
+          "backup_hash_sha256": "aee8e775c7d2280f49b79870634c082d79a44abf6fe74eb590f9b64a1ec6ff5a",
+          "pulled_hash_sha256": null,
+          "size_bytes": 86758,
+          "type": "apks",
+          "hash_match": null
+        },
+        {
+          "filename": "split_s_fizz_mnshttp_msys.apk",
+          "backup_hash_sha256": "ee74b4d23a52acfc65e1344bd0e0074b59518b0b09189f72c7752780cd3991bc",
+          "pulled_hash_sha256": null,
+          "size_bytes": 8643,
+          "type": "apks",
+          "hash_match": null
+        },
+        {
+          "filename": "split_s_fizz_msys.apk",
+          "backup_hash_sha256": "4567d04dbd0bbea03cdcdb1cf715ab882ad2b0d129c1de2b7e38e7da5d869f2f",
+          "pulled_hash_sha256": null,
+          "size_bytes": 37299,
+          "type": "apks",
+          "hash_match": null
+        },
+        {
+          "filename": "split_s_fizz_msysinfra.apk",
+          "backup_hash_sha256": "95da31a69fdeab24ab5d8dcdfb82cf67bde08c22899757a1b414aeeeebbd3fb5",
+          "pulled_hash_sha256": null,
+          "size_bytes": 57789,
+          "type": "apks",
+          "hash_match": null
+        },
+        {
+          "filename": "split_s_idcapture_rtc.apk",
+          "backup_hash_sha256": "9b1f6ff56d32503a5d51eb433d02d91de3620229580faafd49000b330dd3fbbe",
+          "pulled_hash_sha256": null,
+          "size_bytes": 8763,
+          "type": "apks",
+          "hash_match": null
+        },
+        {
+          "filename": "split_s_mediastreaming_msys_rtc.apk",
+          "backup_hash_sha256": "794ef5a4c513fe01242b2dd19d76d4ffa5093263e50b74a961d97058d0bfbdd4",
+          "pulled_hash_sha256": null,
+          "size_bytes": 25039,
+          "type": "apks",
+          "hash_match": null
+        },
+        {
+          "filename": "split_s_mediastreaming_msysinfra.apk",
+          "backup_hash_sha256": "76cd384a02b5445cf58f1fd306eb7000d5d985a80aca4c1e979ee489e8e343c6",
+          "pulled_hash_sha256": null,
+          "size_bytes": 41425,
+          "type": "apks",
+          "hash_match": null
+        },
+        {
+          "filename": "split_s_mediastreaming_rtc.apk",
+          "backup_hash_sha256": "1191d6d0c1052ddbe4d0649bcbbc9af1f4e8bad058dbb86716f41718475e358f",
+          "pulled_hash_sha256": null,
+          "size_bytes": 41413,
+          "type": "apks",
+          "hash_match": null
+        },
+        {
+          "filename": "split_s_mnshttp_msys_rtc.apk",
+          "backup_hash_sha256": "56da0e6dabccdc7538d2f89e4f6c606c4fd436eaafac988d6cfae3522aa2d1d8",
+          "pulled_hash_sha256": null,
+          "size_bytes": 238017,
+          "type": "apks",
+          "hash_match": null
+        },
+        {
+          "filename": "split_s_msys_rtc.apk",
+          "backup_hash_sha256": "40be5d266ba69f93d9964e94162dd9b17d95251abd307f53150d51ab6fcd766a",
+          "pulled_hash_sha256": null,
+          "size_bytes": 402101,
+          "type": "apks",
+          "hash_match": null
+        },
+        {
+          "filename": "split_shared_fizz_ms_profilo.apk",
+          "backup_hash_sha256": "4d473f6ee98d2d542c6acf8a4bd5842597ac06510979b92c2e0d97c821517d0e",
+          "pulled_hash_sha256": null,
+          "size_bytes": 1798780,
+          "type": "apks",
+          "hash_match": null
+        },
+        {
+          "filename": "base.apk",
+          "backup_hash_sha256": "7af5b23f0acc3827ca03b57b30390c694fd491cdc3f5ff48931b393f33a2899c",
+          "pulled_hash_sha256": null,
+          "size_bytes": 3781581,
+          "type": "apk",
+          "hash_match": null
+        }
+      ],
+      "all_hashes_verified": false
+    },
+    {
+      "package_name": "com.kfc.sa",
+      "app_name": "KFC",
+      "version_code": 26010004,
+      "is_aab": false,
+      "backup_timestamp_ms": "1775215912486",
+      "artifacts": [
+        {
+          "filename": "base.apk",
+          "backup_hash_sha256": "cefe7ff88dd21e003e9b10975aeb1dadbf89244c4c6bfeeffda5bb324ba06cb2",
+          "pulled_hash_sha256": null,
+          "size_bytes": 147732293,
+          "type": "apk",
+          "hash_match": null
+        }
+      ],
+      "all_hashes_verified": false
+    },
+    {
+      "package_name": "com.king.farmheroessaga",
+      "app_name": "Farm Heroes Saga",
+      "version_code": 332502,
+      "is_aab": true,
+      "backup_timestamp_ms": "1783379911525",
+      "artifacts": [
+        {
+          "filename": "split_config.arm64_v8a.apk",
+          "backup_hash_sha256": "7027214c20811db0eae0f86042fa987d638d2f12c322f448e24e23451ade4f27",
+          "pulled_hash_sha256": null,
+          "size_bytes": 24072883,
+          "type": "apks",
+          "hash_match": null
+        },
+        {
+          "filename": "split_config.en.apk",
+          "backup_hash_sha256": "4bceed2ca70b0c0afd6bc676a20fd91734705f3abf35d966bb0f5de008b9da85",
+          "pulled_hash_sha256": null,
+          "size_bytes": 74137,
+          "type": "apks",
+          "hash_match": null
+        },
+        {
+          "filename": "split_config.xxhdpi.apk",
+          "backup_hash_sha256": "87b6fc1fee9181612fb73870be342e29da0663d7075674c891bec844820416e8",
+          "pulled_hash_sha256": null,
+          "size_bytes": 248039,
+          "type": "apks",
+          "hash_match": null
+        },
+        {
+          "filename": "base.apk",
+          "backup_hash_sha256": "5cf203422740f0a1f010ac7e6a84b90682f2e4d9a664b1088c99293d9a58c53d",
+          "pulled_hash_sha256": null,
+          "size_bytes": 111690642,
+          "type": "apk",
+          "hash_match": null
+        }
+      ],
+      "all_hashes_verified": false
+    },
+    {
+      "package_name": "com.lemon.lvoverseas",
+      "app_name": "CapCut",
+      "version_code": 17601600,
+      "is_aab": true,
+      "backup_timestamp_ms": "1777675876185",
+      "artifacts": [
+        {
+          "filename": "split_config.armeabi_v7a.apk",
+          "backup_hash_sha256": "7827b6e8f4f565d3b5ef7069e84fd5ec9b41d8187f7dff9197461c8962692d7c",
+          "pulled_hash_sha256": null,
+          "size_bytes": 65728771,
+          "type": "apks",
+          "hash_match": null
+        },
+        {
+          "filename": "split_config.en.apk",
+          "backup_hash_sha256": "c889c33c3efc1f81aa9a35d4a2fccd77130a09f9b9975a24ec8b3c0d7ede5c81",
+          "pulled_hash_sha256": null,
+          "size_bytes": 431437,
+          "type": "apks",
+          "hash_match": null
+        },
+        {
+          "filename": "split_config.xxhdpi.apk",
+          "backup_hash_sha256": "743566279287eebc89d402cf4854aaa52f4d98e30dce9aa7921d6ba6aa08c5a1",
+          "pulled_hash_sha256": null,
+          "size_bytes": 2475485,
+          "type": "apks",
+          "hash_match": null
+        },
+        {
+          "filename": "base.apk",
+          "backup_hash_sha256": "1c8948de358a07cb58ec7b490fbe03e8aa24935f1813e127be5480e3ebfb75e8",
+          "pulled_hash_sha256": null,
+          "size_bytes": 107998857,
+          "type": "apk",
+          "hash_match": null
+        }
+      ],
+      "all_hashes_verified": false
+    },
+    {
+      "package_name": "com.linkedin.android",
+      "app_name": "LinkedIn",
+      "version_code": 210400,
+      "is_aab": true,
+      "backup_timestamp_ms": "1777064906598",
+      "artifacts": [
+        {
+          "filename": "split_config.arm64_v8a.apk",
+          "backup_hash_sha256": "2a21d8bc3e827c3fc095b9ce552f805860284141086156baa66333a155853d75",
+          "pulled_hash_sha256": "a6b9f84e3f08fcb7e273283a5747c6b47baa9cd7f0a01c21fcab39a7fd9a8a94",
+          "size_bytes": 3003617,
+          "type": "apks",
+          "hash_match": false
+        },
+        {
+          "filename": "split_config.en.apk",
+          "backup_hash_sha256": "e8f1f0215446fa7af90139ff9c17e3c3df04886d9f03dfd870ac040da0c98e0f",
+          "pulled_hash_sha256": "1befa9ab557e6bb51857fc984f2553c555e639ad3d14cbd8f5e8fe557a803594",
+          "size_bytes": 25192,
+          "type": "apks",
+          "hash_match": false
+        },
+        {
+          "filename": "split_config.xxhdpi.apk",
+          "backup_hash_sha256": "18a89cec067000ad59cf6c1942eed2d313390f3eae68c4495c880027fb5725c9",
+          "pulled_hash_sha256": null,
+          "size_bytes": 7361199,
+          "type": "apks",
+          "hash_match": null
+        },
+        {
+          "filename": "base.apk",
+          "backup_hash_sha256": "1f4cec54293d4f42937538819373c52a6808541051552d4b958cfafa7cd3ff34",
+          "pulled_hash_sha256": "fa34440962f064964a42dc3d6e0784ecc545704280a43dcac1ba9514a6e00c7c",
+          "size_bytes": 92317994,
+          "type": "apk",
+          "hash_match": false
+        }
+      ],
+      "all_hashes_verified": false
+    },
+    {
+      "package_name": "com.media720.games2020.two.player.offline.games",
+      "app_name": "2 Player Games",
+      "version_code": 11202,
+      "is_aab": true,
+      "backup_timestamp_ms": "1770911506811",
+      "artifacts": [
+        {
+          "filename": "split_config.armeabi_v7a.apk",
+          "backup_hash_sha256": "40a85e0b9b7a63c443d8466a578627fbf93b1fcc503d2d9fc70a27bd3f7d22ff",
+          "pulled_hash_sha256": null,
+          "size_bytes": 561781,
+          "type": "apks",
+          "hash_match": null
+        },
+        {
+          "filename": "split_config.en.apk",
+          "backup_hash_sha256": "e973c7e5e80c98f3f2f26eea0b033443c4e055ce38604f2e6c3c648c409f9939",
+          "pulled_hash_sha256": null,
+          "size_bytes": 90521,
+          "type": "apks",
+          "hash_match": null
+        },
+        {
+          "filename": "split_config.xxhdpi.apk",
+          "backup_hash_sha256": "3a8a1da45736eaefbbe77831aa5c25a1951bd1fd4e6025f35452c717c4532c0a",
+          "pulled_hash_sha256": null,
+          "size_bytes": 975719,
+          "type": "apks",
+          "hash_match": null
+        },
+        {
+          "filename": "base.apk",
+          "backup_hash_sha256": "a3c814e8162987792c2e62dc7f4843ec9004e71a2ae84ad392bafccaf6a678a3",
+          "pulled_hash_sha256": null,
+          "size_bytes": 110105789,
+          "type": "apk",
+          "hash_match": null
+        }
+      ],
+      "all_hashes_verified": false
+    },
+    {
+      "package_name": "com.microsoft.office.outlook",
+      "app_name": "Outlook",
+      "version_code": 32603014,
+      "is_aab": false,
+      "backup_timestamp_ms": "1769908907567",
+      "artifacts": [
+        {
+          "filename": "base.apk",
+          "backup_hash_sha256": "941bd56c86a7f5696600fb1f5e72f6a6a9db45a2fde46abeac404ed5c4b573cd",
+          "pulled_hash_sha256": "fea9b164766356e35b5be7ea7d26d393b88e367de4902ddf6ce8b072cf24f684",
+          "size_bytes": 118482297,
+          "type": "apk",
+          "hash_match": false
+        }
+      ],
+      "all_hashes_verified": false
+    },
+    {
+      "package_name": "com.microsoft.office.word",
+      "app_name": "Word",
+      "version_code": 2005201435,
+      "is_aab": true,
+      "backup_timestamp_ms": "1782765116126",
+      "artifacts": [
+        {
+          "filename": "split_config.en.apk",
+          "backup_hash_sha256": "61720ac56d60a6a18dbfa1f7a3d365de7be03bcbbd4b447b7be1fa71c561efe7",
+          "pulled_hash_sha256": null,
+          "size_bytes": 200914,
+          "type": "apks",
+          "hash_match": null
+        },
+        {
+          "filename": "split_config.xxhdpi.apk",
+          "backup_hash_sha256": "7ff355de665cc190f2efddc256d3f13c4939aeb28b1d47d867aaa7876e810f48",
+          "pulled_hash_sha256": null,
+          "size_bytes": 522153,
+          "type": "apks",
+          "hash_match": null
+        },
+        {
+          "filename": "base.apk",
+          "backup_hash_sha256": "5f7a8c8606b1c4357dd7e29d66b26edb99c98ad8478a50d034a6a22d3075238c",
+          "pulled_hash_sha256": null,
+          "size_bytes": 293573340,
+          "type": "apk",
+          "hash_match": null
+        }
+      ],
+      "all_hashes_verified": false
+    },
+    {
+      "package_name": "com.microsoft.teams",
+      "app_name": "Teams",
+      "version_code": 2026123685,
+      "is_aab": true,
+      "backup_timestamp_ms": "1783714751701",
+      "artifacts": [
+        {
+          "filename": "split_config.arm64_v8a.apk",
+          "backup_hash_sha256": "e9fa716facbcae2376ca03d011571bc61c67079179bbb60acc92d7f21b448b95",
+          "pulled_hash_sha256": null,
+          "size_bytes": 80300846,
+          "type": "apks",
+          "hash_match": null
+        },
+        {
+          "filename": "split_config.en.apk",
+          "backup_hash_sha256": "2fed5eacdd617e3323e4b46e874a47a8729a1ad614550190adc1dd879bc50a9d",
+          "pulled_hash_sha256": null,
+          "size_bytes": 1728722,
+          "type": "apks",
+          "hash_match": null
+        },
+        {
+          "filename": "split_config.xxhdpi.apk",
+          "backup_hash_sha256": "a2471958ef7971100f05258260fedc2ebaab1ddd65f46db80fb33e13566321a6",
+          "pulled_hash_sha256": null,
+          "size_bytes": 549811,
+          "type": "apks",
+          "hash_match": null
+        },
+        {
+          "filename": "base.apk",
+          "backup_hash_sha256": "1b0e5bc771e391524b7da8ed182df558f635b13384b24722fc5fccd4f08d9179",
+          "pulled_hash_sha256": null,
+          "size_bytes": 134234135,
+          "type": "apk",
+          "hash_match": null
+        }
+      ],
+      "all_hashes_verified": false
+    },
+    {
+      "package_name": "com.mrd.food",
+      "app_name": "Mr D",
+      "version_code": 2012032351,
+      "is_aab": false,
+      "backup_timestamp_ms": "1779022915927",
+      "artifacts": [
+        {
+          "filename": "base.apk",
+          "backup_hash_sha256": "ec942e0d3e85bfbb7cfe49b721c0c506450284fcc8e31ce1b2289a4b56a543ee",
+          "pulled_hash_sha256": null,
+          "size_bytes": 63090,
+          "type": "apk",
+          "hash_match": null
+        }
+      ],
+      "all_hashes_verified": false
+    },
+    {
+      "package_name": "com.mtnapp",
+      "app_name": "MTN App ZA",
+      "version_code": 87,
+      "is_aab": true,
+      "backup_timestamp_ms": "1780757885301",
+      "artifacts": [
+        {
+          "filename": "split_config.arm64_v8a.apk",
+          "backup_hash_sha256": "3cc973aa600c0d4836518aa281b395b0f4a8c4b0197cb14642d099be3c5fa454",
+          "pulled_hash_sha256": "3cc973aa600c0d4836518aa281b395b0f4a8c4b0197cb14642d099be3c5fa454",
+          "size_bytes": 27429118,
+          "type": "apks",
+          "hash_match": true
+        },
+        {
+          "filename": "split_config.en.apk",
+          "backup_hash_sha256": "708c6ba4e659609ff268982ca5437723e1d66978ccd4e037d988b1435374b163",
+          "pulled_hash_sha256": "708c6ba4e659609ff268982ca5437723e1d66978ccd4e037d988b1435374b163",
+          "size_bytes": 57753,
+          "type": "apks",
+          "hash_match": true
+        },
+        {
+          "filename": "split_config.xxhdpi.apk",
+          "backup_hash_sha256": "61b558aa85cf1f30d8898fcba3078901ee22f6e430fdada76d79525116906583",
+          "pulled_hash_sha256": "61b558aa85cf1f30d8898fcba3078901ee22f6e430fdada76d79525116906583",
+          "size_bytes": 178022,
+          "type": "apks",
+          "hash_match": true
+        },
+        {
+          "filename": "base.apk",
+          "backup_hash_sha256": "609c3f93f454b483cfa222f301a2407f68fec9f9adbf1e1cf7d1d2f364266e61",
+          "pulled_hash_sha256": "609c3f93f454b483cfa222f301a2407f68fec9f9adbf1e1cf7d1d2f364266e61",
+          "size_bytes": 56934488,
+          "type": "apk",
+          "hash_match": true
+        }
+      ],
+      "all_hashes_verified": true
+    },
+    {
+      "package_name": "com.netshort.abroad",
+      "app_name": "NetShort",
+      "version_code": 234,
+      "is_aab": true,
+      "backup_timestamp_ms": "1782868054658",
+      "artifacts": [
+        {
+          "filename": "split_config.arm64_v8a.apk",
+          "backup_hash_sha256": "6ce0ab9c42b86f213ce275f794a5a970f58a4f713810bbab1705a57fb0d9ab48",
+          "pulled_hash_sha256": null,
+          "size_bytes": 26819698,
+          "type": "apks",
+          "hash_match": null
+        },
+        {
+          "filename": "split_config.xxhdpi.apk",
+          "backup_hash_sha256": "acf117f09facd2bdcb40844bf5f220c89ca70039e3856a81bc443e80d920e99f",
+          "pulled_hash_sha256": null,
+          "size_bytes": 579297,
+          "type": "apks",
+          "hash_match": null
+        },
+        {
+          "filename": "base.apk",
+          "backup_hash_sha256": "45b0035be289ec094f1c875bc0d914369fe774725410c6e50cd3b456a35e16a0",
+          "pulled_hash_sha256": null,
+          "size_bytes": 131272714,
+          "type": "apk",
+          "hash_match": null
+        }
+      ],
+      "all_hashes_verified": false
+    },
+    {
+      "package_name": "com.newleaf.app.android.victor",
+      "app_name": "ReelShort",
+      "version_code": 3855,
+      "is_aab": true,
+      "backup_timestamp_ms": "1780214515561",
+      "artifacts": [
+        {
+          "filename": "split_config.xxhdpi.apk",
+          "backup_hash_sha256": "9561771272a35916b217aac82e1757945626d76ff7b27519fc474e64c60bac72",
+          "pulled_hash_sha256": null,
+          "size_bytes": 264827,
+          "type": "apks",
+          "hash_match": null
+        },
+        {
+          "filename": "base.apk",
+          "backup_hash_sha256": "ea1d6b25941c14b2026671de55f548b96ac583b0ab50631bee8b223d02aa0a4c",
+          "pulled_hash_sha256": null,
+          "size_bytes": 104736906,
+          "type": "apk",
+          "hash_match": null
+        }
+      ],
+      "all_hashes_verified": false
+    },
+    {
+      "package_name": "com.opera.max.oem",
+      "app_name": "Samsung Max",
+      "version_code": 440190101,
+      "is_aab": false,
+      "backup_timestamp_ms": "1656184181785",
+      "artifacts": [
+        {
+          "filename": "base.apk",
+          "backup_hash_sha256": "361567c00effaaba83dd362710b9e66e097ba5dc1157ad2467ba82787acc7443",
+          "pulled_hash_sha256": "361567c00effaaba83dd362710b9e66e097ba5dc1157ad2467ba82787acc7443",
+          "size_bytes": 21660528,
+          "type": "apk",
+          "hash_match": true
+        }
+      ],
+      "all_hashes_verified": true
+    },
+    {
+      "package_name": "com.rsupport.rs.activity.rsupport.aas2",
+      "app_name": "Smart Tutor",
+      "version_code": 452,
+      "is_aab": false,
+      "backup_timestamp_ms": "1783287613325",
+      "artifacts": [
+        {
+          "filename": "base.apk",
+          "backup_hash_sha256": "8309db9f4e25098d2e149eafe41a475c46a57d3418afa0703b3a495f2e7bf396",
+          "pulled_hash_sha256": "8309db9f4e25098d2e149eafe41a475c46a57d3418afa0703b3a495f2e7bf396",
+          "size_bytes": 16482321,
+          "type": "apk",
+          "hash_match": true
+        }
+      ],
+      "all_hashes_verified": true
+    },
+    {
+      "package_name": "com.samsung.SMT.lang_en_gb_l02",
+      "app_name": "SamsungTTS UK English Voice 1",
+      "version_code": 312500000,
+      "is_aab": false,
+      "backup_timestamp_ms": "1770199597717",
+      "artifacts": [
+        {
+          "filename": "base.apk",
+          "backup_hash_sha256": "3c5c127c4689f6a54885d3c27a2a1eb5ccab868e34ca3134ba33cf002518d23b",
+          "pulled_hash_sha256": null,
+          "size_bytes": 101024518,
+          "type": "apk",
+          "hash_match": null
+        }
+      ],
+      "all_hashes_verified": false
+    },
+    {
+      "package_name": "com.samsung.SMT.lang_en_us_f00",
+      "app_name": "SamsungTTS US English Default voice 1 - Classic",
+      "version_code": 312351900,
+      "is_aab": false,
+      "backup_timestamp_ms": "1770189481694",
+      "artifacts": [
+        {
+          "filename": "base.apk",
+          "backup_hash_sha256": "52c454bd5317a37ce3507e92399983a0dd4553338b41d1d34b7dc10fde0d4286",
+          "pulled_hash_sha256": "52c454bd5317a37ce3507e92399983a0dd4553338b41d1d34b7dc10fde0d4286",
+          "size_bytes": 20776315,
+          "type": "apk",
+          "hash_match": true
+        }
+      ],
+      "all_hashes_verified": true
+    },
+    {
+      "package_name": "com.samsung.SMT.lang_fr_fr_l01",
+      "app_name": "SamsungTTS Fran\u00e7ais Voix 1",
+      "version_code": 312502000,
+      "is_aab": false,
+      "backup_timestamp_ms": "1770199606501",
+      "artifacts": [
+        {
+          "filename": "base.apk",
+          "backup_hash_sha256": "45d1ad04fe3f35e4bad02542543e0dbc301bd14300db26327bbb7f66ca551bd5",
+          "pulled_hash_sha256": null,
+          "size_bytes": 110982830,
+          "type": "apk",
+          "hash_match": null
+        }
+      ],
+      "all_hashes_verified": false
+    },
+    {
+      "package_name": "com.samsung.android.app.cameraassistant",
+      "app_name": "Camera Assistant",
+      "version_code": 450020000,
+      "is_aab": false,
+      "backup_timestamp_ms": "1781264375979",
+      "artifacts": [
+        {
+          "filename": "base.apk",
+          "backup_hash_sha256": "24cbaa10ad87beb3d4ec19f2b15debb04a60bcde851477c8d8035783c5df7461",
+          "pulled_hash_sha256": null,
+          "size_bytes": 12270099,
+          "type": "apk",
+          "hash_match": null
+        }
+      ],
+      "all_hashes_verified": false
+    },
+    {
+      "package_name": "com.samsung.android.bixby.ondevice.engb",
+      "app_name": "Samsung on-device Resource English (United Kingdom)",
+      "version_code": 310512303,
+      "is_aab": false,
+      "backup_timestamp_ms": "1782561621688",
+      "artifacts": [
+        {
+          "filename": "base.apk",
+          "backup_hash_sha256": "fd083cce0b2ea5bd7ac563bda674e7b71f887808daa5744ec7a34a705aa46521",
+          "pulled_hash_sha256": "87ec07c94d53ced91723acf25abb4e1be596e937e06878293f07a5e18bba13a8",
+          "size_bytes": 353883995,
+          "type": "apk",
+          "hash_match": false
+        }
+      ],
+      "all_hashes_verified": false
+    },
+    {
+      "package_name": "com.samsung.android.bixby.ondevice.frfr",
+      "app_name": "Samsung on-device Resource Fran\u00e7ais (France)",
+      "version_code": 310506303,
+      "is_aab": false,
+      "backup_timestamp_ms": "1782561534352",
+      "artifacts": [
+        {
+          "filename": "base.apk",
+          "backup_hash_sha256": "b4768194fa9606b0b6c3557db7fdc83341f33217cb0d4082af4ac7c081aa1bbe",
+          "pulled_hash_sha256": null,
+          "size_bytes": 265331322,
+          "type": "apk",
+          "hash_match": null
+        }
+      ],
+      "all_hashes_verified": false
+    },
+    {
+      "package_name": "com.samsung.android.nmt.apps.t2t.languagepack.enfr",
+      "app_name": "En-Fr Language Pack",
+      "version_code": 220502000,
+      "is_aab": false,
+      "backup_timestamp_ms": "1782561800104",
+      "artifacts": [
+        {
+          "filename": "base.apk",
+          "backup_hash_sha256": "e8a03682f1ab38ac1e56d7866cd0452331ce48257909262228ee2da2f0ab87d6",
+          "pulled_hash_sha256": null,
+          "size_bytes": 129680346,
+          "type": "apk",
+          "hash_match": null
+        }
+      ],
+      "all_hashes_verified": false
+    },
+    {
+      "package_name": "com.samsung.android.service.stplatform",
+      "app_name": "SmartThings Companion",
+      "version_code": 230809000,
+      "is_aab": false,
+      "backup_timestamp_ms": "1768510358951",
+      "artifacts": [
+        {
+          "filename": "base.apk",
+          "backup_hash_sha256": "5d16dc8a443a564ab0167b0ecea75060cdd7dfc8415a11135435d0320c0fe9d2",
+          "pulled_hash_sha256": "5d16dc8a443a564ab0167b0ecea75060cdd7dfc8415a11135435d0320c0fe9d2",
+          "size_bytes": 18870946,
+          "type": "apk",
+          "hash_match": true
+        }
+      ],
+      "all_hashes_verified": true
+    },
+    {
+      "package_name": "com.samsung.ecomm.global.gbr",
+      "app_name": "Samsung Shop",
+      "version_code": 3665,
+      "is_aab": false,
+      "backup_timestamp_ms": "1782561586432",
+      "artifacts": [
+        {
+          "filename": "base.apk",
+          "backup_hash_sha256": "bd9a31f04e405a52e71bd62979d047af4ab7e20cc989b37362d08bff639cba0b",
+          "pulled_hash_sha256": "29bd7b92d609158f48637b5aa581c69d358d596f4b74f90d9c62442c312caff5",
+          "size_bytes": 172741988,
+          "type": "apk",
+          "hash_match": false
+        }
+      ],
+      "all_hashes_verified": false
+    },
+    {
+      "package_name": "com.samsung.sree",
+      "app_name": "Samsung Global Goals",
+      "version_code": 360102000,
+      "is_aab": false,
+      "backup_timestamp_ms": "1776109631018",
+      "artifacts": [
+        {
+          "filename": "base.apk",
+          "backup_hash_sha256": "b74ddb0ec6f9431e47b5d7ddbe9c118ecf11e6d061f016170d7ff44023dd8a09",
+          "pulled_hash_sha256": "97c68a488d1067ba97369a5180ffc983f0dea0fe7ef82d6ee700b9a762ad35f1",
+          "size_bytes": 116562571,
+          "type": "apk",
+          "hash_match": false
+        }
+      ],
+      "all_hashes_verified": false
+    },
+    {
+      "package_name": "com.sbg.mobile.phone",
+      "app_name": "Standard/Stanbic Bank",
+      "version_code": 3079002,
+      "is_aab": true,
+      "backup_timestamp_ms": "1780758335081",
+      "artifacts": [
+        {
+          "filename": "split_config.arm64_v8a.apk",
+          "backup_hash_sha256": "6057f673a4cb9cccf5d5f15a1e12801d98fb0545f215aead14f94d0dd096c36d",
+          "pulled_hash_sha256": "f0159b3fc47d38bdd4b2065182f45aabcef223a4a7166ca2134d98bc6fb2d717",
+          "size_bytes": 44074564,
+          "type": "apks",
+          "hash_match": false
+        },
+        {
+          "filename": "split_config.xxhdpi.apk",
+          "backup_hash_sha256": "be6992b1c0d25dadf5c22fed6ab52aad0f7bd504ae6bbb67309e9af36243847a",
+          "pulled_hash_sha256": null,
+          "size_bytes": 4773926,
+          "type": "apks",
+          "hash_match": null
+        },
+        {
+          "filename": "base.apk",
+          "backup_hash_sha256": "0ce39909d0b4981c5798ea73c5721c70246b9292f418788ab75d0a51a2e31e2a",
+          "pulled_hash_sha256": "ecd76728863aaaf3b14382d19d4dcd2f5c1b2eff8cc2c29faabf2754710c7913",
+          "size_bytes": 106202459,
+          "type": "apk",
+          "hash_match": false
+        }
+      ],
+      "all_hashes_verified": false
+    },
+    {
+      "package_name": "com.scaleup.chatai",
+      "app_name": "Nova",
+      "version_code": 40010,
+      "is_aab": true,
+      "backup_timestamp_ms": "1767245255397",
+      "artifacts": [
+        {
+          "filename": "split_config.armeabi_v7a.apk",
+          "backup_hash_sha256": "f93ea0b6df9a7d7164f8bff08b820138c2d619d88a9ed44d25420147b4372065",
+          "pulled_hash_sha256": null,
+          "size_bytes": 7246621,
+          "type": "apks",
+          "hash_match": null
+        },
+        {
+          "filename": "split_config.xxhdpi.apk",
+          "backup_hash_sha256": "b2134e23cb7fa8c5ee47590496041a9e9a895d9db0195203381fa68574996ffb",
+          "pulled_hash_sha256": null,
+          "size_bytes": 2143400,
+          "type": "apks",
+          "hash_match": null
+        },
+        {
+          "filename": "base.apk",
+          "backup_hash_sha256": "c623a17026fd1e2122f205ae9adaef2452448cb5f8fa72091a443b4678685b81",
+          "pulled_hash_sha256": null,
+          "size_bytes": 63020350,
+          "type": "apk",
+          "hash_match": null
+        }
+      ],
+      "all_hashes_verified": false
+    },
+    {
+      "package_name": "com.showmax.app",
+      "app_name": "Showmax",
+      "version_code": 9400002,
+      "is_aab": false,
+      "backup_timestamp_ms": "1770189481854",
+      "artifacts": [
+        {
+          "filename": "base.apk",
+          "backup_hash_sha256": "e4250c5347ffc32b18c907e11449aea1dee7bc72ad8547c60da275323ea48845",
+          "pulled_hash_sha256": null,
+          "size_bytes": 58619,
+          "type": "apk",
+          "hash_match": null
+        }
+      ],
+      "all_hashes_verified": false
+    },
+    {
+      "package_name": "com.sinyee.babybus.gameworld.design.home.friends.fun.life.story",
+      "app_name": "Game World",
+      "version_code": 8732101,
+      "is_aab": true,
+      "backup_timestamp_ms": "1777078578969",
+      "artifacts": [
+        {
+          "filename": "split_config.armeabi_v7a.apk",
+          "backup_hash_sha256": "b1dce16bdb2dc86b2fff41c2dd2709341211b6b51951fcd569117cf2a5634285",
+          "pulled_hash_sha256": null,
+          "size_bytes": 29136190,
+          "type": "apks",
+          "hash_match": null
+        },
+        {
+          "filename": "split_config.en.apk",
+          "backup_hash_sha256": "84cee914af65029087f8efdba8845f1f0fecdde96064eafb2c1f91c11ba02277",
+          "pulled_hash_sha256": null,
+          "size_bytes": 571243,
+          "type": "apks",
+          "hash_match": null
+        },
+        {
+          "filename": "split_config.other_lang.apk",
+          "backup_hash_sha256": "73a5c3b758ce337858ab7c7e3edf1b52e6b6e6588efe6e8c98eac48d6f184d2e",
+          "pulled_hash_sha256": null,
+          "size_bytes": 47360,
+          "type": "apks",
+          "hash_match": null
+        },
+        {
+          "filename": "split_config.xxhdpi.apk",
+          "backup_hash_sha256": "7358d81f4d6b3fa8096a49d5ceae2d93ca42e3869fe4ffecf8650af4a3101648",
+          "pulled_hash_sha256": null,
+          "size_bytes": 143773,
+          "type": "apks",
+          "hash_match": null
+        },
+        {
+          "filename": "split_gameworlddesignhomefriendsfunlifestory_runtime_asset.apk",
+          "backup_hash_sha256": "820f9e7f1176d7903c4405d46a63426223f7c5f65333ffdb57f94c5bb1d4561a",
+          "pulled_hash_sha256": null,
+          "size_bytes": 591059649,
+          "type": "apks",
+          "hash_match": null
+        },
+        {
+          "filename": "base.apk",
+          "backup_hash_sha256": "0e69fc34619b8ccf4e7625ab912b3de6723674ff91c3ee5a4e470133d6695028",
+          "pulled_hash_sha256": null,
+          "size_bytes": 72628447,
+          "type": "apk",
+          "hash_match": null
+        }
+      ],
+      "all_hashes_verified": false
+    },
+    {
+      "package_name": "com.sirma.mobile.bible.android",
+      "app_name": "Bible",
+      "version_code": 7092989,
+      "is_aab": true,
+      "backup_timestamp_ms": "1782737995261",
+      "artifacts": [
+        {
+          "filename": "split_config.arm64_v8a.apk",
+          "backup_hash_sha256": "a8e438cfed19acf02872ae2c4b850798d744b9ff50ebb31366a0a9d94b3125ce",
+          "pulled_hash_sha256": null,
+          "size_bytes": 32781167,
+          "type": "apks",
+          "hash_match": null
+        },
+        {
+          "filename": "split_config.en.apk",
+          "backup_hash_sha256": "0ec7c111887987da27e62ae7a36a4465d996e22f168bcf4e5bc72360be5e9462",
+          "pulled_hash_sha256": null,
+          "size_bytes": 2856195,
+          "type": "apks",
+          "hash_match": null
+        },
+        {
+          "filename": "split_config.xxhdpi.apk",
+          "backup_hash_sha256": "7ae93a4063737b1151f01c534fa25d35c55cab1f19402ba8e765342461f12923",
+          "pulled_hash_sha256": null,
+          "size_bytes": 130748,
+          "type": "apks",
+          "hash_match": null
+        },
+        {
+          "filename": "base.apk",
+          "backup_hash_sha256": "2ede53be2584ea39a36d60bfc76263d3f883e686260b0a36b173dd3ec6b7068e",
+          "pulled_hash_sha256": null,
+          "size_bytes": 18833406,
+          "type": "apk",
+          "hash_match": null
+        }
+      ],
+      "all_hashes_verified": false
+    },
+    {
+      "package_name": "com.sms.color.messenger.messages",
+      "app_name": "Color SMS",
+      "version_code": 43,
+      "is_aab": true,
+      "backup_timestamp_ms": "1776603772807",
+      "artifacts": [
+        {
+          "filename": "split_config.armeabi_v7a.apk",
+          "backup_hash_sha256": "dfc792428823f7ee8e628249690b71c4194f49a96d5544e483a795b191c8849c",
+          "pulled_hash_sha256": null,
+          "size_bytes": 1393526,
+          "type": "apks",
+          "hash_match": null
+        },
+        {
+          "filename": "split_config.en.apk",
+          "backup_hash_sha256": "ee917f494788983795442fe8b6234a37c10430655ab7d160115fdbe82b87e968",
+          "pulled_hash_sha256": null,
+          "size_bytes": 45266,
+          "type": "apks",
+          "hash_match": null
+        },
+        {
+          "filename": "split_config.xxhdpi.apk",
+          "backup_hash_sha256": "06204ae720c5b95f687bc436b1d432bb56da4862a9b1703cc4c0e739a7ef9116",
+          "pulled_hash_sha256": null,
+          "size_bytes": 148354,
+          "type": "apks",
+          "hash_match": null
+        },
+        {
+          "filename": "base.apk",
+          "backup_hash_sha256": "68bb71c253dd26142066970cf4ebfea00bba2812c5d837c10fb6e9e866dfa07f",
+          "pulled_hash_sha256": null,
+          "size_bytes": 33554954,
+          "type": "apk",
+          "hash_match": null
+        }
+      ],
+      "all_hashes_verified": false
+    },
+    {
+      "package_name": "com.snapchat.android",
+      "app_name": "Snapchat",
+      "version_code": 285022,
+      "is_aab": true,
+      "backup_timestamp_ms": "1777676296377",
+      "artifacts": [
+        {
+          "filename": "split_bloops_dynamic_sdk.apk",
+          "backup_hash_sha256": "691744663ac942e409240452e320f376d3969a1f98cbf098a90037fc9daea1ce",
+          "pulled_hash_sha256": null,
+          "size_bytes": 12721,
+          "type": "apks",
+          "hash_match": null
+        },
+        {
+          "filename": "split_bloops_dynamic_sdk.config.armeabi_v7a.apk",
+          "backup_hash_sha256": "5dded955e4683f29547a0e8136d6eac0be40514a6f0c31b71bfe8332ffb0f8fe",
+          "pulled_hash_sha256": null,
+          "size_bytes": 1454555,
+          "type": "apks",
+          "hash_match": null
+        },
+        {
+          "filename": "split_config.armeabi_v7a.apk",
+          "backup_hash_sha256": "a301a054792df2e2b8db2270230c2f4d7baaca8dc207da456fe253a7f7414c75",
+          "pulled_hash_sha256": null,
+          "size_bytes": 57689691,
+          "type": "apks",
+          "hash_match": null
+        },
+        {
+          "filename": "split_config.en.apk",
+          "backup_hash_sha256": "555f51bfc0b035fdb5dcbdee015fcb33288a28d936b62fa69390333768e71ea4",
+          "pulled_hash_sha256": null,
+          "size_bytes": 1728921,
+          "type": "apks",
+          "hash_match": null
+        },
+        {
+          "filename": "split_config.xxhdpi.apk",
+          "backup_hash_sha256": "86dd1ebcf56f0eae753c9979bf96b2102cf6ebc9e5ab3d05346a1bc5a24f48e2",
+          "pulled_hash_sha256": null,
+          "size_bytes": 2206376,
+          "type": "apks",
+          "hash_match": null
+        },
+        {
+          "filename": "base.apk",
+          "backup_hash_sha256": "ce771e4878e233ff57bb8a863490d9ea4973c0aa27a85934952073b689d7a393",
+          "pulled_hash_sha256": null,
+          "size_bytes": 102517459,
+          "type": "apk",
+          "hash_match": null
+        }
+      ],
+      "all_hashes_verified": false
+    },
+    {
+      "package_name": "com.spotify.music",
+      "app_name": "Spotify",
+      "version_code": 140785734,
+      "is_aab": true,
+      "backup_timestamp_ms": "1776905795081",
+      "artifacts": [
+        {
+          "filename": "split_config.armeabi_v7a.apk",
+          "backup_hash_sha256": "5af15af7d4c364ea36e22c5e8ebc1ecbcf64bfd06d7c91be76f7db3054072bc7",
+          "pulled_hash_sha256": null,
+          "size_bytes": 17319159,
+          "type": "apks",
+          "hash_match": null
+        },
+        {
+          "filename": "split_config.en.apk",
+          "backup_hash_sha256": "8633ff0f9fbdf33e847c3de5a02301fc7116eb3055155c964c2f19ce49fe3f91",
+          "pulled_hash_sha256": "fe05c8fb4afe2cb90dd391c1698e24319b362e87c5a0f0a3daa723e0447ec0ff",
+          "size_bytes": 815513,
+          "type": "apks",
+          "hash_match": false
+        },
+        {
+          "filename": "split_config.xxhdpi.apk",
+          "backup_hash_sha256": "bb0f3cdabf1125f498f46594a6a0a674f10f0449a0c61f587d8391826c9128e0",
+          "pulled_hash_sha256": null,
+          "size_bytes": 595827,
+          "type": "apks",
+          "hash_match": null
+        },
+        {
+          "filename": "base.apk",
+          "backup_hash_sha256": "fc2f3a8547815763522f17e26504dcaefc230a2a054cb632c54f0d9385991634",
+          "pulled_hash_sha256": "b6c3f3bb070c454dbe7fcfefd2c467eddc03dbdc6ab0cae5bcdc2ba892c79e41",
+          "size_bytes": 79426027,
+          "type": "apk",
+          "hash_match": false
+        }
+      ],
+      "all_hashes_verified": false
+    },
+    {
+      "package_name": "com.superbalist.android",
+      "app_name": "Superbalist",
+      "version_code": 363,
+      "is_aab": true,
+      "backup_timestamp_ms": "1782738605473",
+      "artifacts": [
+        {
+          "filename": "split_config.arm64_v8a.apk",
+          "backup_hash_sha256": "c666c12c373e5d904a702a381dec7d3c335abc4008fd6a426890aa2c607b5d4c",
+          "pulled_hash_sha256": null,
+          "size_bytes": 856743,
+          "type": "apks",
+          "hash_match": null
+        },
+        {
+          "filename": "split_config.xxhdpi.apk",
+          "backup_hash_sha256": "7713b47dd1294f12c8348e2c74f03f529fed1bfe940d0d46e089d373b076069c",
+          "pulled_hash_sha256": null,
+          "size_bytes": 254285,
+          "type": "apks",
+          "hash_match": null
+        },
+        {
+          "filename": "base.apk",
+          "backup_hash_sha256": "710730db816235bade8b9b2fc7559bd7158dab5febb9f842723da41077af8146",
+          "pulled_hash_sha256": null,
+          "size_bytes": 17439398,
+          "type": "apk",
+          "hash_match": null
+        }
+      ],
+      "all_hashes_verified": false
+    },
+    {
+      "package_name": "com.tocaboca.tocalifeworld",
+      "app_name": "Toca World",
+      "version_code": 102566,
+      "is_aab": true,
+      "backup_timestamp_ms": "1777080112241",
+      "artifacts": [
+        {
+          "filename": "split_UnityDataAssetPack.apk",
+          "backup_hash_sha256": "8e851d4a03a3fc7f22a3fe102101c9e4414b35e40123e1f4e75de16a484bf691",
+          "pulled_hash_sha256": null,
+          "size_bytes": 787500740,
+          "type": "apks",
+          "hash_match": null
+        },
+        {
+          "filename": "split_config.armeabi_v7a.apk",
+          "backup_hash_sha256": "f0f07254a0e5ff9da0fd68326fdd5bab0afcd72f5987b812fd5d6fdcda17779e",
+          "pulled_hash_sha256": null,
+          "size_bytes": 32584566,
+          "type": "apks",
+          "hash_match": null
+        },
+        {
+          "filename": "base.apk",
+          "backup_hash_sha256": "be231234116bf485071a3cd84dfc4f4f30c7f8c57274f7b1792766fd0c90051b",
+          "pulled_hash_sha256": null,
+          "size_bytes": 42345448,
+          "type": "apk",
+          "hash_match": null
+        }
+      ],
+      "all_hashes_verified": false
+    },
+    {
+      "package_name": "com.totalbattle",
+      "app_name": "Total Battle",
+      "version_code": 345020075,
+      "is_aab": true,
+      "backup_timestamp_ms": "1783119361257",
+      "artifacts": [
+        {
+          "filename": "split_config.arm64_v8a.apk",
+          "backup_hash_sha256": "ea93c17509860aecdb09ec243c56da19a654da339a76d5ef43ac099313d4fb56",
+          "pulled_hash_sha256": null,
+          "size_bytes": 161649548,
+          "type": "apks",
+          "hash_match": null
+        },
+        {
+          "filename": "split_config.en.apk",
+          "backup_hash_sha256": "df2c946706f3441f05ebe82ef07c02dba3abfbfd37628ab49c7da29bc08d17d5",
+          "pulled_hash_sha256": null,
+          "size_bytes": 82329,
+          "type": "apks",
+          "hash_match": null
+        },
+        {
+          "filename": "split_config.xxhdpi.apk",
+          "backup_hash_sha256": "634d99883f4f8302af7a3cb28d7c064227db91466bf83fed7d84195d276b52d2",
+          "pulled_hash_sha256": null,
+          "size_bytes": 176707,
+          "type": "apks",
+          "hash_match": null
+        },
+        {
+          "filename": "base.apk",
+          "backup_hash_sha256": "e1c1252c729632a075b08ed6bf3301f31851115a4e35574f008b9ad9fce68122",
+          "pulled_hash_sha256": null,
+          "size_bytes": 83541723,
+          "type": "apk",
+          "hash_match": null
+        }
+      ],
+      "all_hashes_verified": false
+    },
+    {
+      "package_name": "com.transcribe.audio.to.text",
+      "app_name": "1Transcribe",
+      "version_code": 253,
+      "is_aab": true,
+      "backup_timestamp_ms": "1780392178217",
+      "artifacts": [
+        {
+          "filename": "split_config.arm64_v8a.apk",
+          "backup_hash_sha256": "08ab95200dbee7a4b1543094935996c64ca30c169de357e0dc32fedb0faad653",
+          "pulled_hash_sha256": null,
+          "size_bytes": 41399,
+          "type": "apks",
+          "hash_match": null
+        },
+        {
+          "filename": "split_config.en.apk",
+          "backup_hash_sha256": "bfef78857652c5d4215861eabfa86fc3a3e2e5063371dce29adccb8c6ce2f2cf",
+          "pulled_hash_sha256": null,
+          "size_bytes": 49561,
+          "type": "apks",
+          "hash_match": null
+        },
+        {
+          "filename": "split_config.xxhdpi.apk",
+          "backup_hash_sha256": "5c05bcec452007190dc98246bb6f32a151b426885440b6ff1c2b63a657306801",
+          "pulled_hash_sha256": null,
+          "size_bytes": 386585,
+          "type": "apks",
+          "hash_match": null
+        },
+        {
+          "filename": "base.apk",
+          "backup_hash_sha256": "0164f9fb3036f87c981ad1a3c65c5f4eb156f970c14e199319a6778838b2bebe",
+          "pulled_hash_sha256": null,
+          "size_bytes": 12962977,
+          "type": "apk",
+          "hash_match": null
+        }
+      ],
+      "all_hashes_verified": false
+    },
+    {
+      "package_name": "com.truecaller",
+      "app_name": "Truecaller",
+      "version_code": 2604006,
+      "is_aab": true,
+      "backup_timestamp_ms": "1770248500977",
+      "artifacts": [
+        {
+          "filename": "split_config.armeabi_v7a.apk",
+          "backup_hash_sha256": "24897b93a4418dcbc3ecba75e106aa04d5f28fd7af78eb396a81bc95136bf269",
+          "pulled_hash_sha256": null,
+          "size_bytes": 16794792,
+          "type": "apks",
+          "hash_match": null
+        },
+        {
+          "filename": "split_config.xxhdpi.apk",
+          "backup_hash_sha256": "a407f474d64e221ff857ddc826e675aab9fd6e9f902e9a82d25953d25bbd959e",
+          "pulled_hash_sha256": null,
+          "size_bytes": 4731684,
+          "type": "apks",
+          "hash_match": null
+        },
+        {
+          "filename": "split_insights_category_model.apk",
+          "backup_hash_sha256": "39b142a530dde9ccb9019e05a94d4b1751fe9fc1521ee5e66ffc98a11e3e8936",
+          "pulled_hash_sha256": null,
+          "size_bytes": 868848,
+          "type": "apks",
+          "hash_match": null
+        },
+        {
+          "filename": "split_insights_category_model.config.armeabi_v7a.apk",
+          "backup_hash_sha256": "e528229fb844caad9b1b8523d77af4f760d0d7f35f769e5b1690da7d2cdc30b4",
+          "pulled_hash_sha256": null,
+          "size_bytes": 2396595,
+          "type": "apks",
+          "hash_match": null
+        },
+        {
+          "filename": "base.apk",
+          "backup_hash_sha256": "62449c41dddff7224734c33f9a8f0672ca175990e4a01133dee3f281a16ba13f",
+          "pulled_hash_sha256": "41ba6b5b20b3aa4eb8638e388b492f01f6e9db6cb50799d354e9bd883c13fef8",
+          "size_bytes": 139634777,
+          "type": "apk",
+          "hash_match": false
+        }
+      ],
+      "all_hashes_verified": false
+    },
+    {
+      "package_name": "com.tunecho.music",
+      "app_name": "Tunecho Music-Play Offline",
+      "version_code": 43,
+      "is_aab": true,
+      "backup_timestamp_ms": "1746384709599",
+      "artifacts": [
+        {
+          "filename": "split_config.armeabi_v7a.apk",
+          "backup_hash_sha256": "9c9d05b2fe50bef91f85ed7cbe2de3528655337de616f34a51e5ef0e3fc726ec",
+          "pulled_hash_sha256": "9c9d05b2fe50bef91f85ed7cbe2de3528655337de616f34a51e5ef0e3fc726ec",
+          "size_bytes": 1614967,
+          "type": "apks",
+          "hash_match": true
+        },
+        {
+          "filename": "split_config.en.apk",
+          "backup_hash_sha256": "399618c0f61e17d714dac203131fd47c6bc7833065a7679ac2267108f6e857f9",
+          "pulled_hash_sha256": "399618c0f61e17d714dac203131fd47c6bc7833065a7679ac2267108f6e857f9",
+          "size_bytes": 74137,
+          "type": "apks",
+          "hash_match": true
+        },
+        {
+          "filename": "split_config.xxhdpi.apk",
+          "backup_hash_sha256": "ec65b2c1efc5e019ffc9907afa7d054ef9cb47f7d350f853836df540ea0acaa7",
+          "pulled_hash_sha256": "ec65b2c1efc5e019ffc9907afa7d054ef9cb47f7d350f853836df540ea0acaa7",
+          "size_bytes": 207588,
+          "type": "apks",
+          "hash_match": true
+        },
+        {
+          "filename": "base.apk",
+          "backup_hash_sha256": "a23f511a1b7a521537ddd1be4be100a1936c2ff50f53f51f17e0460600635267",
+          "pulled_hash_sha256": "a23f511a1b7a521537ddd1be4be100a1936c2ff50f53f51f17e0460600635267",
+          "size_bytes": 43654770,
+          "type": "apk",
+          "hash_match": true
+        }
+      ],
+      "all_hashes_verified": true
+    },
+    {
+      "package_name": "com.ubercab",
+      "app_name": "Uber",
+      "version_code": 294014,
+      "is_aab": true,
+      "backup_timestamp_ms": "1783475922773",
+      "artifacts": [
+        {
+          "filename": "split_BarcodeScanner.apk",
+          "backup_hash_sha256": "e0670124b5e867b3a643ccc5bc0bd65cc704491e242e8131f70d10ed51dd00c3",
+          "pulled_hash_sha256": "622cf89b9040b6075967b85fac398239a2af0f6b4bae45d5b5a2c55f2c79535a",
+          "size_bytes": 1295392,
+          "type": "apks",
+          "hash_match": false
+        },
+        {
+          "filename": "split_BarcodeScanner.config.arm64_v8a.apk",
+          "backup_hash_sha256": "b6610029d18cccc3ab0f85606219b957729c94935bce923a6e7e6180e05c6f0b",
+          "pulled_hash_sha256": null,
+          "size_bytes": 4977067,
+          "type": "apks",
+          "hash_match": null
+        },
+        {
+          "filename": "split_EatsDFMAPI.apk",
+          "backup_hash_sha256": "13165fa498dda4e52ccbb0e5c7ea9cc61cb36731ecfa402907b9bbbbfa06be70",
+          "pulled_hash_sha256": null,
+          "size_bytes": 12438,
+          "type": "apks",
+          "hash_match": null
+        },
+        {
+          "filename": "split_EatsDFMViewAPI.apk",
+          "backup_hash_sha256": "b190cdd873dfc6bce5c5031ca5e90488adea063396b81b2811ee8964fe867dd6",
+          "pulled_hash_sha256": null,
+          "size_bytes": 12438,
+          "type": "apks",
+          "hash_match": null
+        },
+        {
+          "filename": "split_GooglePaySdk.apk",
+          "backup_hash_sha256": "654cf7915b06c2d60f10e120c0167df63220dec490d779322996b998612d965a",
+          "pulled_hash_sha256": "3fd3120bab7ce58da93d411211a91c5e4882607e6b63193ef64bbfbf3d392f51",
+          "size_bytes": 94571,
+          "type": "apks",
+          "hash_match": false
+        },
+        {
+          "filename": "split_VoipTwilio.apk",
+          "backup_hash_sha256": "bb4a9d6be9a01997b7df19b9f4bb7b23552cd122b63cc916afc529873a56994b",
+          "pulled_hash_sha256": "cb25820b981c57d72463182d656846b9020e695a025f89b2665e94a5d3a7cd64",
+          "size_bytes": 331983,
+          "type": "apks",
+          "hash_match": false
+        },
+        {
+          "filename": "split_VoipTwilio.config.arm64_v8a.apk",
+          "backup_hash_sha256": "adac0720e255ab83e258fdc34336c30cd5281e9315cc3fc61e106ec26fb692f6",
+          "pulled_hash_sha256": null,
+          "size_bytes": 10883510,
+          "type": "apks",
+          "hash_match": null
+        },
+        {
+          "filename": "split_config.arm64_v8a.apk",
+          "backup_hash_sha256": "26b526e2fe534b0fe8e8b24ad24715c21235f90cf94a654b0159b32b1be33073",
+          "pulled_hash_sha256": null,
+          "size_bytes": 25601538,
+          "type": "apks",
+          "hash_match": null
+        },
+        {
+          "filename": "split_config.en.apk",
+          "backup_hash_sha256": "55d22a9ca08c08509b6384dec919e6954b718fd5e25294c6d8631e7de5e0f849",
+          "pulled_hash_sha256": "4d479d72a5eeca126991e62a1cbd36886b6e37ae7bfeb5062edc76392efab26b",
+          "size_bytes": 1941913,
+          "type": "apks",
+          "hash_match": false
+        },
+        {
+          "filename": "split_config.xxhdpi.apk",
+          "backup_hash_sha256": "cb519ae00dc13bc539a09551312939fa65c93b1a7321b63ac5623e59fb0ca965",
+          "pulled_hash_sha256": "dd7c3ca47907713ca29c4c62d7ed9d7eaa6ea0e0bf365923000b16813d50fbf2",
+          "size_bytes": 727181,
+          "type": "apks",
+          "hash_match": false
+        },
+        {
+          "filename": "base.apk",
+          "backup_hash_sha256": "4e66c956832827284df1cdb50482a5d402dd956febd9a05ec7ab467e0c8d6c15",
+          "pulled_hash_sha256": "5419a41fd6411c24f1c7af7e70e4771738f750777b1aa8b86a0f25344bc0822c",
+          "size_bytes": 206571735,
+          "type": "apk",
+          "hash_match": false
+        }
+      ],
+      "all_hashes_verified": false
+    },
+    {
+      "package_name": "com.ubercab.eats",
+      "app_name": "Uber Eats",
+      "version_code": 112185364,
+      "is_aab": true,
+      "backup_timestamp_ms": "1783550037231",
+      "artifacts": [
+        {
+          "filename": "split_GooglePaySdk.apk",
+          "backup_hash_sha256": "a61838d42b908d2f301c13786974f0a15a3ebae64649888d7e361775dae175cc",
+          "pulled_hash_sha256": null,
+          "size_bytes": 106917,
+          "type": "apks",
+          "hash_match": null
+        },
+        {
+          "filename": "split_config.arm64_v8a.apk",
+          "backup_hash_sha256": "8a3c477456c0c5295c1d3080d379e7db90f606cc4b8ec83a6065faf9d00b1918",
+          "pulled_hash_sha256": null,
+          "size_bytes": 25605634,
+          "type": "apks",
+          "hash_match": null
+        },
+        {
+          "filename": "split_config.en.apk",
+          "backup_hash_sha256": "44d93dedcd817fecece330e2609812ec3e0218bef089dc88cea79f37d5d02b93",
+          "pulled_hash_sha256": null,
+          "size_bytes": 1294745,
+          "type": "apks",
+          "hash_match": null
+        },
+        {
+          "filename": "split_config.xxhdpi.apk",
+          "backup_hash_sha256": "80096252d0fa0d00974aa23949eb4e71e8984a885a4df8e38cdb5ad1bf355400",
+          "pulled_hash_sha256": null,
+          "size_bytes": 652754,
+          "type": "apks",
+          "hash_match": null
+        },
+        {
+          "filename": "split_cubes.apk",
+          "backup_hash_sha256": "fa5968aee7a06ee8bb8add34654a8f7b0905f1d93dddbaf765bd5dda4e8b5ba6",
+          "pulled_hash_sha256": null,
+          "size_bytes": 168353,
+          "type": "apks",
+          "hash_match": null
+        },
+        {
+          "filename": "base.apk",
+          "backup_hash_sha256": "82c6687f5572a60d7aac53cdf6283b57dd3e450138eb2338be36f47c2d793d81",
+          "pulled_hash_sha256": null,
+          "size_bytes": 201953190,
+          "type": "apk",
+          "hash_match": null
+        }
+      ],
+      "all_hashes_verified": false
+    },
+    {
+      "package_name": "com.webafrica.app",
+      "app_name": "WEBAFRICA",
+      "version_code": 280,
+      "is_aab": true,
+      "backup_timestamp_ms": "1782746141962",
+      "artifacts": [
+        {
+          "filename": "split_config.arm64_v8a.apk",
+          "backup_hash_sha256": "d9f9eae9d70a57ab0c3c9539ecea39c84c658708331eb2553240d96699731599",
+          "pulled_hash_sha256": "f7cf9789ccafcc9227dd441f2fbccf30de92c30a39748bf7a4d2248535cd53dd",
+          "size_bytes": 25041296,
+          "type": "apks",
+          "hash_match": false
+        },
+        {
+          "filename": "split_config.en.apk",
+          "backup_hash_sha256": "2194090837cd2362d6d754c3d2127a3694139e527f55b6a7a54660c4b1872795",
+          "pulled_hash_sha256": "1672ce5a47ed4d7328843eb3be63c93dff639335082d1261ebe8329c747a9c53",
+          "size_bytes": 57753,
+          "type": "apks",
+          "hash_match": false
+        },
+        {
+          "filename": "split_config.xxhdpi.apk",
+          "backup_hash_sha256": "86b0efd58103d68322b7f970c35d8e3a8d68af729051712c19a6e65a4b7412c4",
+          "pulled_hash_sha256": "7fb5fcd2e17926053c86e4514e7ba43806578909da9b47f2ab435092ba9c65c8",
+          "size_bytes": 83842,
+          "type": "apks",
+          "hash_match": false
+        },
+        {
+          "filename": "base.apk",
+          "backup_hash_sha256": "ecf57132b36c96e9d6226e1f38a777f0cb32eb0782b4bd8d547b610a508860d0",
+          "pulled_hash_sha256": "84d06ce9af8649abb9edad8a92cd2c03f303209ee19ed2635c0a122aee7d940c",
+          "size_bytes": 51913419,
+          "type": "apk",
+          "hash_match": false
+        }
+      ],
+      "all_hashes_verified": false
+    },
+    {
+      "package_name": "com.whatsapp",
+      "app_name": "WhatsApp",
+      "version_code": 262107501,
+      "is_aab": true,
+      "backup_timestamp_ms": "1780660908146",
+      "artifacts": [
+        {
+          "filename": "split_config.armeabi_v7a.apk",
+          "backup_hash_sha256": "34dbe62e7491c48211d9aceffea3a910da919864f7428e9b4967851d86123585",
+          "pulled_hash_sha256": null,
+          "size_bytes": 15409733,
+          "type": "apks",
+          "hash_match": null
+        },
+        {
+          "filename": "split_config.xxhdpi.apk",
+          "backup_hash_sha256": "b86cb28315a25092fa5f7fa47b2ef118f9ea386109a765f338b2c97ab3fc0f08",
+          "pulled_hash_sha256": null,
+          "size_bytes": 2370615,
+          "type": "apks",
+          "hash_match": null
+        },
+        {
+          "filename": "split_i18n_af.apk",
+          "backup_hash_sha256": "b3420ee850e75ca86778daf51e52e1079457ec1e4a631984c7d94cab7e410381",
+          "pulled_hash_sha256": "6598e3832e344bf1c8ebe309f86b86463b9883b757ac1eb8045a322ff700b4f8",
+          "size_bytes": 258473,
+          "type": "apks",
+          "hash_match": false
+        },
+        {
+          "filename": "split_i18n_en.apk",
+          "backup_hash_sha256": "297d1daced8d39ee151fb32d85bcc926f3ff4d4fca253a9e63b33a59f3ad0269",
+          "pulled_hash_sha256": "6027123e1e29e7319057e3c78c805d86dffba046c3f10655ddca26ebc7330ed3",
+          "size_bytes": 20905,
+          "type": "apks",
+          "hash_match": false
+        },
+        {
+          "filename": "base.apk",
+          "backup_hash_sha256": "5fdf67e70e75f0a608aeb42f233147f468a661399a57d037a2d4a631e5bfe966",
+          "pulled_hash_sha256": "cb60293515dd40775f2b92f2e95b28528a23514bb6c4915e87e95bca30eab036",
+          "size_bytes": 115091943,
+          "type": "apk",
+          "hash_match": false
+        }
+      ],
+      "all_hashes_verified": false
+    },
+    {
+      "package_name": "com.zzkko",
+      "app_name": "SHEIN",
+      "version_code": 2652,
+      "is_aab": true,
+      "backup_timestamp_ms": "1777676222481",
+      "artifacts": [
+        {
+          "filename": "split_config.armeabi_v7a.apk",
+          "backup_hash_sha256": "a6753b84f204daf11e4f832aaa0b095866380aa00782372a466bface2c35184e",
+          "pulled_hash_sha256": null,
+          "size_bytes": 8910792,
+          "type": "apks",
+          "hash_match": null
+        },
+        {
+          "filename": "split_config.xxhdpi.apk",
+          "backup_hash_sha256": "f3d87b0a2330a9d1717ddee3af5b18d55af7d9b03f818f8126abda2c5b0e0f0e",
+          "pulled_hash_sha256": null,
+          "size_bytes": 252157,
+          "type": "apks",
+          "hash_match": null
+        },
+        {
+          "filename": "split_si_dynamic_common.apk",
+          "backup_hash_sha256": "c291bdf1d1a24e8458baf3da58259021aee047299a0a67f2df6aa32c48b9ca8c",
+          "pulled_hash_sha256": null,
+          "size_bytes": 279507,
+          "type": "apks",
+          "hash_match": null
+        },
+        {
+          "filename": "split_si_dynamic_common.config.armeabi_v7a.apk",
+          "backup_hash_sha256": "712dd739fe80e024728998d221a677fb43f458f02de1f367e6434f3238d481a0",
+          "pulled_hash_sha256": null,
+          "size_bytes": 1282776,
+          "type": "apks",
+          "hash_match": null
+        },
+        {
+          "filename": "base.apk",
+          "backup_hash_sha256": "2f2795404cc5ded3a15669f7c4f30c39137a7fc595c25f1b2b8de44d8684c32d",
+          "pulled_hash_sha256": null,
+          "size_bytes": 86169622,
+          "type": "apk",
+          "hash_match": null
+        }
+      ],
+      "all_hashes_verified": false
+    },
+    {
+      "package_name": "ee.mtakso.client",
+      "app_name": "Bolt",
+      "version_code": 4230,
+      "is_aab": true,
+      "backup_timestamp_ms": "1782863745507",
+      "artifacts": [
+        {
+          "filename": "split_config.arm64_v8a.apk",
+          "backup_hash_sha256": "93777363941b1175dac6bd3a43231c82f95b587f3dc2ca0bf98d3e6d85d39220",
+          "pulled_hash_sha256": "25a7e1acefa4059dc613e4921aad00cc8edbe92d0322e0f31f8caa01ced9af3d",
+          "size_bytes": 13518147,
+          "type": "apks",
+          "hash_match": false
+        },
+        {
+          "filename": "split_config.en.apk",
+          "backup_hash_sha256": "9247259bd979bc76b00133d2933a4e09b3bdd13cb179dd195a9b3c3d559aeefd",
+          "pulled_hash_sha256": "575ef57fc1d58d3af83636907d9b7070a0600d7e96c44d951d3988cd03ff953a",
+          "size_bytes": 266649,
+          "type": "apks",
+          "hash_match": false
+        },
+        {
+          "filename": "split_config.xxhdpi.apk",
+          "backup_hash_sha256": "48f6a85f62d948dd741ea65abe2f932308a0fb832d921d6c345b85cf0f505d90",
+          "pulled_hash_sha256": "22dfc56caed51d2c63cd1f6ba81f277a53593690d09b53184e2e4485a876950c",
+          "size_bytes": 3415285,
+          "type": "apks",
+          "hash_match": false
+        },
+        {
+          "filename": "split_voip_ui.apk",
+          "backup_hash_sha256": "7fcd56f8f4be21a71b1d2ee355012b68a49666e3e962546ca84e6b906a09b2b0",
+          "pulled_hash_sha256": "738c95358f481df8f609e49c3ec18bd9b01c9e39a98c305aa01754c3ff96d96b",
+          "size_bytes": 1716431,
+          "type": "apks",
+          "hash_match": false
+        },
+        {
+          "filename": "split_voip_ui.config.arm64_v8a.apk",
+          "backup_hash_sha256": "dbf65e5ddb8d7be459ae803e1bba7903af829eca3d2234bf98ff7d11fb44abee",
+          "pulled_hash_sha256": "55176256eb15fdcb9720ba0bf173940fb7cddc5071805bc0b3f07a3b03dfd41b",
+          "size_bytes": 11989424,
+          "type": "apks",
+          "hash_match": false
+        },
+        {
+          "filename": "base.apk",
+          "backup_hash_sha256": "77bd776309effdfd758484559e6ec06f74e3e793bcce3c8ded47868020f6f6ea",
+          "pulled_hash_sha256": "96c1d7b79e300a6887d4b4a985b75b4e2080312aca0f161f9d85117d6d31e561",
+          "size_bytes": 125269903,
+          "type": "apk",
+          "hash_match": false
+        }
+      ],
+      "all_hashes_verified": false
+    },
+    {
+      "package_name": "fi.android.takealot",
+      "app_name": "takealot",
+      "version_code": 800746,
+      "is_aab": true,
+      "backup_timestamp_ms": "1783287710125",
+      "artifacts": [
+        {
+          "filename": "split_config.arm64_v8a.apk",
+          "backup_hash_sha256": "57df969ee02e06be182e523fa484ede4bfdf574369e6173177cf06afbcee91ee",
+          "pulled_hash_sha256": "d8b3dfa5833a5f49c76ec034ab20957f75436754085d805b86c4b9763775437f",
+          "size_bytes": 733682,
+          "type": "apks",
+          "hash_match": false
+        },
+        {
+          "filename": "split_config.en.apk",
+          "backup_hash_sha256": "7666fa04c212d284c59f4819b5de85fbd8cf2d80b534c9b54a3a7fde5a1b4dd5",
+          "pulled_hash_sha256": "523ffd20b3b324fede5c8a5501178732f08b46c0df4e49f919d4f867fb3a8887",
+          "size_bytes": 102610,
+          "type": "apks",
+          "hash_match": false
+        },
+        {
+          "filename": "split_config.xxhdpi.apk",
+          "backup_hash_sha256": "e50959bbdcf11aab90dce1c7e88f12bd7f4c04c843b4638183f58dbd91990a8f",
+          "pulled_hash_sha256": null,
+          "size_bytes": 132644,
+          "type": "apks",
+          "hash_match": null
+        },
+        {
+          "filename": "base.apk",
+          "backup_hash_sha256": "bb351e7787cab7ca8df0f250371c98444a5be14c0603208cdda7557aa1659ff3",
+          "pulled_hash_sha256": "fd74db6083dc24871e9942199f58c8d11d2ab8c9d1c9d96a85d1ace3fe0e072a",
+          "size_bytes": 48975714,
+          "type": "apk",
+          "hash_match": false
+        }
+      ],
+      "all_hashes_verified": false
+    },
+    {
+      "package_name": "io.flatcircle.runwaysaleandroid",
+      "app_name": "MyRunway",
+      "version_code": 253,
+      "is_aab": true,
+      "backup_timestamp_ms": "1782738737037",
+      "artifacts": [
+        {
+          "filename": "split_config.en.apk",
+          "backup_hash_sha256": "8e09601c9f791cbfabe054ac9d96b1bfb6b34669c72a567e0ef3887bae13557e",
+          "pulled_hash_sha256": null,
+          "size_bytes": 45465,
+          "type": "apks",
+          "hash_match": null
+        },
+        {
+          "filename": "split_config.xxhdpi.apk",
+          "backup_hash_sha256": "3b860d1fdb4773820b634c9ce5472b6a4de72e8174f60b510352daa51ae41275",
+          "pulled_hash_sha256": null,
+          "size_bytes": 179025,
+          "type": "apks",
+          "hash_match": null
+        },
+        {
+          "filename": "base.apk",
+          "backup_hash_sha256": "697952f861783e2a3693135ef8bcab34cd7d2c6ae36b7f8f9cf78201dc23cc1f",
+          "pulled_hash_sha256": null,
+          "size_bytes": 11315611,
+          "type": "apk",
+          "hash_match": null
+        }
+      ],
+      "all_hashes_verified": false
+    },
+    {
+      "package_name": "live.shorttv.apps",
+      "app_name": "ShortMax",
+      "version_code": 2968,
+      "is_aab": true,
+      "backup_timestamp_ms": "1783549756583",
+      "artifacts": [
+        {
+          "filename": "split_config.arm64_v8a.apk",
+          "backup_hash_sha256": "058af79f8b6d79a70f2980fe176e30bed342f675055859f0344c60a1dc48dfb9",
+          "pulled_hash_sha256": null,
+          "size_bytes": 27234129,
+          "type": "apks",
+          "hash_match": null
+        },
+        {
+          "filename": "split_config.xxhdpi.apk",
+          "backup_hash_sha256": "4a197b32f802ef3a04e22acbfde353df5c4678900855db5ee61efb9a988fcc12",
+          "pulled_hash_sha256": null,
+          "size_bytes": 232826,
+          "type": "apks",
+          "hash_match": null
+        },
+        {
+          "filename": "base.apk",
+          "backup_hash_sha256": "03afc8d3a137a30353a8d5a87d924b4dbb26b9d737215d2681902f6ae20c01b8",
+          "pulled_hash_sha256": null,
+          "size_bytes": 85330270,
+          "type": "apk",
+          "hash_match": null
+        }
+      ],
+      "all_hashes_verified": false
+    },
+    {
+      "package_name": "lockscreen",
+      "app_name": "lockscreen",
+      "version_code": 0,
+      "is_aab": false,
+      "backup_timestamp_ms": "1780888338665",
+      "artifacts": [],
+      "all_hashes_verified": false
+    },
+    {
+      "package_name": "me.bazaart.app",
+      "app_name": "Bazaart",
+      "version_code": 638,
+      "is_aab": true,
+      "backup_timestamp_ms": "1782664534327",
+      "artifacts": [
+        {
+          "filename": "split_config.arm64_v8a.apk",
+          "backup_hash_sha256": "3048be74677907fcb80d4e160513f98e2b6cba17eb789880a677723c88ad376f",
+          "pulled_hash_sha256": "086737df6cb2a16674b49ad8cf5a7de607f74b735c3535fc9bf9c8e2d4d365ec",
+          "size_bytes": 28648218,
+          "type": "apks",
+          "hash_match": false
+        },
+        {
+          "filename": "split_config.en.apk",
+          "backup_hash_sha256": "2b5a4580b571db04e858a377f4417adcd14b836265616128cbe671de7e3eab83",
+          "pulled_hash_sha256": "ee0d9e562cdc857d81fad3d4b002a482a10197321c75a2edd59b8c9b441f460f",
+          "size_bytes": 78034,
+          "type": "apks",
+          "hash_match": false
+        },
+        {
+          "filename": "split_config.xxhdpi.apk",
+          "backup_hash_sha256": "a9daafce45250f616dbf1df35db7572811ccfbcd61dc0feeeef160fc46a1e796",
+          "pulled_hash_sha256": "ddf58cfd2fe1aca384ebdd48bf07f59db70128d02267a67240acdc1d143c3f9c",
+          "size_bytes": 12902970,
+          "type": "apks",
+          "hash_match": false
+        },
+        {
+          "filename": "base.apk",
+          "backup_hash_sha256": "1b7cbe60926ddfaffdc76806df0b744fbae10e6b9e79c946324ad157a2da31c2",
+          "pulled_hash_sha256": "2577cebb527a7b2c7ae09fd52363f9edaab6129ae894aca4fb9ddd8ef972f89b",
+          "size_bytes": 44781151,
+          "type": "apk",
+          "hash_match": false
+        }
+      ],
+      "all_hashes_verified": false
+    },
+    {
+      "package_name": "org.chromium.webapk.a015efc14ee37adf2_v2",
+      "app_name": "Ackermans",
+      "version_code": 1,
+      "is_aab": false,
+      "backup_timestamp_ms": "1666808635047",
+      "artifacts": [
+        {
+          "filename": "base.apk",
+          "backup_hash_sha256": "35ead9be5e86ebaa8a7930d560e50234e2e5321fb099cea7b05d09a0a1774712",
+          "pulled_hash_sha256": null,
+          "size_bytes": 162692,
+          "type": "apk",
+          "hash_match": null
+        }
+      ],
+      "all_hashes_verified": false
+    },
+    {
+      "package_name": "org.chromium.webapk.a4b4b60e66bb41079_v2",
+      "app_name": "Superb Hyper",
+      "version_code": 1,
+      "is_aab": false,
+      "backup_timestamp_ms": "1770189481210",
+      "artifacts": [
+        {
+          "filename": "base.apk",
+          "backup_hash_sha256": "18386e60e999897d133c4c2ef4b2fbe6f968e408427f83541dd2ff33af1030da",
+          "pulled_hash_sha256": null,
+          "size_bytes": 154226,
+          "type": "apk",
+          "hash_match": null
+        }
+      ],
+      "all_hashes_verified": false
+    },
+    {
+      "package_name": "org.chromium.webapk.a5b263669486f1ecd_v2",
+      "app_name": "HTC",
+      "version_code": 1,
+      "is_aab": false,
+      "backup_timestamp_ms": "1770189479710",
+      "artifacts": [
+        {
+          "filename": "base.apk",
+          "backup_hash_sha256": "59914a0beb5da541648a605c94eb95ed8c71f0c1b937aeb025e430ceab2dfd8a",
+          "pulled_hash_sha256": null,
+          "size_bytes": 141853,
+          "type": "apk",
+          "hash_match": null
+        }
+      ],
+      "all_hashes_verified": false
+    },
+    {
+      "package_name": "org.chromium.webapk.a97281008742e8e60_v2",
+      "app_name": "Quizlet",
+      "version_code": 2,
+      "is_aab": false,
+      "backup_timestamp_ms": "1738527929217",
+      "artifacts": [
+        {
+          "filename": "base.apk",
+          "backup_hash_sha256": "37f8d419704dc0e5b9b9ddaf2b381e40bff7023c10556dfd930d0f8b87d46e97",
+          "pulled_hash_sha256": null,
+          "size_bytes": 146027,
+          "type": "apk",
+          "hash_match": null
+        }
+      ],
+      "all_hashes_verified": false
+    },
+    {
+      "package_name": "org.chromium.webapk.a9d6776a3063d6c49_v2",
+      "app_name": "Mr Price",
+      "version_code": 1,
+      "is_aab": false,
+      "backup_timestamp_ms": "1666292608205",
+      "artifacts": [
+        {
+          "filename": "base.apk",
+          "backup_hash_sha256": "a014c7055b08a25801203bb4e760f89b71589b07e03af5c005823efbe3ea26c0",
+          "pulled_hash_sha256": null,
+          "size_bytes": 166712,
+          "type": "apk",
+          "hash_match": null
+        }
+      ],
+      "all_hashes_verified": false
+    },
+    {
+      "package_name": "org.telegram.messenger",
+      "app_name": "Telegram",
+      "version_code": 67502,
+      "is_aab": true,
+      "backup_timestamp_ms": "1778792028985",
+      "artifacts": [
+        {
+          "filename": "split_config.arm64_v8a.apk",
+          "backup_hash_sha256": "d605b2048e44d2b7001fdb32dbf6ab70c8c61918faf8fcf9feca57aac0e30e5e",
+          "pulled_hash_sha256": "97ab9176dd1f71b7cf5894c84ab20cd472579901eb4e7f11bab96103f8355b67",
+          "size_bytes": 25797120,
+          "type": "apks",
+          "hash_match": false
+        },
+        {
+          "filename": "split_config.en.apk",
+          "backup_hash_sha256": "6532896ba1e45be17077381281f314ee782199bc93d0e07fd73bb412c50b3fdc",
+          "pulled_hash_sha256": "a19c3714235cd78d7ba9d915540b0dd8d93fd96aabfe99dc3f89ec73a60ff2da",
+          "size_bytes": 364953,
+          "type": "apks",
+          "hash_match": false
+        },
+        {
+          "filename": "split_config.xxhdpi.apk",
+          "backup_hash_sha256": "2161089b5e0ba068d32ad0e2c3a3d1b050168b5bff88a418f671d83dd93e7fed",
+          "pulled_hash_sha256": null,
+          "size_bytes": 1666039,
+          "type": "apks",
+          "hash_match": null
+        },
+        {
+          "filename": "base.apk",
+          "backup_hash_sha256": "844521228b477fbc2477fabb009b7d86ad0043c7d1d1f6ca8e33e3074275c19b",
+          "pulled_hash_sha256": "253cf4a742d4546ac455e9857ee51acee3316935d84cd42aeee023391a05f5a2",
+          "size_bytes": 50741479,
+          "type": "apk",
+          "hash_match": false
+        }
+      ],
+      "all_hashes_verified": false
+    },
+    {
+      "package_name": "pdf.tap.scanner",
+      "app_name": "TapScanner",
+      "version_code": 3093,
+      "is_aab": true,
+      "backup_timestamp_ms": "1768256183507",
+      "artifacts": [
+        {
+          "filename": "split_config.armeabi_v7a.apk",
+          "backup_hash_sha256": "16128082d464c4dce8481f3b6a3e14b2b02519ef60eb50612113832a2ec1110d",
+          "pulled_hash_sha256": null,
+          "size_bytes": 21595712,
+          "type": "apks",
+          "hash_match": null
+        },
+        {
+          "filename": "split_config.xxhdpi.apk",
+          "backup_hash_sha256": "56a912894ca7cacbbc100cf3b4ec11dd0e3c6157041715f1e380a63b8c442c44",
+          "pulled_hash_sha256": null,
+          "size_bytes": 110543,
+          "type": "apks",
+          "hash_match": null
+        },
+        {
+          "filename": "base.apk",
+          "backup_hash_sha256": "d3626c50a89f73df4b58f613a62e13542558a99d59b1bb505baf53dac93bdd65",
+          "pulled_hash_sha256": null,
+          "size_bytes": 43730867,
+          "type": "apk",
+          "hash_match": null
+        }
+      ],
+      "all_hashes_verified": false
+    },
+    {
+      "package_name": "sinet.startup.inDriver",
+      "app_name": "inDrive",
+      "version_code": 1914,
+      "is_aab": true,
+      "backup_timestamp_ms": "1783716055013",
+      "artifacts": [
+        {
+          "filename": "split_config.arm64_v8a.apk",
+          "backup_hash_sha256": "7a58eea52b71247eee942f07fc14360af4b2804bb626f0a93d15481667f39762",
+          "pulled_hash_sha256": "0379bb890d0f7721cbadffd40dc575fbdf09d6720521358d83adc279663cd3de",
+          "size_bytes": 24225435,
+          "type": "apks",
+          "hash_match": false
+        },
+        {
+          "filename": "split_config.xxhdpi.apk",
+          "backup_hash_sha256": "97c240bb9c2362c16ce6a2103550e6f620516f38cbca55baf7f40287a3a4cec1",
+          "pulled_hash_sha256": null,
+          "size_bytes": 7462167,
+          "type": "apks",
+          "hash_match": null
+        },
+        {
+          "filename": "base.apk",
+          "backup_hash_sha256": "ed844e0319bfe020499524c7fc87147f0d18f85ba0ca4f350eb592ad4626b73c",
+          "pulled_hash_sha256": "713d9dfc1bcfa095900d7e1827ff85065f3ba5f0c6b44b16ba115b0203cafef8",
+          "size_bytes": 130464503,
+          "type": "apk",
+          "hash_match": false
+        }
+      ],
+      "all_hashes_verified": false
+    },
+    {
+      "package_name": "us.zoom.videomeetings",
+      "app_name": "Zoom",
+      "version_code": 6700020,
+      "is_aab": true,
+      "backup_timestamp_ms": "1777090391438",
+      "artifacts": [
+        {
+          "filename": "split_config.arm64_v8a.apk",
+          "backup_hash_sha256": "6ce3fb1eff3116537ad91cc96bc4972b159a6ca976306765ccf95825efa4ed68",
+          "pulled_hash_sha256": null,
+          "size_bytes": 120300287,
+          "type": "apks",
+          "hash_match": null
+        },
+        {
+          "filename": "split_config.xxhdpi.apk",
+          "backup_hash_sha256": "4fd1bce15baac0853f5deb1f334eec0da34df29bc5fe0896ac6eefc2053904e1",
+          "pulled_hash_sha256": null,
+          "size_bytes": 1529135,
+          "type": "apks",
+          "hash_match": null
+        },
+        {
+          "filename": "split_dynamic_feature_localasr.apk",
+          "backup_hash_sha256": "99286d6d1a2fb40cfecd599b183eb8e07cfe59ce3cd469429442270bb77f6191",
+          "pulled_hash_sha256": null,
+          "size_bytes": 16651,
+          "type": "apks",
+          "hash_match": null
+        },
+        {
+          "filename": "split_dynamic_feature_localasr.config.arm64_v8a.apk",
+          "backup_hash_sha256": "625b2930b8a69d52c1c31f3108e50981cc17e0d5f7d2e9632c66a2f02db16b18",
+          "pulled_hash_sha256": null,
+          "size_bytes": 7750133,
+          "type": "apks",
+          "hash_match": null
+        },
+        {
+          "filename": "split_dynamic_feature_meeting_plugin.apk",
+          "backup_hash_sha256": "7527b17a052c1933b98a2c9085d9fdbe022bce7fa832bd59dd7ebe27a7041ee0",
+          "pulled_hash_sha256": null,
+          "size_bytes": 12555,
+          "type": "apks",
+          "hash_match": null
+        },
+        {
+          "filename": "split_dynamic_feature_meeting_plugin.config.arm64_v8a.apk",
+          "backup_hash_sha256": "53ae43b82ecf3e8da0f0b992e3185af89fdbe75bcf57e99f8b32ba63e14d752c",
+          "pulled_hash_sha256": null,
+          "size_bytes": 9536181,
+          "type": "apks",
+          "hash_match": null
+        },
+        {
+          "filename": "base.apk",
+          "backup_hash_sha256": "5bd0ec8f43a54a8ce3cc465aa2140bcd3d5739f3f91664410749fde8b85f8683",
+          "pulled_hash_sha256": null,
+          "size_bytes": 148609982,
+          "type": "apk",
+          "hash_match": null
+        }
+      ],
+      "all_hashes_verified": false
+    },
+    {
+      "package_name": "wallpaper",
+      "app_name": "wallpaper",
+      "version_code": 0,
+      "is_aab": false,
+      "backup_timestamp_ms": "1780888338045",
+      "artifacts": [],
+      "all_hashes_verified": false
+    },
+    {
+      "package_name": "za.co.dischem",
+      "app_name": "Dis-Chem",
+      "version_code": 402,
+      "is_aab": false,
+      "backup_timestamp_ms": "1769205985009",
+      "artifacts": [
+        {
+          "filename": "base.apk",
+          "backup_hash_sha256": "102f774db752f2b7c8e6dd7e8fd3798b9bafe37383fad8b240921660c36613fe",
+          "pulled_hash_sha256": null,
+          "size_bytes": 87406543,
+          "type": "apk",
+          "hash_match": null
+        }
+      ],
+      "all_hashes_verified": false
+    },
+    {
+      "package_name": "za.co.fnb.connect.itt",
+      "app_name": "FNB",
+      "version_code": 6309,
+      "is_aab": true,
+      "backup_timestamp_ms": "1782738137229",
+      "artifacts": [
+        {
+          "filename": "split_config.arm64_v8a.apk",
+          "backup_hash_sha256": "e4626e5a41f2a3d61d880d07259277740829072ce53fb53eb74a0cd3ce0e09d1",
+          "pulled_hash_sha256": null,
+          "size_bytes": 13779812,
+          "type": "apks",
+          "hash_match": null
+        },
+        {
+          "filename": "split_config.xxhdpi.apk",
+          "backup_hash_sha256": "829c0e15b0e29aa236692691c3c17430cab9542a54afa17e56e2816ab46cb09f",
+          "pulled_hash_sha256": null,
+          "size_bytes": 866371,
+          "type": "apks",
+          "hash_match": null
+        },
+        {
+          "filename": "base.apk",
+          "backup_hash_sha256": "f24d467178b2a88c7264150208c8dbb5d5f965a648ce14c8b98e59548c09318a",
+          "pulled_hash_sha256": null,
+          "size_bytes": 39621656,
+          "type": "apk",
+          "hash_match": null
+        }
+      ],
+      "all_hashes_verified": false
+    },
+    {
+      "package_name": "za.co.lancet.Mobile",
+      "app_name": "Lancet Mobile",
+      "version_code": 37,
+      "is_aab": true,
+      "backup_timestamp_ms": "1770189480806",
+      "artifacts": [
+        {
+          "filename": "split_config.en.apk",
+          "backup_hash_sha256": "bd8a04eee3827eb59ca17669f571dcc3f028a2062e79e030567f8232c069bb7d",
+          "pulled_hash_sha256": "bd8a04eee3827eb59ca17669f571dcc3f028a2062e79e030567f8232c069bb7d",
+          "size_bytes": 33177,
+          "type": "apks",
+          "hash_match": true
+        },
+        {
+          "filename": "split_config.xxhdpi.apk",
+          "backup_hash_sha256": "c6e6e0822c2a0053ce8136e5d7339b55d83ec2be449e6486762f1fc41ba9bb68",
+          "pulled_hash_sha256": "c6e6e0822c2a0053ce8136e5d7339b55d83ec2be449e6486762f1fc41ba9bb68",
+          "size_bytes": 178845,
+          "type": "apks",
+          "hash_match": true
+        },
+        {
+          "filename": "base.apk",
+          "backup_hash_sha256": "5d9bc7212e55b1acaab5ecfac1e0bbad45a5a6a7364182d08e451ef51add1ed0",
+          "pulled_hash_sha256": "5d9bc7212e55b1acaab5ecfac1e0bbad45a5a6a7364182d08e451ef51add1ed0",
+          "size_bytes": 1178628,
+          "type": "apk",
+          "hash_match": true
+        }
+      ],
+      "all_hashes_verified": true
+    },
+    {
+      "package_name": "za.co.makro.shopping",
+      "app_name": "Makro",
+      "version_code": 1880230,
+      "is_aab": true,
+      "backup_timestamp_ms": "1783436338506",
+      "artifacts": [
+        {
+          "filename": "split_config.arm64_v8a.apk",
+          "backup_hash_sha256": "2d08c85da8f8e0c234b78eb4b4635f8c54b73265cdaa5b5101425fc1386b1ad2",
+          "pulled_hash_sha256": null,
+          "size_bytes": 4343180,
+          "type": "apks",
+          "hash_match": null
+        },
+        {
+          "filename": "split_config.xxhdpi.apk",
+          "backup_hash_sha256": "3ce01af2da2b36f3761aabd6ae7ed2da818b619fd8f1d617e1efefb9426d5348",
+          "pulled_hash_sha256": null,
+          "size_bytes": 528115,
+          "type": "apks",
+          "hash_match": null
+        },
+        {
+          "filename": "base.apk",
+          "backup_hash_sha256": "2d6fb9b8f4ef90bdcc70e37428470703d4d3772970f1d55a0548038537bcf72f",
+          "pulled_hash_sha256": null,
+          "size_bytes": 33426878,
+          "type": "apk",
+          "hash_match": null
+        }
+      ],
+      "all_hashes_verified": false
+    },
+    {
+      "package_name": "za.co.nedbank",
+      "app_name": "Nedbank Money",
+      "version_code": 285,
+      "is_aab": true,
+      "backup_timestamp_ms": "1782738596989",
+      "artifacts": [
+        {
+          "filename": "split_config.arm64_v8a.apk",
+          "backup_hash_sha256": "2374d8d3876dbdd7ab619a58fb94114bcc1483385697890b0b68f918258b7261",
+          "pulled_hash_sha256": null,
+          "size_bytes": 13378694,
+          "type": "apks",
+          "hash_match": null
+        },
+        {
+          "filename": "split_config.en.apk",
+          "backup_hash_sha256": "f26498da6aee3a807f8d6d1cb75202a9a1e23776c3233139e3a52f5066c1bd21",
+          "pulled_hash_sha256": null,
+          "size_bytes": 139673,
+          "type": "apks",
+          "hash_match": null
+        },
+        {
+          "filename": "split_config.xxhdpi.apk",
+          "backup_hash_sha256": "5ed39b0654a9b82b53986573394916a574025ba3520ece5e5409ba98ba0359e5",
+          "pulled_hash_sha256": null,
+          "size_bytes": 1198929,
+          "type": "apks",
+          "hash_match": null
+        },
+        {
+          "filename": "base.apk",
+          "backup_hash_sha256": "b4ff8c5aec0f519542ddc642104ded655bdb5825c3831c8c819adede06909e59",
+          "pulled_hash_sha256": null,
+          "size_bytes": 144484196,
+          "type": "apk",
+          "hash_match": null
+        }
+      ],
+      "all_hashes_verified": false
+    },
+    {
+      "package_name": "za.co.outsurance",
+      "app_name": "OUTsurance",
+      "version_code": 2026031801,
+      "is_aab": true,
+      "backup_timestamp_ms": "1783667208089",
+      "artifacts": [
+        {
+          "filename": "split_config.arm64_v8a.apk",
+          "backup_hash_sha256": "f7e6f6977db5649891aa69289a049c54bc74fd612d1c03b82093aac22f03e43d",
+          "pulled_hash_sha256": null,
+          "size_bytes": 32601112,
+          "type": "apks",
+          "hash_match": null
+        },
+        {
+          "filename": "split_config.en.apk",
+          "backup_hash_sha256": "a526443c603a6176cc127f4d2bd80e4338a154ad39471f73561eedb58871012c",
+          "pulled_hash_sha256": null,
+          "size_bytes": 61849,
+          "type": "apks",
+          "hash_match": null
+        },
+        {
+          "filename": "split_config.xxhdpi.apk",
+          "backup_hash_sha256": "d3fa7458648ba23af1c2063f49d3b439c5d5fca8949f58c34907cd8e14fd2c11",
+          "pulled_hash_sha256": null,
+          "size_bytes": 88324,
+          "type": "apks",
+          "hash_match": null
+        },
+        {
+          "filename": "base.apk",
+          "backup_hash_sha256": "8556645948efb88e2ef85a5675bc593ea458f489a37cb3007eb390958f904263",
+          "pulled_hash_sha256": null,
+          "size_bytes": 21215800,
+          "type": "apk",
+          "hash_match": null
+        }
+      ],
+      "all_hashes_verified": false
+    },
+    {
+      "package_name": "za.co.payflex.app.payflex_app",
+      "app_name": "Payflex",
+      "version_code": 135,
+      "is_aab": true,
+      "backup_timestamp_ms": "1778009676982",
+      "artifacts": [
+        {
+          "filename": "split_config.arm64_v8a.apk",
+          "backup_hash_sha256": "5b2af85df1eb13f8bc53872eb60c4a6156da246e57aeae9cd9715ad1c771b794",
+          "pulled_hash_sha256": null,
+          "size_bytes": 25846833,
+          "type": "apks",
+          "hash_match": null
+        },
+        {
+          "filename": "split_config.en.apk",
+          "backup_hash_sha256": "38d695c4548cea7cde97260bc740d200d8cdb21eae7c6f2d73e49e06134b2417",
+          "pulled_hash_sha256": null,
+          "size_bytes": 74137,
+          "type": "apks",
+          "hash_match": null
+        },
+        {
+          "filename": "split_config.xxhdpi.apk",
+          "backup_hash_sha256": "70b51f5d318ca4a7ef1dff1b0216731f9a1b7ee2e8648bb1294e9dfab205e4c7",
+          "pulled_hash_sha256": null,
+          "size_bytes": 255232,
+          "type": "apks",
+          "hash_match": null
+        },
+        {
+          "filename": "base.apk",
+          "backup_hash_sha256": "7acdd387361b796f0c629e55afdb8f89f4b9b5764fe20461bcfc89491c9f3233",
+          "pulled_hash_sha256": null,
+          "size_bytes": 30618716,
+          "type": "apk",
+          "hash_match": null
+        }
+      ],
+      "all_hashes_verified": false
+    },
+    {
+      "package_name": "za.co.pnp.smartshopper",
+      "app_name": "Pick n Pay asap!",
+      "version_code": 300005119,
+      "is_aab": true,
+      "backup_timestamp_ms": "1782738058113",
+      "artifacts": [
+        {
+          "filename": "split_config.arm64_v8a.apk",
+          "backup_hash_sha256": "dc03a879f3fafc82f6bd87ed2a494651c765f8b77a28b4e1cdcd409d1669dc84",
+          "pulled_hash_sha256": "899767283f8fcd65e94da029911442aec8173786a7385f2d7fc30f6225ee5b9f",
+          "size_bytes": 9794346,
+          "type": "apks",
+          "hash_match": false
+        },
+        {
+          "filename": "split_config.en.apk",
+          "backup_hash_sha256": "29424a3a8584b4c732247f50e1d2a2fce6527902dfc781fd4875c1d2e5d4fa01",
+          "pulled_hash_sha256": "6731df5e8b92b7ced5d4b618e8d5d2285bace99cb87b6d28e670cbd2dddb550f",
+          "size_bytes": 139474,
+          "type": "apks",
+          "hash_match": false
+        },
+        {
+          "filename": "split_config.xxhdpi.apk",
+          "backup_hash_sha256": "eff2ace3d78926f4dd8c7cd9bc9012d6db4d469b8e9bee9c668cf1530478a67f",
+          "pulled_hash_sha256": null,
+          "size_bytes": 143620,
+          "type": "apks",
+          "hash_match": null
+        },
+        {
+          "filename": "base.apk",
+          "backup_hash_sha256": "69946f401c93d454fa822e031e7d322b3937453b8bffe87ff9dee54b4f4bf87f",
+          "pulled_hash_sha256": "b54c5cf8ab5f3da6f41c09cfc110e5086d1926433762101534a7a953e36eba26",
+          "size_bytes": 144561395,
+          "type": "apk",
+          "hash_match": false
+        }
+      ],
+      "all_hashes_verified": false
+    },
+    {
+      "package_name": "za.co.shoprite.sixty60",
+      "app_name": "Checkers Sixty60",
+      "version_code": 1783525297,
+      "is_aab": true,
+      "backup_timestamp_ms": "1783902040765",
+      "artifacts": [
+        {
+          "filename": "split_config.arm64_v8a.apk",
+          "backup_hash_sha256": "4e9d19aad35594f731259490965b743f123ec184de4b3729bca5db9da5518758",
+          "pulled_hash_sha256": "bb56b8044079d32fb07dbca02328eee882b672ddce244abd2e4a47c56f2320ef",
+          "size_bytes": 46972099,
+          "type": "apks",
+          "hash_match": false
+        },
+        {
+          "filename": "split_config.en.apk",
+          "backup_hash_sha256": "622bc27e3ca03e608fac8415573fe8000531fc6879b5609519de9c713f8fd21e",
+          "pulled_hash_sha256": "c0cf890ac8b3d118fe4f81305810c919f366cc708675ea7d873f3f7731ebe4aa",
+          "size_bytes": 57753,
+          "type": "apks",
+          "hash_match": false
+        },
+        {
+          "filename": "split_config.xxhdpi.apk",
+          "backup_hash_sha256": "4b396e8607a303ec695c53fb561343ca841f58956ab954c1c2fe0f7f957c0b8a",
+          "pulled_hash_sha256": null,
+          "size_bytes": 83887,
+          "type": "apks",
+          "hash_match": null
+        },
+        {
+          "filename": "base.apk",
+          "backup_hash_sha256": "673a4a86eabedb71d2b26c74dd3cdfe0893199e3486f7e2ef9ef4af06d1a045e",
+          "pulled_hash_sha256": "f34ec5b9401d65b56e22ffe7a3c32c6425b0862009d197c0e1a8378445d6ce8c",
+          "size_bytes": 87877919,
+          "type": "apk",
+          "hash_match": false
+        }
+      ],
+      "all_hashes_verified": false
+    },
+    {
+      "package_name": "za.co.spar2u",
+      "app_name": "SPAR2U",
+      "version_code": 325,
+      "is_aab": true,
+      "backup_timestamp_ms": "1782738464357",
+      "artifacts": [
+        {
+          "filename": "split_config.arm64_v8a.apk",
+          "backup_hash_sha256": "899fff63980fa0e24ef8bfc3527c71a9ac1788acab547721819e48646935ee1a",
+          "pulled_hash_sha256": null,
+          "size_bytes": 26884712,
+          "type": "apks",
+          "hash_match": null
+        },
+        {
+          "filename": "split_config.en.apk",
+          "backup_hash_sha256": "09b561f3b1ef6a7c6e9672c907d7d68dcdf2ea0e26b3e5ee9fa98fc772b1fc77",
+          "pulled_hash_sha256": null,
+          "size_bytes": 70041,
+          "type": "apks",
+          "hash_match": null
+        },
+        {
+          "filename": "split_config.xxhdpi.apk",
+          "backup_hash_sha256": "00bc67f7aae622e2bb8688cd95980cf6eb5cfe3233d3f1bc9c3d863444093925",
+          "pulled_hash_sha256": null,
+          "size_bytes": 161691,
+          "type": "apks",
+          "hash_match": null
+        },
+        {
+          "filename": "base.apk",
+          "backup_hash_sha256": "370d93ac30c9b9922af7bf95f9b0e0da903d77db98e58015332e1d33bf8b83eb",
+          "pulled_hash_sha256": null,
+          "size_bytes": 103426507,
+          "type": "apk",
+          "hash_match": null
+        }
+      ],
+      "all_hashes_verified": false
+    },
+    {
+      "package_name": "za.com.mrp",
+      "app_name": "Mr Price",
+      "version_code": 3294,
+      "is_aab": false,
+      "backup_timestamp_ms": "1781678841253",
+      "artifacts": [
+        {
+          "filename": "base.apk",
+          "backup_hash_sha256": "2d6b0352abdbb62ea95ffca39ca52cf9ed9e343390f895b2628cf97284e6c61f",
+          "pulled_hash_sha256": null,
+          "size_bytes": 49729753,
+          "type": "apk",
+          "hash_match": null
+        }
+      ],
+      "all_hashes_verified": false
+    },
+    {
+      "package_name": "za.stylephasehome",
+      "app_name": "Stylephase Home",
+      "version_code": 8,
+      "is_aab": false,
+      "backup_timestamp_ms": "1770189481414",
+      "artifacts": [
+        {
+          "filename": "base.apk",
+          "backup_hash_sha256": "3d0b399fe52b8fe9df8ce17441424e33a86c6a46f482b2ebe1a8e335fb334f12",
+          "pulled_hash_sha256": null,
+          "size_bytes": 42458,
+          "type": "apk",
+          "hash_match": null
+        }
+      ],
+      "all_hashes_verified": false
+    },
+    {
+      "package_name": "za.stylephasehomeapp",
+      "app_name": "Stylephase Home",
+      "version_code": 8,
+      "is_aab": true,
+      "backup_timestamp_ms": "1764622651521",
+      "artifacts": [
+        {
+          "filename": "split_config.armeabi_v7a.apk",
+          "backup_hash_sha256": "be100fd343573fe9fcdf3ec7a6807082927dbd0dd31bb5e63df502d4985a6b22",
+          "pulled_hash_sha256": null,
+          "size_bytes": 54282711,
+          "type": "apks",
+          "hash_match": null
+        },
+        {
+          "filename": "split_config.en.apk",
+          "backup_hash_sha256": "ed90ab59d75e57281abac2a6e2ea1a8eb4e30b825a8941a3be68031f1a0ed6a3",
+          "pulled_hash_sha256": null,
+          "size_bytes": 201113,
+          "type": "apks",
+          "hash_match": null
+        },
+        {
+          "filename": "split_config.xxhdpi.apk",
+          "backup_hash_sha256": "7c118215b0c4d7bc170285d78be2a5ea5affeb0b2d238b5a6376a366cd209adf",
+          "pulled_hash_sha256": null,
+          "size_bytes": 275045,
+          "type": "apks",
+          "hash_match": null
+        },
+        {
+          "filename": "base.apk",
+          "backup_hash_sha256": "5e8235c817ec2b8876d6465dbd4c1cc63309965fdcf37f4f84e1f1a44e089971",
+          "pulled_hash_sha256": null,
+          "size_bytes": 68425645,
+          "type": "apk",
+          "hash_match": null
+        }
+      ],
+      "all_hashes_verified": false
+    }
+  ]
+}
