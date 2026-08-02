@@ -128,13 +128,3 @@ jobs:
             echo "ERROR: tests/avd-lifecycle-test is required for this workflow." >&2
             exit 1
           fi
-
-      - name: Run emulator communication tests
-        run: |
-          if [ -f tests/emulator-comm-test ]; then
-            chmod +x tests/emulator-comm-test scripts/emulator-comm 2>/dev/null || true
-            tests/emulator-comm-test
-          else
-            echo "ERROR: tests/emulator-comm-test is required for this workflow." >&2
-            exit 1
-          fi

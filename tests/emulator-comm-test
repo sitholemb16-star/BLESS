@@ -46,19 +46,19 @@ assert_log_contains '-s emulator-5554 shell am start -W -a android.intent.action
 assert_log_contains 'shell input keyevent KEYCODE_ENDCALL'
 
 : >"$ADB_LOG"
-"$ROOT/scripts/emulator-comm" incoming-call 5551234 >/dev/null
+MOCK_AVD_NAME=Galaxy-S25-128GB "$ROOT/scripts/emulator-comm" incoming-call 5551234 >/dev/null
 assert_log_contains 'emu gsm call 5551234'
 
 : >"$ADB_LOG"
-"$ROOT/scripts/emulator-comm" accept-call 5551234 >/dev/null
+MOCK_AVD_NAME=Galaxy-S25-128GB "$ROOT/scripts/emulator-comm" accept-call 5551234 >/dev/null
 assert_log_contains 'emu gsm accept 5551234'
 
 : >"$ADB_LOG"
-"$ROOT/scripts/emulator-comm" reject-call 5551234 >/dev/null
+MOCK_AVD_NAME=Galaxy-S25-128GB "$ROOT/scripts/emulator-comm" reject-call 5551234 >/dev/null
 assert_log_contains 'emu gsm cancel 5551234'
 
 : >"$ADB_LOG"
-"$ROOT/scripts/emulator-comm" incoming-sms 5551234 'test message' >/dev/null
+MOCK_AVD_NAME=Galaxy-S25-128GB "$ROOT/scripts/emulator-comm" incoming-sms 5551234 'test message' >/dev/null
 assert_log_contains 'emu sms send 5551234 test\ message'
 
 : >"$ADB_LOG"
@@ -109,11 +109,11 @@ assert_log_contains 'emu gsm call 5551234'
 
 # --- boot-wait succeeds immediately when already booted ---
 : >"$ADB_LOG"
-MOCK_BOOT_COMPLETED=1 "$ROOT/scripts/emulator-comm" boot-wait >/dev/null
+MOCK_AVD_NAME=Galaxy-S25-128GB MOCK_BOOT_COMPLETED=1 "$ROOT/scripts/emulator-comm" boot-wait >/dev/null
 assert_log_contains 'getprop sys.boot_completed'
 
 # --- boot-wait times out when boot never completes ---
-if MOCK_BOOT_COMPLETED=0 BOOT_TIMEOUT=2 "$ROOT/scripts/emulator-comm" boot-wait >/dev/null 2>&1; then
+if MOCK_AVD_NAME=Galaxy-S25-128GB MOCK_BOOT_COMPLETED=0 BOOT_TIMEOUT=2 "$ROOT/scripts/emulator-comm" boot-wait >/dev/null 2>&1; then
   printf 'boot-wait must fail when emulator never boots within timeout\n' >&2
   exit 1
 fi

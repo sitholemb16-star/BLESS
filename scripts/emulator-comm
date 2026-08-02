@@ -73,7 +73,7 @@ require_s25() {
   require_emulator
   local avd_name
   avd_name="$(adb_run shell getprop ro.boot.qemu.avd_name 2>/dev/null | tr -d '\r')"
-  if [[ -n "$avd_name" && "$avd_name" != "$EXPECTED_AVD" ]]; then
+  if [[ "$avd_name" != "$EXPECTED_AVD" ]]; then
     fail "connected AVD is '$avd_name', expected '$EXPECTED_AVD' (override with EXPECTED_AVD_NAME)"
   fi
 }
@@ -106,13 +106,19 @@ case "$COMMAND" in
     printf 'connected: %s (%s)\n' "${SERIAL:-default adb target}" "${model:-unknown model}"
     [[ -n "$avd_name" ]] && printf 'avd: %s\n' "$avd_name"
     if [[ "$is_emulator" == "1" ]]; then
-      printf 'incoming event injection: available\n'
+      if [[ "$avd_name" == "$EXPECTED_AVD" ]]; then
+        printf 'incoming event injection: available\n'
+      else
+        printf 'incoming event injection: restricted (expected AVD %s, connected: %s)\n' \
+          "$EXPECTED_AVD" "${avd_name:-unknown}"
+      fi
     else
       printf 'incoming event injection: unavailable (target is not an emulator)\n'
     fi
     ;;
   boot-wait)
     require_s25
+    [[ "$BOOT_TIMEOUT" =~ ^[1-9][0-9]*$ ]] || fail "BOOT_TIMEOUT must be a positive integer"
     printf 'waiting for boot (timeout %ss)...\n' "$BOOT_TIMEOUT"
     deadline=$(( $(date +%s) + BOOT_TIMEOUT ))
     while true; do
