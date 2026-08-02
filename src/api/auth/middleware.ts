@@ -12,7 +12,7 @@ import type { Request, Response, NextFunction } from "express";
 import { createHmac, timingSafeEqual as cryptoTimingSafeEqual } from "node:crypto";
 
 // Anchored regex: exactly "Bearer <single-token>", no extra spaces/tokens.
-const BEARER_RE = /^Bearer ([!-~]+)$/;
+const BEARER_RE = /^Bearer ([!-~]+)$/i;
 
 // Stable key used only for constant-time HMAC comparison; not a secret.
 const CMP_KEY = "bless-auth-hmac-compare";

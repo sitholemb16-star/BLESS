@@ -48,7 +48,8 @@ jobs:
           if [ ${#csvs[@]} -gt 0 ] && [ -f apks/SHA256SUMS.txt ]; then
             python3 tools/app_inventory/verify_hashes_against_csv.py \
               --csv "${csvs[@]}" \
-              --sums apks/SHA256SUMS.txt
+              --sums apks/SHA256SUMS.txt \
+              --fail-on-mismatch
           else
             echo "No CSV manifests in apks/manifests — skipping FILE_LIST hash verification"
           fi
