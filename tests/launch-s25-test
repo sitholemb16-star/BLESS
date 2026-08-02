@@ -1,20 +1,19 @@
 #!/usr/bin/env bash
-# launch-s25-test — Mock-emulator tests for launch-s25 argument handling.
-# Verifies: normal launch argv, --headless flags, and extra flag forwarding.
+# launch-s25-test — Integration tests for scripts/launch-s25.
+# Invokes the real script against a stubbed SDK and asserts on actual emulator argv.
 set -euo pipefail
 
 REPO_ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 
 # ── Stub environment ──────────────────────────────────────────────────────────
-# Override SDK_ROOT and AVD_HOME via environment so launch-s25 uses our stubs.
 stub_dir="$(mktemp -d)"
 trap 'rm -rf "$stub_dir"' EXIT
 
-# Fake SDK tree
 mkdir -p "$stub_dir/sdk/emulator"
 mkdir -p "$stub_dir/sdk/platform-tools"
+mkdir -p "$stub_dir/avd"
 
-# Stub emulator: records argv to a file and exits cleanly.
+# Stub emulator: records its argv to a file and exits cleanly.
 argv_file="$stub_dir/emulator_argv"
 cat > "$stub_dir/sdk/emulator/emulator" <<STUB
 #!/usr/bin/env bash
@@ -23,115 +22,43 @@ exit 0
 STUB
 chmod +x "$stub_dir/sdk/emulator/emulator"
 
-# Point launch-s25 at our stub SDK and a writable AVD home.
-export ANDROID_AVD_HOME="$stub_dir/avd"
-export JAVA_HOME="${JAVA_HOME:-/usr/local/opt/openjdk}"
-mkdir -p "$stub_dir/avd"
-
-# Patch s25-env.sh vars by overriding EXTERNAL and SDK_ROOT after source.
-# We do this by running launch-s25 in a subprocess with the real script modified
-# via a wrapper that intercepts the emulator exec.
+# Helper: invoke the real scripts/launch-s25 with overridden SDK/AVD paths.
+# s25-env.sh uses ANDROID_SDK_ROOT as SDK_ROOT, so setting it here is enough.
 run_launch() {
-  local extra_args=("$@")
-  # We can't easily override SDK_ROOT (defined inside s25-env.sh), so we swap
-  # the emulator binary by prepending our stub dir to PATH.
-  PATH="$stub_dir/sdk/emulator:$PATH" \
-    ANDROID_AVD_HOME="$stub_dir/avd" \
-    ANDROID_SDK_ROOT="$stub_dir/sdk" \
-    bash -c '
-      # Replace the exec guard: if emulator binary exists via PATH, skip the
-      # hardcoded path check — launch-s25 checks $SDK_ROOT/emulator/emulator.
-      # We satisfy this by creating a matching path in the fake SDK.
-      true
-    '
-  # Direct invocation: replace SDK_ROOT inline by setting the env the script reads.
-  # Since s25-env.sh uses EXTERNAL/Android/sdk, we symlink our stub in place.
-  mkdir -p "$stub_dir/sdk_parent"
-  ln -sf "$stub_dir/sdk" "$stub_dir/sdk_parent/sdk"
   rm -f "$argv_file"
-  EXTERNAL="$stub_dir/sdk_parent/.. " \
+  ANDROID_SDK_ROOT="$stub_dir/sdk" \
   ANDROID_AVD_HOME="$stub_dir/avd" \
-    bash -c "
-      export EXTERNAL='$stub_dir'
-      export ANDROID_SDK_ROOT='$stub_dir/sdk'
-      export ANDROID_AVD_HOME='$stub_dir/avd'
-      export JAVA_HOME='${JAVA_HOME:-/usr/local/opt/openjdk}'
-      # Source the shared env, then run the launch logic directly.
-      # Inline the launch-s25 logic but override SDK_ROOT to our stub.
-      SDK_ROOT='$stub_dir/sdk'
-      AVD_NAME='Galaxy-S25-128GB'
-      AVD_HOME='$stub_dir/avd'
-      EMU='$stub_dir/sdk/emulator/emulator'
-      HEADLESS=0
-      EXTRA_FLAGS=()
-      for arg in $(printf '%s\n' ${extra_args[*]+"${extra_args[@]}"}); do
-        case \"\$arg\" in
-          --headless) HEADLESS=1 ;;
-          *) EXTRA_FLAGS+=(\"\$arg\") ;;
-        esac
-      done
-      FLAGS=(-avd \"\$AVD_NAME\" -dns-server 8.8.8.8 -no-snapshot-save)
-      [[ \$HEADLESS -eq 1 ]] && FLAGS+=(-no-window -no-audio)
-      printf '%s\n' \"\${FLAGS[@]}\" \"\${EXTRA_FLAGS[@]}\" > '$argv_file'
-    " "${extra_args[@]+"${extra_args[@]}"}"
+    "$REPO_ROOT/scripts/launch-s25" "$@"
 }
 
 # ── Test 1: normal launch (no extra flags) ────────────────────────────────────
-rm -f "$argv_file"
-(
-  SDK_ROOT="$stub_dir/sdk"
-  AVD_NAME="Galaxy-S25-128GB"
-  EMU="$stub_dir/sdk/emulator/emulator"
-  HEADLESS=0
-  EXTRA_FLAGS=()
-  FLAGS=(-avd "$AVD_NAME" -dns-server 8.8.8.8 -no-snapshot-save)
-  printf '%s\n' "${FLAGS[@]}" "${EXTRA_FLAGS[@]}" > "$argv_file"
-)
+run_launch
 argv="$(cat "$argv_file")"
-echo "$argv" | grep -q -- "-avd" || { echo "FAIL test1: -avd missing"; exit 1; }
+echo "$argv" | grep -q -- "-avd"          || { echo "FAIL test1: -avd missing"; exit 1; }
 echo "$argv" | grep -q "Galaxy-S25-128GB" || { echo "FAIL test1: AVD name missing"; exit 1; }
-echo "$argv" | grep -q -- "-no-window" && { echo "FAIL test1: -no-window present in normal mode"; exit 1; }
+echo "$argv" | grep -q -- "-no-window"    && { echo "FAIL test1: -no-window present in normal mode"; exit 1; }
 echo "test1 (normal): passed"
 
 # ── Test 2: --headless launch ─────────────────────────────────────────────────
-(
-  SDK_ROOT="$stub_dir/sdk"
-  AVD_NAME="Galaxy-S25-128GB"
-  HEADLESS=1
-  EXTRA_FLAGS=()
-  FLAGS=(-avd "$AVD_NAME" -dns-server 8.8.8.8 -no-snapshot-save)
-  [[ $HEADLESS -eq 1 ]] && FLAGS+=(-no-window -no-audio)
-  printf '%s\n' "${FLAGS[@]}" "${EXTRA_FLAGS[@]}" > "$argv_file"
-)
+run_launch --headless
 argv="$(cat "$argv_file")"
 echo "$argv" | grep -q -- "-no-window" || { echo "FAIL test2: -no-window missing in headless mode"; exit 1; }
 echo "$argv" | grep -q -- "-no-audio"  || { echo "FAIL test2: -no-audio missing in headless mode"; exit 1; }
 echo "test2 (headless): passed"
 
 # ── Test 3: extra flags are forwarded ─────────────────────────────────────────
-(
-  SDK_ROOT="$stub_dir/sdk"
-  AVD_NAME="Galaxy-S25-128GB"
-  HEADLESS=0
-  EXTRA_FLAGS=("-gpu" "swiftshader_indirect")
-  FLAGS=(-avd "$AVD_NAME" -dns-server 8.8.8.8 -no-snapshot-save)
-  [[ $HEADLESS -eq 1 ]] && FLAGS+=(-no-window -no-audio)
-  printf '%s\n' "${FLAGS[@]}" "${EXTRA_FLAGS[@]}" > "$argv_file"
-)
+run_launch -gpu swiftshader_indirect
 argv="$(cat "$argv_file")"
-echo "$argv" | grep -q -- "-gpu" || { echo "FAIL test3: -gpu not forwarded"; exit 1; }
+echo "$argv" | grep -q -- "-gpu"              || { echo "FAIL test3: -gpu not forwarded"; exit 1; }
 echo "$argv" | grep -q "swiftshader_indirect" || { echo "FAIL test3: gpu value not forwarded"; exit 1; }
 echo "test3 (extra flags): passed"
 
 # ── Test 4: missing emulator binary exits non-zero ────────────────────────────
-if bash -c '
-  set -euo pipefail
-  EMU="/nonexistent/emulator"
-  if [[ ! -x "$EMU" ]]; then
-    echo "ERROR: emulator binary not found at $EMU" >&2
-    exit 1
-  fi
-' 2>/dev/null; then
+missing_sdk="$stub_dir/missing-sdk"
+mkdir -p "$missing_sdk/emulator"
+# No emulator binary here — the script's guard should reject it.
+if ANDROID_SDK_ROOT="$missing_sdk" ANDROID_AVD_HOME="$stub_dir/avd" \
+    "$REPO_ROOT/scripts/launch-s25" 2>/dev/null; then
   echo "FAIL test4: should have exited non-zero for missing emulator"
   exit 1
 fi
