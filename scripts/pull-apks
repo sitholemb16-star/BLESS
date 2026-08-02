@@ -7,6 +7,13 @@ set -euo pipefail
 SERIAL="${ANDROID_SERIAL:-}"
 PACKAGES=()
 APKS_DIR="$(cd "$(dirname "$0")/.." && pwd)/apks"
+ACTIVE_STAGE_DIR=""
+cleanup_stage() {
+  if [[ -n "$ACTIVE_STAGE_DIR" && -d "$ACTIVE_STAGE_DIR" ]]; then
+    rm -rf "$ACTIVE_STAGE_DIR"
+  fi
+}
+trap cleanup_stage EXIT
 
 while [[ $# -gt 0 ]]; do
   case "$1" in
@@ -83,6 +90,7 @@ for PKG in "${PACKAGES[@]}"; do
   STAGE_DIR="$APKS_DIR/.staging-$PKG-$$"
   rm -rf "$STAGE_DIR"
   mkdir -p "$STAGE_DIR"
+  ACTIVE_STAGE_DIR="$STAGE_DIR"
   echo "Pulling $PKG..."
   package_failed=0
 
@@ -102,12 +110,30 @@ for PKG in "${PACKAGES[@]}"; do
 
   if (( package_failed > 0 )); then
     rm -rf "$STAGE_DIR"
+    ACTIVE_STAGE_DIR=""
     echo "FAIL  $PKG (preserved prior pull set)" >&2
     continue
   fi
 
-  rm -rf "$DEST_ABS"
-  mv "$STAGE_DIR" "$DEST_ABS"
+  backup_dir="$APKS_DIR/.backup-$PKG-$$"
+  rm -rf "$backup_dir"
+  if [[ -d "$DEST_ABS" ]]; then
+    mv "$DEST_ABS" "$backup_dir"
+  fi
+  if mv "$STAGE_DIR" "$DEST_ABS"; then
+    rm -rf "$backup_dir"
+    ACTIVE_STAGE_DIR=""
+  else
+    rm -rf "$DEST_ABS"
+    if [[ -d "$backup_dir" ]]; then
+      mv "$backup_dir" "$DEST_ABS"
+    fi
+    rm -rf "$STAGE_DIR"
+    ACTIVE_STAGE_DIR=""
+    echo "FAIL  $PKG (destination update failed; previous pull set restored)" >&2
+    ((FAILED+=1))
+    continue
+  fi
 done
 
 echo ""

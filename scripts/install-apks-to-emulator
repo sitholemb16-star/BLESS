@@ -28,16 +28,26 @@ fi
 ADB=(adb -s "$SERIAL")
 EXPECTED_AVD_NAME="${EXPECTED_AVD_NAME:-Galaxy-S25-128GB}"
 BOOT_TIMEOUT_SECONDS="${BOOT_TIMEOUT_SECONDS:-180}"
+if [[ ! "$BOOT_TIMEOUT_SECONDS" =~ ^[1-9][0-9]*$ ]]; then
+  echo "ERROR: BOOT_TIMEOUT_SECONDS must be a positive integer." >&2
+  exit 1
+fi
 
 # Wait for emulator to be fully booted
 echo "Waiting for emulator $SERIAL to finish booting..."
-"${ADB[@]}" wait-for-device
+deadline=$((SECONDS + BOOT_TIMEOUT_SECONDS))
+until [[ "$("${ADB[@]}" get-state 2>/dev/null | tr -d '\r')" == "device" ]]; do
+  if (( SECONDS >= deadline )); then
+    echo "ERROR: Device $SERIAL not reachable within ${BOOT_TIMEOUT_SECONDS}s." >&2
+    exit 1
+  fi
+  sleep 2
+done
 avd_name="$("${ADB[@]}" shell getprop ro.boot.qemu.avd_name 2>/dev/null | tr -d '\r')"
 if [[ -n "$avd_name" && "$avd_name" != "$EXPECTED_AVD_NAME" ]]; then
   echo "ERROR: Connected emulator is '$avd_name', expected '$EXPECTED_AVD_NAME'." >&2
   exit 1
 fi
-deadline=$((SECONDS + BOOT_TIMEOUT_SECONDS))
 until [[ "$("${ADB[@]}" shell getprop sys.boot_completed 2>/dev/null | tr -d '\r')" == "1" ]]; do
   if (( SECONDS >= deadline )); then
     echo "ERROR: Emulator did not finish booting within ${BOOT_TIMEOUT_SECONDS}s." >&2

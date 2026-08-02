@@ -22,7 +22,10 @@ def timestamp_key(value):
     if text.isdigit():
         return int(text)
     try:
-        return int(datetime.fromisoformat(text.replace('Z', '+00:00')).timestamp() * 1000)
+        parsed = datetime.fromisoformat(text.replace('Z', '+00:00'))
+        if parsed.tzinfo is None:
+            parsed = parsed.replace(tzinfo=timezone.utc)
+        return int(parsed.timestamp() * 1000)
     except ValueError:
         return None
 
@@ -125,13 +128,14 @@ def load_csvs(paths):
                             file=sys.stderr,
                         )
                         continue
-                    backup_hash = str(item.get('hash', '')).strip().lower()
+                    raw_hash = item.get('hash', '')
+                    backup_hash = '' if raw_hash is None else str(raw_hash).strip().lower()
                     if backup_hash and not SHA256_RE.match(backup_hash):
                         print(
-                            f"WARN: Skipping FILE_LIST entry with invalid hash in {path}:{index}",
+                            f"WARN: FILE_LIST entry has invalid hash in {path}:{index}; keeping as unverified",
                             file=sys.stderr,
                         )
-                        continue
+                        backup_hash = ''
                     parsed_files.append(
                         {
                             'filename': os.path.basename(item_path),

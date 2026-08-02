@@ -39,7 +39,7 @@ Pull APKs directly from the connected phone over ADB, then regenerate the integr
 
 ### Pull packages from the phone
 ```bash
-./scripts/pull-apks --serial <DONOR_DEVICE_SERIAL>
+DONOR_DEVICE_SERIAL="<your-donor-device-serial>" ./scripts/pull-apks --serial "$DONOR_DEVICE_SERIAL"
 ```
 
 The package list lives in `apks/packages.txt`. The script skips packages that are no longer installed on the device.
@@ -52,10 +52,10 @@ The package list lives in `apks/packages.txt`. The script skips packages that ar
 ### Build provenance JSON from Samsung backup manifests
 ```bash
 python3 tools/app_inventory/merge_csv_with_hashes.py \
-  --csv <APP_manifest_1.csv> <APP_manifest_2.csv> <APP_manifest_3.csv> \
+  --csv "$APP_MANIFEST_1" "$APP_MANIFEST_2" "$APP_MANIFEST_3" \
   --sums apks/SHA256SUMS.txt \
-  --device-serial <DONOR_DEVICE_SERIAL> \
-  --device-model <DONOR_DEVICE_MODEL> \
+  --device-serial "$DONOR_DEVICE_SERIAL" \
+  --device-model "$DONOR_DEVICE_MODEL" \
   --out apks/provenance.json
 ```
 
@@ -79,7 +79,7 @@ Use the external sparsebundle-backed path for AVD storage:
 
 Create/update the AVD:
 ```bash
-ANDROID_AVD_HOME=<EXTERNAL_AVD_HOME> ./scripts/setup-s25-avd
+EXTERNAL_AVD_HOME="<external-avd-home>" ANDROID_AVD_HOME="$EXTERNAL_AVD_HOME" ./scripts/setup-s25-avd
 ```
 
 Launch it:

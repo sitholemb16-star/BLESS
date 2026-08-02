@@ -15,14 +15,24 @@ fi
 python3 - "$REPO_ROOT" "$APKS_DIR" "$OUT" <<'PY'
 import hashlib
 import os
+import stat
 import sys
 
 repo_root, apks_dir, out = sys.argv[1:4]
 paths = []
-for root, _, files in os.walk(apks_dir):
+
+def on_walk_error(err):
+    raise RuntimeError(f"Failed to scan APK directory: {err}")
+
+for root, _, files in os.walk(apks_dir, onerror=on_walk_error):
     for name in files:
         if name.endswith(".apk") or name.endswith(".apks"):
-            paths.append(os.path.join(root, name))
+            if "\n" in name or "\r" in name:
+                raise RuntimeError(f"Unsupported APK filename with newline: {name!r}")
+            path = os.path.join(root, name)
+            st = os.lstat(path)
+            if stat.S_ISREG(st.st_mode) and not stat.S_ISLNK(st.st_mode):
+                paths.append(path)
 paths.sort()
 
 with open(out, "w", encoding="utf-8") as fh:

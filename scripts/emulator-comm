@@ -54,8 +54,6 @@ require_number() {
 require_safe_message() {
   local message="$1"
   [[ "$message" != *$'\n'* ]] || fail "SMS message cannot contain newlines"
-  [[ "$message" != *";"* && "$message" != *"&"* && "$message" != *"|"* && "$message" != *"$"* && "$message" != *"<"* && "$message" != *">"* && "$message" != *"\`"* ]] \
-    || fail "SMS message contains unsupported shell metacharacters"
 }
 
 require_emulator() {
@@ -124,7 +122,9 @@ case "$COMMAND" in
     [[ -n "${1:-}" ]] || fail "an SMS message is required"
     msg="$*"
     require_safe_message "$msg"
-    adb_run shell am start -W -a android.intent.action.SENDTO -d "smsto:$number" --es sms_body "$msg"
+    msg_q=$(printf '%q' "$msg")
+    number_q=$(printf '%q' "smsto:$number")
+    adb_run shell "am start -W -a android.intent.action.SENDTO -d $number_q --es sms_body $msg_q"
     ;;
   incoming-sms)
     require_number "${1:-}"
