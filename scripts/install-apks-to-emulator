@@ -69,10 +69,6 @@ fi
 
 for pkg_dir in "${pkg_dirs[@]}"; do
   pkg="$(basename "$pkg_dir")"
-  # Skip non-package dirs
-  [[ "$pkg" == "packages.txt" ]] && continue
-  [[ "$pkg" == "SHA256SUMS.txt" ]] && continue
-  [[ "$pkg" == "provenance.json" ]] && continue
 
   apk_files=()
   while IFS= read -r apk_path; do
