@@ -15,6 +15,8 @@ case "$*" in
   *"get-state"*) printf 'device\n' ;;
   *"getprop ro.kernel.qemu"*) printf '%s\n' "${MOCK_QEMU:-1}" ;;
   *"getprop ro.product.model"*) printf 'Test Emulator\n' ;;
+  *"getprop ro.boot.qemu.avd_name"*) printf '%s\n' "${MOCK_AVD_NAME:-}" ;;
+  *"getprop sys.boot_completed"*) printf '%s\n' "${MOCK_BOOT_COMPLETED:-1}" ;;
 esac
 EOF
 chmod +x "$TMP/adb"
@@ -81,6 +83,38 @@ fi
 
 if "$ROOT/scripts/emulator-comm" dial '555;rm' >/dev/null 2>&1; then
   printf 'invalid phone numbers must be rejected\n' >&2
+  exit 1
+fi
+
+# --- status shows AVD name when available ---
+: >"$ADB_LOG"
+status_out="$(MOCK_AVD_NAME=Galaxy-S25-128GB "$ROOT/scripts/emulator-comm" status 2>/dev/null)"
+printf '%s' "$status_out" | grep -q 'avd: Galaxy-S25-128GB' || {
+  printf 'status must include avd name when available\n' >&2
+  printf 'actual output: %s\n' "$status_out" >&2
+  exit 1
+}
+
+# --- require_s25 rejects wrong AVD name ---
+if MOCK_AVD_NAME=wrong-avd "$ROOT/scripts/emulator-comm" incoming-call 5551234 >/dev/null 2>&1; then
+  printf 'wrong AVD name must be rejected by require_s25\n' >&2
+  exit 1
+fi
+
+# --- require_s25 allows matching AVD name ---
+: >"$ADB_LOG"
+EXPECTED_AVD_NAME=my-test-avd MOCK_AVD_NAME=my-test-avd \
+  "$ROOT/scripts/emulator-comm" incoming-call 5551234 >/dev/null
+assert_log_contains 'emu gsm call 5551234'
+
+# --- boot-wait succeeds immediately when already booted ---
+: >"$ADB_LOG"
+MOCK_BOOT_COMPLETED=1 "$ROOT/scripts/emulator-comm" boot-wait >/dev/null
+assert_log_contains 'getprop sys.boot_completed'
+
+# --- boot-wait times out when boot never completes ---
+if MOCK_BOOT_COMPLETED=0 BOOT_TIMEOUT=2 "$ROOT/scripts/emulator-comm" boot-wait >/dev/null 2>&1; then
+  printf 'boot-wait must fail when emulator never boots within timeout\n' >&2
   exit 1
 fi
 
