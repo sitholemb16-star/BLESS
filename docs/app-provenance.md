@@ -2,10 +2,10 @@
 
 This repository tracks APK provenance from Samsung backup metadata to locally pulled APK binaries.
 
-## 1) Pull APKs from the donor device (A04)
+## 1) Pull APKs from the donor device
 
 ```bash
-./scripts/pull-apks --serial R83WA0GJ03V
+./scripts/pull-apks --serial <DONOR_DEVICE_SERIAL>
 ```
 
 This pulls `base.apk` and split APKs into `apks/<package>/`.
@@ -37,10 +37,10 @@ Notes:
 python3 tools/app_inventory/merge_csv_with_hashes.py \
   --csv apks/manifests/APP_*.csv \
   --sums apks/SHA256SUMS.txt \
-  --galaxy-store-csv "/Volumes/2027 Final Drafts/SamsungCloud/Samsung_2ND_SAM_unzipped/galaxyapps_gk000068459847_20260717_access/GalaxyStore_1048629395_20260717_access.csv" \
-  --smartthings-csv "/Volumes/2027 Final Drafts/SamsungCloud/Samsung_2ND_SAM_unzipped/SmartThings_gk000068459851_20260716_access/SmartThings_Client.csv" \
-  --device-serial R83WA0GJ03V \
-  --device-model SM-A042F \
+  --galaxy-store-csv "<PATH_TO_GALAXY_STORE_EXPORT_CSV>" \
+  --smartthings-csv "<PATH_TO_SMARTTHINGS_EXPORT_CSV>" \
+  --device-serial <DONOR_DEVICE_SERIAL> \
+  --device-model <DONOR_DEVICE_MODEL> \
   --out apks/provenance.json
 ```
 
@@ -56,6 +56,6 @@ python3 tools/app_inventory/merge_csv_with_hashes.py \
 
 The AVD is created in external storage:
 
-- `ANDROID_AVD_HOME=/Volumes/VOLUME 1/2027 Final Drafts.sparsebundle/android-avd`
+- `ANDROID_AVD_HOME=<EXTERNAL_AVD_HOME>`
 - AVD name: `Galaxy-S25-128GB`
 - Data partition: `128G` (sparse virtual disk)
