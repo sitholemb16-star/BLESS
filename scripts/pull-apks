@@ -61,7 +61,7 @@ SKIPPED=0
 FAILED=0
 
 for PKG in "${PACKAGES[@]}"; do
-  if [[ ! "$PKG" =~ ^[A-Za-z0-9._]+$ ]]; then
+  if [[ ! "$PKG" =~ ^([A-Za-z0-9_]+)(\.[A-Za-z0-9_]+)*$ ]]; then
     echo "FAIL  $PKG (invalid package name)" >&2
     ((FAILED+=1))
     continue
@@ -75,28 +75,39 @@ for PKG in "${PACKAGES[@]}"; do
   fi
   PATHS=$(printf '%s' "$PM_PATH_RAW" | tr -d '\r')
   if [[ -z "$PATHS" ]]; then
-    rm -rf "$DEST_ABS"
-    echo "SKIP  $PKG (not installed on device)"
+    echo "SKIP  $PKG (not installed on device; preserved prior pull set)"
     ((SKIPPED+=1))
     continue
   fi
 
-  rm -rf "$DEST_ABS"
-  mkdir -p "$DEST_ABS"
+  STAGE_DIR="$APKS_DIR/.staging-$PKG-$$"
+  rm -rf "$STAGE_DIR"
+  mkdir -p "$STAGE_DIR"
   echo "Pulling $PKG..."
+  package_failed=0
 
   while IFS= read -r line; do
     APK_PATH="${line#package:}"
     FNAME=$(basename "$APK_PATH")
-    if "${ADB[@]}" pull "$APK_PATH" "$DEST_ABS/$FNAME" >/dev/null 2>&1; then
-      SIZE=$(du -sh "$DEST_ABS/$FNAME" | cut -f1)
+    if "${ADB[@]}" pull "$APK_PATH" "$STAGE_DIR/$FNAME" >/dev/null 2>&1; then
+      SIZE=$(du -sh "$STAGE_DIR/$FNAME" | cut -f1)
       echo "  ✓  $FNAME ($SIZE)"
       ((PULLED+=1))
     else
       echo "  ✗  $FNAME (pull failed)" >&2
+      package_failed=1
       ((FAILED+=1))
     fi
   done <<< "$PATHS"
+
+  if (( package_failed > 0 )); then
+    rm -rf "$STAGE_DIR"
+    echo "FAIL  $PKG (preserved prior pull set)" >&2
+    continue
+  fi
+
+  rm -rf "$DEST_ABS"
+  mv "$STAGE_DIR" "$DEST_ABS"
 done
 
 echo ""

@@ -8,8 +8,11 @@ import argparse
 import csv
 import json
 import os
+import re
 import sys
 from datetime import datetime, timezone
+
+SHA256_RE = re.compile(r"^[0-9a-fA-F]{64}$")
 
 
 def timestamp_key(value):
@@ -47,7 +50,7 @@ def merge_unique_files(existing_files, incoming_files):
 
 def load_sums(path):
     sums = {}
-    with open(path) as f:
+    with open(path, encoding='utf-8') as f:
         for line in f:
             line = line.strip()
             if not line:
@@ -55,7 +58,9 @@ def load_sums(path):
             parts = line.split(None, 1)
             if len(parts) == 2:
                 sha, fpath = parts
-                sums[fpath.lstrip('./')] = sha
+                sha = sha.strip().lower()
+                if SHA256_RE.match(sha):
+                    sums[fpath.lstrip('./')] = sha
     return sums
 
 
@@ -73,7 +78,20 @@ def load_csvs(paths):
                         file=sys.stderr,
                     )
                     continue
-                pkg = str(meta.get('package_name', '')).strip()
+                if not isinstance(meta, dict):
+                    print(
+                        f"WARN: Skipping non-object ITEM_DATA in {path}:{index}",
+                        file=sys.stderr,
+                    )
+                    continue
+                pkg_raw = meta.get('package_name', '')
+                if not isinstance(pkg_raw, str):
+                    print(
+                        f"WARN: Skipping non-string package_name in {path}:{index}",
+                        file=sys.stderr,
+                    )
+                    continue
+                pkg = pkg_raw.strip()
                 if not pkg:
                     continue
 
@@ -101,16 +119,23 @@ def load_csvs(paths):
                     if item_type not in ('apk', 'apks'):
                         continue
                     item_path = item.get('path')
-                    if not item_path:
+                    if not isinstance(item_path, str) or not item_path.strip():
                         print(
                             f"WARN: Skipping FILE_LIST entry without path in {path}:{index}",
+                            file=sys.stderr,
+                        )
+                        continue
+                    backup_hash = str(item.get('hash', '')).strip().lower()
+                    if backup_hash and not SHA256_RE.match(backup_hash):
+                        print(
+                            f"WARN: Skipping FILE_LIST entry with invalid hash in {path}:{index}",
                             file=sys.stderr,
                         )
                         continue
                     parsed_files.append(
                         {
                             'filename': os.path.basename(item_path),
-                            'backup_hash': item.get('hash', ''),
+                            'backup_hash': backup_hash,
                             'size': item.get('size', 0),
                             'type': item_type,
                         }
@@ -220,15 +245,16 @@ def parse_galaxy_store_download_history(path):
         if len(row) == 1 and row[0].strip():
             break
 
-        content_id = row[header_idx.get('content id', -1)].strip() if 'content id' in header_idx else ''
+        content_idx = header_idx.get('content id', -1)
+        content_id = row[content_idx].strip() if content_idx >= 0 and content_idx < len(row) else ''
         model = (
             row[header_idx.get('device model id', -1)].strip()
-            if 'device model id' in header_idx
+            if 'device model id' in header_idx and header_idx.get('device model id', -1) < len(row)
             else ''
         )
         version = (
             row[header_idx.get('version of the last downloaded app', -1)].strip()
-            if 'version of the last downloaded app' in header_idx
+            if 'version of the last downloaded app' in header_idx and header_idx.get('version of the last downloaded app', -1) < len(row)
             else ''
         )
         if not content_id and not model:
@@ -273,7 +299,7 @@ def merge(apps, sums, *, smartthings_devices, galaxy_store_summary, pulled_devic
                 'pulled_hash_sha256': pulled_hash,
                 'size_bytes': bf['size'],
                 'type': bf['type'],
-                'hash_match': bf['backup_hash'] == pulled_hash if pulled_hash else None,
+                'hash_match': (bf['backup_hash'] == pulled_hash) if (bf['backup_hash'] and pulled_hash) else None,
             })
 
         # Package-level Galaxy Store linkage is unknown with this export shape
@@ -291,7 +317,7 @@ def merge(apps, sums, *, smartthings_devices, galaxy_store_summary, pulled_devic
             'app_name': info['app_name'],
             'version_code': info['version_code'],
             'is_aab': info['is_aab'],
-            'backup_timestamp_ms': info['backup_timestamp'],
+            'backup_timestamp_ms': timestamp_key(info['backup_timestamp']),
             'pulled_from_device': pulled_device,
             'account_device_models': account_device_models,
             'galaxy_store': galaxy_store_evidence,
@@ -340,7 +366,7 @@ def main():
     out_dir = os.path.dirname(args.out)
     if out_dir:
         os.makedirs(out_dir, exist_ok=True)
-    with open(args.out, 'w') as f:
+    with open(args.out, 'w', encoding='utf-8') as f:
         json.dump(result, f, indent=2)
     print(f"Written {len(result['packages'])} package records to {args.out}")
 

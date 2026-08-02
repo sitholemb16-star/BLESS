@@ -11,7 +11,10 @@ apps can update between backup time and pull time.
 import argparse
 import csv
 import json
+import re
 import sys
+
+SHA256_RE = re.compile(r"^[0-9a-fA-F]{64}$")
 
 
 def load_sums(path):
@@ -25,7 +28,7 @@ def load_sums(path):
             if len(parts) != 2:
                 continue
             sha, rel_path = parts
-            sums[rel_path.lstrip("./")] = sha
+            sums[rel_path.lstrip("./")] = sha.lower()
     return sums
 
 
@@ -37,9 +40,22 @@ def load_expected(csv_paths):
             for index, row in enumerate(csv.DictReader(f), start=2):
                 try:
                     meta = json.loads(row.get("ITEM_DATA", "{}"))
-                    pkg = meta.get("package_name")
-                    if not pkg:
+                    if not isinstance(meta, dict):
+                        invalid_rows += 1
+                        print(
+                            f"WARN: non-object ITEM_DATA in {path}:{index}",
+                            file=sys.stderr,
+                        )
                         continue
+                    pkg = meta.get("package_name")
+                    if not isinstance(pkg, str) or not pkg.strip():
+                        invalid_rows += 1
+                        print(
+                            f"WARN: missing/invalid package_name in {path}:{index}",
+                            file=sys.stderr,
+                        )
+                        continue
+                    pkg = pkg.strip()
                     file_list = json.loads(row.get("FILE_LIST", "[]"))
                     if not isinstance(file_list, list):
                         invalid_rows += 1
@@ -60,10 +76,18 @@ def load_expected(csv_paths):
                         if item_type not in ("apk", "apks"):
                             continue
                         item_path = item.get("path")
-                        if not item_path:
+                        if not isinstance(item_path, str) or not item_path.strip():
                             invalid_rows += 1
                             print(
                                 f"WARN: FILE_LIST entry missing path in {path}:{index}",
+                                file=sys.stderr,
+                            )
+                            continue
+                        backup_hash = str(item.get("hash", "")).strip()
+                        if backup_hash and not SHA256_RE.match(backup_hash):
+                            invalid_rows += 1
+                            print(
+                                f"WARN: invalid FILE_LIST hash in {path}:{index}",
                                 file=sys.stderr,
                             )
                             continue
@@ -71,7 +95,7 @@ def load_expected(csv_paths):
                         expected.append(
                             {
                                 "rel_path": rel,
-                                "backup_hash": item.get("hash", ""),
+                                "backup_hash": backup_hash.lower(),
                                 "package_name": pkg,
                                 "type": item_type,
                             }

@@ -10,7 +10,22 @@ AVD_HOME="/Volumes/VOLUME 1/2027 Final Drafts.sparsebundle/android-avd"
 AVD_NAME="Galaxy-S25-128GB"
 SYSIMG_35="system-images;android-35;google_apis_playstore;arm64-v8a"
 SYSIMG_34="system-images;android-34;google_apis_playstore;arm64-v8a"
-JAVA_HOME="/usr/local/opt/openjdk"
+FORCE=0
+
+while [[ $# -gt 0 ]]; do
+  case "$1" in
+    --force) FORCE=1; shift ;;
+    *) echo "Unknown arg: $1" >&2; exit 1 ;;
+  esac
+done
+
+if [[ -n "${JAVA_HOME:-}" ]]; then
+  JAVA_HOME="${JAVA_HOME}"
+elif [[ -d "/opt/homebrew/opt/openjdk" ]]; then
+  JAVA_HOME="/opt/homebrew/opt/openjdk"
+else
+  JAVA_HOME="/usr/local/opt/openjdk"
+fi
 
 export JAVA_HOME
 export ANDROID_SDK_ROOT="$SDK_ROOT"
@@ -47,10 +62,16 @@ fi
 # ── 2) Create AVD dir
 mkdir -p "$AVD_HOME"
 
-# ── 3) Delete existing AVD if present
-if [[ -d "$AVD_HOME/$AVD_NAME.avd" ]]; then
-  echo "Removing existing AVD $AVD_NAME..."
-  avdmanager delete avd -n "$AVD_NAME" 2>/dev/null || rm -rf "$AVD_HOME/$AVD_NAME.avd" "$AVD_HOME/$AVD_NAME.ini"
+# ── 3) Preserve existing AVD unless --force is provided
+if [[ -d "$AVD_HOME/$AVD_NAME.avd" || -f "$AVD_HOME/$AVD_NAME.ini" ]]; then
+  if [[ "$FORCE" -ne 1 ]]; then
+    echo "AVD '$AVD_NAME' already exists; preserving current device state."
+    echo "Re-run with --force to recreate it from scratch."
+    exit 0
+  fi
+  echo "Removing existing AVD $AVD_NAME (--force)..."
+  avdmanager delete avd -n "$AVD_NAME" 2>/dev/null || true
+  rm -rf "$AVD_HOME/$AVD_NAME.avd" "$AVD_HOME/$AVD_NAME.ini"
 fi
 
 # ── 4) Create the AVD (pixel_9_pro = 6.3" 1080×2424, closest to S25 6.2")

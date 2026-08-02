@@ -68,7 +68,11 @@ jobs:
         run: |
           for script in scripts/setup-s25-avd scripts/launch-s25 scripts/install-apks-to-emulator; do
             if [ -f "$script" ]; then
-              bash -n "$script" && echo "SYNTAX OK: $script"
+              if ! bash -n "$script"; then
+                echo "SYNTAX FAIL: $script" >&2
+                exit 1
+              fi
+              echo "SYNTAX OK: $script"
             fi
           done
 

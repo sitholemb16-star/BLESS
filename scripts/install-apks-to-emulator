@@ -26,11 +26,23 @@ if ! command -v adb >/dev/null 2>&1; then
 fi
 
 ADB=(adb -s "$SERIAL")
+EXPECTED_AVD_NAME="${EXPECTED_AVD_NAME:-Galaxy-S25-128GB}"
+BOOT_TIMEOUT_SECONDS="${BOOT_TIMEOUT_SECONDS:-180}"
 
 # Wait for emulator to be fully booted
 echo "Waiting for emulator $SERIAL to finish booting..."
 "${ADB[@]}" wait-for-device
+avd_name="$("${ADB[@]}" shell getprop ro.boot.qemu.avd_name 2>/dev/null | tr -d '\r')"
+if [[ -n "$avd_name" && "$avd_name" != "$EXPECTED_AVD_NAME" ]]; then
+  echo "ERROR: Connected emulator is '$avd_name', expected '$EXPECTED_AVD_NAME'." >&2
+  exit 1
+fi
+deadline=$((SECONDS + BOOT_TIMEOUT_SECONDS))
 until [[ "$("${ADB[@]}" shell getprop sys.boot_completed 2>/dev/null | tr -d '\r')" == "1" ]]; do
+  if (( SECONDS >= deadline )); then
+    echo "ERROR: Emulator did not finish booting within ${BOOT_TIMEOUT_SECONDS}s." >&2
+    exit 1
+  fi
   sleep 3
   echo "  still booting..."
 done
@@ -38,7 +50,14 @@ echo "  Emulator ready."
 
 PASSED=0; FAILED=0; SKIPPED=0
 
-for pkg_dir in "$APKS_DIR"/*/; do
+shopt -s nullglob
+pkg_dirs=("$APKS_DIR"/*/)
+if [[ ${#pkg_dirs[@]} -eq 0 ]]; then
+  echo "ERROR: No package directories found under $APKS_DIR" >&2
+  exit 1
+fi
+
+for pkg_dir in "${pkg_dirs[@]}"; do
   pkg="$(basename "$pkg_dir")"
   # Skip non-package dirs
   [[ "$pkg" == "packages.txt" ]] && continue

@@ -39,14 +39,23 @@ adb_run() {
 
 require_adb() {
   command -v "$ADB" >/dev/null 2>&1 || fail "adb was not found; install Android SDK Platform-Tools"
-  adb_run get-state >/dev/null 2>&1 || fail "no reachable Android device or emulator"
+  local state
+  state="$(adb_run get-state 2>/dev/null || true)"
+  [[ "$state" == "device" ]] || fail "no reachable Android device or emulator"
 }
 
 require_number() {
   local number="${1:-}"
-  local supported_number='^[+0-9*#,;]+$'
+  local supported_number='^\+?[0-9]+$'
   [[ -n "$number" ]] || fail "a phone number is required"
   [[ "$number" =~ $supported_number ]] || fail "phone number contains unsupported characters: $number"
+}
+
+require_safe_message() {
+  local message="$1"
+  [[ "$message" != *$'\n'* ]] || fail "SMS message cannot contain newlines"
+  [[ "$message" != *";"* && "$message" != *"&"* && "$message" != *"|"* && "$message" != *"$"* && "$message" != *"<"* && "$message" != *">"* && "$message" != *"\`"* ]] \
+    || fail "SMS message contains unsupported shell metacharacters"
 }
 
 require_emulator() {
@@ -109,15 +118,23 @@ case "$COMMAND" in
     adb_run emu gsm cancel "$1"
     ;;
   compose-sms)
-    require_number "${1:-}"
-    [[ -n "${2:-}" ]] || fail "an SMS message is required"
-    adb_run shell am start -W -a android.intent.action.SENDTO -d "smsto:$1" --es sms_body "$2"
+    number="${1:-}"
+    require_number "$number"
+    shift
+    [[ -n "${1:-}" ]] || fail "an SMS message is required"
+    msg="$*"
+    require_safe_message "$msg"
+    adb_run shell am start -W -a android.intent.action.SENDTO -d "smsto:$number" --es sms_body "$msg"
     ;;
   incoming-sms)
     require_number "${1:-}"
-    [[ -n "${2:-}" ]] || fail "an SMS message is required"
+    number="$1"
+    shift
+    [[ -n "${1:-}" ]] || fail "an SMS message is required"
+    msg="$*"
+    require_safe_message "$msg"
     require_emulator
-    adb_run emu sms send "$1" "$2"
+    adb_run emu sms send "$number" "$msg"
     ;;
   *)
     usage >&2

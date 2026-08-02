@@ -12,17 +12,28 @@ if ! find "$APKS_DIR" -type f \( -name "*.apk" -o -name "*.apks" \) -print -quit
   exit 0
 fi
 
-find "$APKS_DIR" -type f \( -name "*.apk" -o -name "*.apks" \) -print0 \
-  | sort -z \
-  | while IFS= read -r -d '' apk_file; do
-      if command -v sha256sum >/dev/null 2>&1; then
-        sha256sum "$apk_file"
-      else
-        shasum -a 256 "$apk_file"
-      fi
-    done \
-  | sed "s|$REPO_ROOT/||" \
-  > "$OUT"
+python3 - "$REPO_ROOT" "$APKS_DIR" "$OUT" <<'PY'
+import hashlib
+import os
+import sys
+
+repo_root, apks_dir, out = sys.argv[1:4]
+paths = []
+for root, _, files in os.walk(apks_dir):
+    for name in files:
+        if name.endswith(".apk") or name.endswith(".apks"):
+            paths.append(os.path.join(root, name))
+paths.sort()
+
+with open(out, "w", encoding="utf-8") as fh:
+    for path in paths:
+        rel = os.path.relpath(path, repo_root)
+        h = hashlib.sha256()
+        with open(path, "rb") as src:
+            for chunk in iter(lambda: src.read(1024 * 1024), b""):
+                h.update(chunk)
+        fh.write(f"{h.hexdigest()}  {rel}\n")
+PY
 
 echo "Manifest written: $OUT"
 cat "$OUT"
