@@ -78,7 +78,7 @@ def load_csvs(paths):
     for path in paths:
         with open(path, encoding='utf-8-sig') as f:
             for index, row in enumerate(csv.DictReader(f), start=2):
-                item_data_raw = row.get('ITEM_DATA', '{}')
+                item_data_raw = row.get('ITEM_DATA') or '{}'
                 try:
                     meta = json.loads(item_data_raw)
                 except json.JSONDecodeError as exc:
@@ -104,7 +104,7 @@ def load_csvs(paths):
                 if not pkg:
                     continue
 
-                file_list_raw = row.get('FILE_LIST', '[]')
+                file_list_raw = row.get('FILE_LIST') or '[]'
                 try:
                     file_list = json.loads(file_list_raw)
                 except json.JSONDecodeError as exc:

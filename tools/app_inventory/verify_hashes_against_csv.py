@@ -139,6 +139,9 @@ def main():
     missing_backup = 0
     mismatch_rows = []
 
+    expected_paths = {exp["rel_path"] for exp in expected}
+    local_only = sorted(set(sums.keys()) - expected_paths)
+
     for exp in expected:
         rel_path = exp["rel_path"]
         backup_hash = exp["backup_hash"]
@@ -163,6 +166,7 @@ def main():
     print(f"  missing_local:      {missing_local}")
     print(f"  missing_backup:     {missing_backup}")
     print(f"  invalid_rows:       {invalid_rows}")
+    print(f"  local_only:         {len(local_only)}")
 
     if mismatch_rows:
         print("\nTop mismatches:")
@@ -171,8 +175,16 @@ def main():
             print(f"    backup={backup_hash}")
             print(f"    local ={local_hash}")
 
+    if local_only:
+        print("\nLocal-only APKs (present in SHA256SUMS.txt but absent from any CSV FILE_LIST):")
+        for rel in local_only[:20]:
+            print(f"  - {rel}")
+        if len(local_only) > 20:
+            print(f"  ... and {len(local_only) - 20} more")
+
     if args.fail_on_mismatch and (
         mismatched > 0 or missing_local > 0 or missing_backup > 0 or invalid_rows > 0
+        or len(local_only) > 0
     ):
         return 2
     return 0

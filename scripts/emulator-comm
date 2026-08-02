@@ -54,6 +54,7 @@ require_number() {
 require_safe_message() {
   local message="$1"
   [[ "$message" != *$'\n'* ]] || fail "SMS message cannot contain newlines"
+  [[ "$message" != *$'\r'* ]] || fail "SMS message cannot contain carriage returns"
 }
 
 require_emulator() {

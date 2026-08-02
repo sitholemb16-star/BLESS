@@ -19,6 +19,7 @@ jobs:
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683  # v4.2.2
         with:
           lfs: true
+          persist-credentials: false
 
       - name: Verify LFS APK hashes
         run: |
@@ -67,13 +68,15 @@ jobs:
       - name: Bash syntax check — S25 emulator scripts
         run: |
           for script in scripts/setup-s25-avd scripts/launch-s25 scripts/install-apks-to-emulator; do
-            if [ -f "$script" ]; then
-              if ! bash -n "$script"; then
-                echo "SYNTAX FAIL: $script" >&2
-                exit 1
-              fi
-              echo "SYNTAX OK: $script"
+            if [ ! -f "$script" ]; then
+              echo "MISSING REQUIRED SCRIPT: $script" >&2
+              exit 1
             fi
+            if ! bash -n "$script"; then
+              echo "SYNTAX FAIL: $script" >&2
+              exit 1
+            fi
+            echo "SYNTAX OK: $script"
           done
 
       - name: Run harness tests (mocked ADB)

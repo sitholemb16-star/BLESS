@@ -35,7 +35,8 @@ for root, _, files in os.walk(apks_dir, onerror=on_walk_error):
                 paths.append(path)
 paths.sort()
 
-with open(out, "w", encoding="utf-8") as fh:
+tmp = out + ".tmp"
+with open(tmp, "w", encoding="utf-8") as fh:
     for path in paths:
         rel = os.path.relpath(path, repo_root)
         if "\n" in rel or "\r" in rel:
@@ -45,6 +46,7 @@ with open(out, "w", encoding="utf-8") as fh:
             for chunk in iter(lambda: src.read(1024 * 1024), b""):
                 h.update(chunk)
         fh.write(f"{h.hexdigest()}  {rel}\n")
+os.replace(tmp, out)
 PY
 
 echo "Manifest written: $OUT"
