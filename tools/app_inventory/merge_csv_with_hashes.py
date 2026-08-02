@@ -51,10 +51,17 @@ def merge_unique_files(existing_files, incoming_files):
             by_key[key] = len(existing_files) - 1
             continue
         existing = existing_files[idx]
-        existing_hash = bool(existing.get('backup_hash'))
-        incoming_hash = bool(item.get('backup_hash'))
+        existing_hash = existing.get('backup_hash', '')
+        incoming_hash = item.get('backup_hash', '')
         if (not existing_hash) and incoming_hash:
             existing_files[idx] = item
+        elif existing_hash and incoming_hash and existing_hash != incoming_hash:
+            print(
+                f"WARN: Conflicting backup hashes for '{item.get('filename')}' "
+                f"(type={item.get('type')}); marking as ambiguous.",
+                file=sys.stderr,
+            )
+            existing_files[idx] = dict(existing, backup_hash='', hash_conflict=True)
 
 
 def load_sums(path):
@@ -121,6 +128,7 @@ def load_csvs(paths):
                     continue
 
                 parsed_files = []
+                malformed_apk_count = 0
                 for item in file_list:
                     if not isinstance(item, dict):
                         continue
@@ -133,6 +141,7 @@ def load_csvs(paths):
                             f"WARN: Skipping FILE_LIST entry without path in {path}:{index}",
                             file=sys.stderr,
                         )
+                        malformed_apk_count += 1
                         continue
                     raw_hash = item.get('hash', '')
                     backup_hash = '' if raw_hash is None else str(raw_hash).strip().lower()
@@ -159,6 +168,7 @@ def load_csvs(paths):
                         'is_aab': meta.get('is_aab', True),
                         'backup_timestamp': row.get('TIMESTAMP', ''),
                         'backup_files': [],
+                        'has_malformed_apk_entries': False,
                     }
 
                 app = apps[pkg]
@@ -171,8 +181,11 @@ def load_csvs(paths):
                     app['is_aab'] = meta.get('is_aab', app.get('is_aab', True))
                     app['backup_timestamp'] = ts
                     app['backup_files'] = list(parsed_files)
+                    app['has_malformed_apk_entries'] = malformed_apk_count > 0
                 elif ts == app.get('backup_timestamp', ''):
                     merge_unique_files(app['backup_files'], parsed_files)
+                    if malformed_apk_count > 0:
+                        app['has_malformed_apk_entries'] = True
     return apps
 
 
@@ -289,7 +302,14 @@ def parse_galaxy_store_download_history(path):
 
 def merge(apps, sums, *, smartthings_devices, galaxy_store_summary, pulled_device):
     records = []
-    generated_at = datetime.now(timezone.utc).isoformat()
+    epoch_str = os.environ.get('SOURCE_DATE_EPOCH', '')
+    if epoch_str:
+        try:
+            generated_at = datetime.fromtimestamp(int(epoch_str), tz=timezone.utc).isoformat()
+        except (ValueError, OSError):
+            generated_at = datetime.now(timezone.utc).isoformat()
+    else:
+        generated_at = datetime.now(timezone.utc).isoformat()
     account_device_models = sorted(
         {
             d['model_number']
@@ -332,9 +352,11 @@ def merge(apps, sums, *, smartthings_devices, galaxy_store_summary, pulled_devic
             'account_device_models': account_device_models,
             'galaxy_store': galaxy_store_evidence,
             'artifacts': pulled,
-            'all_hashes_verified': all(
-                a['hash_match'] is True for a in pulled
-            ) if pulled else False,
+            'all_hashes_verified': (
+                not info.get('has_malformed_apk_entries', False)
+                and bool(pulled)
+                and all(a['hash_match'] is True for a in pulled)
+            ),
         })
     return {
         'generated_at': generated_at,
@@ -392,8 +414,17 @@ def main():
     out_dir = os.path.dirname(args.out)
     if out_dir:
         os.makedirs(out_dir, exist_ok=True)
-    with open(args.out, 'w', encoding='utf-8') as f:
-        json.dump(result, f, indent=2, sort_keys=True)
+    tmp_out = args.out + '.tmp'
+    try:
+        with open(tmp_out, 'w', encoding='utf-8') as f:
+            json.dump(result, f, indent=2, sort_keys=True)
+        os.replace(tmp_out, args.out)
+    except Exception:
+        try:
+            os.unlink(tmp_out)
+        except OSError:
+            pass
+        raise
     print(f"Written {len(result['packages'])} package records to {args.out}")
 
 if __name__ == '__main__':

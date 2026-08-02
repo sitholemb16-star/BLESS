@@ -30,7 +30,7 @@ router.get("/provenance", (_req: Request, res: Response) => {
   readFile(provenancePath, "utf8")
     .then((data) => {
       const parsed: unknown = JSON.parse(data);
-      res.json(parsed);
+      res.set("Cache-Control", "no-store").json(parsed);
     })
     .catch((err: NodeJS.ErrnoException) => {
       if (err.code === "ENOENT") {

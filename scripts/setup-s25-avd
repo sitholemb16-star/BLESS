@@ -8,8 +8,31 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 # shellcheck source=scripts/s25-env.sh
 source "$SCRIPT_DIR/s25-env.sh"
 
-SYSIMG_35="system-images;android-35;google_apis_playstore;arm64-v8a"
+# ── Resolve ABI from environment or host architecture ──────────────────────────
+if [[ -n "${SYSIMG_ABI:-}" ]]; then
+  ABI="$SYSIMG_ABI"
+else
+  _host_arch="$(uname -m)"
+  case "$_host_arch" in
+    arm64)   ABI="arm64-v8a" ;;
+    x86_64)  ABI="x86_64"   ;;
+    *)
+      echo "ERROR: Unsupported host architecture '$_host_arch'. " \
+           "Set SYSIMG_ABI to 'arm64-v8a' or 'x86_64' explicitly." >&2
+      exit 1
+      ;;
+  esac
+  unset _host_arch
+fi
+
+SYSIMG_35="system-images;android-35;google_apis_playstore;${ABI}"
 FORCE=0
+
+# ── Validate AVD_NAME (no path separators) ────────────────────────────────────
+if [[ "$AVD_NAME" =~ [/\\] ]]; then
+  echo "ERROR: AVD_NAME must not contain '/' or '\\' (got: '$AVD_NAME')." >&2
+  exit 1
+fi
 
 while [[ $# -gt 0 ]]; do
   case "$1" in
@@ -35,7 +58,7 @@ install_sysimg() {
 }
 
 # ── 1) Install system images if missing
-if [[ ! -f "$SDK_ROOT/system-images/android-35/google_apis_playstore/arm64-v8a/source.properties" ]]; then
+if [[ ! -f "$SDK_ROOT/system-images/android-35/google_apis_playstore/${ABI}/source.properties" ]]; then
   echo "Installing API 35 Play Store arm64 system image..."
   install_sysimg "$SYSIMG_35"
 else
