@@ -16,8 +16,8 @@ export PATH="$JAVA_HOME/bin:$SDK_ROOT/platform-tools:$SDK_ROOT/emulator:$PATH"
 
 EMU="$SDK_ROOT/emulator/emulator"
 if [[ ! -x "$EMU" ]]; then
-  echo "ERROR: emulator binary not found at $EMU"
-  echo "Run ./scripts/setup-s25-avd first."
+  echo "ERROR: emulator binary not found at $EMU" >&2
+  echo "Install the Android Emulator package (SDK Manager) or correct SDK_ROOT, then run ./scripts/setup-s25-avd." >&2
   exit 1
 fi
 

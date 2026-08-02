@@ -35,8 +35,10 @@ export PATH="$JAVA_HOME/bin:$SDK_ROOT/cmdline-tools/latest/bin:$SDK_ROOT/platfor
 install_sysimg() {
   local sysimg="$1"
   set +o pipefail
-  yes | sdkmanager --sdk_root="$SDK_ROOT" "$sysimg"
-  local rc=${PIPESTATUS[1]}
+  local rc=0
+  if ! yes | sdkmanager --sdk_root="$SDK_ROOT" "$sysimg"; then
+    rc=${PIPESTATUS[1]:-1}
+  fi
   set -o pipefail
   if [[ $rc -ne 0 ]]; then
     echo "ERROR: sdkmanager failed for $sysimg" >&2
