@@ -129,6 +129,16 @@ def main():
     )
     args = ap.parse_args()
 
+    # Precondition: every --csv path and --sums must exist before reading.
+    missing = [f for f in args.csv if not os.path.isfile(f)]
+    if missing:
+        for f in missing:
+            print(f"ERROR: CSV file not found: {f}", file=sys.stderr)
+        sys.exit(1)
+    if not os.path.isfile(args.sums):
+        print(f"ERROR: sums file not found: {args.sums}", file=sys.stderr)
+        sys.exit(1)
+
     sums, invalid_local_rows = load_sums(args.sums)
     expected, invalid_rows = load_expected(args.csv)
     invalid_rows += invalid_local_rows

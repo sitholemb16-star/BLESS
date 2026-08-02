@@ -14,15 +14,29 @@
 
 EXTERNAL="${EXTERNAL:-/Volumes/Secure AI Coding Tools}"
 SDK_ROOT="${ANDROID_SDK_ROOT:-$EXTERNAL/Android/sdk}"
-AVD_HOME="${ANDROID_AVD_HOME:-/Volumes/VOLUME 1/2027 Final Drafts.sparsebundle/android-avd}"
-AVD_NAME="Galaxy-S25-128GB"
+AVD_NAME="${AVD_NAME:-Galaxy-S25-128GB}"
+
+# AVD home must be set via ANDROID_AVD_HOME; there is no portable fallback.
+if [[ -z "${ANDROID_AVD_HOME:-}" ]]; then
+  echo "ERROR: ANDROID_AVD_HOME is not set. Export it before sourcing this file." >&2
+  return 1
+fi
+AVD_HOME="$ANDROID_AVD_HOME"
 
 if [[ -n "${JAVA_HOME:-}" ]]; then
-  JAVA_HOME="${JAVA_HOME}"
-elif [[ -d "/opt/homebrew/opt/openjdk" ]]; then
-  JAVA_HOME="/opt/homebrew/opt/openjdk"
+  : # already set by the caller — use it as-is
+elif command -v java >/dev/null 2>&1; then
+  # Resolve JAVA_HOME from the runtime on PATH (portable across macOS/Linux).
+  _java_bin="$(command -v java)"
+  # Follow symlinks to the real binary.
+  while [[ -L "$_java_bin" ]]; do
+    _java_bin="$(readlink "$_java_bin")"
+  done
+  JAVA_HOME="$(cd "$(dirname "$_java_bin")/.." && pwd)"
+  unset _java_bin
 else
-  JAVA_HOME="/usr/local/opt/openjdk"
+  echo "ERROR: JAVA_HOME is not set and java is not on PATH." >&2
+  return 1
 fi
 
 export JAVA_HOME
