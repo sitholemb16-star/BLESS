@@ -108,3 +108,23 @@ jobs:
             echo "ERROR: tests/apk-shell-pipeline-test is required for this workflow." >&2
             exit 1
           fi
+
+      - name: Run launch-s25 argument tests
+        run: |
+          if [ -f tests/launch-s25-test ]; then
+            chmod +x tests/launch-s25-test scripts/launch-s25 scripts/s25-env.sh 2>/dev/null || true
+            tests/launch-s25-test
+          else
+            echo "ERROR: tests/launch-s25-test is required for this workflow." >&2
+            exit 1
+          fi
+
+      - name: Run AVD lifecycle tests
+        run: |
+          if [ -f tests/avd-lifecycle-test ]; then
+            chmod +x tests/avd-lifecycle-test scripts/setup-s25-avd 2>/dev/null || true
+            tests/avd-lifecycle-test
+          else
+            echo "ERROR: tests/avd-lifecycle-test is required for this workflow." >&2
+            exit 1
+          fi
