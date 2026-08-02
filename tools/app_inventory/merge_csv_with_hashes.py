@@ -343,7 +343,7 @@ def merge(apps, sums, *, smartthings_devices, galaxy_store_summary, pulled_devic
             'galaxy_store_download_history': galaxy_store_summary,
             'pulled_from_device': pulled_device,
         },
-        'packages': records,
+        'packages': sorted(records, key=lambda r: r['package_name']),
     }
 
 def main():
@@ -353,9 +353,25 @@ def main():
     p.add_argument('--out', default='apks/provenance.json')
     p.add_argument('--galaxy-store-csv', default='')
     p.add_argument('--smartthings-csv', default='')
-    p.add_argument('--device-serial', default='')
-    p.add_argument('--device-model', default='')
+    p.add_argument('--device-serial', default=os.environ.get('DEVICE_SERIAL', ''))
+    p.add_argument('--device-model', default=os.environ.get('DEVICE_MODEL', ''))
     args = p.parse_args()
+
+    # Precondition: every --csv path and --sums must exist before reading.
+    missing = [f for f in args.csv if not os.path.isfile(f)]
+    if missing:
+        for f in missing:
+            print(f"ERROR: CSV file not found: {f}", file=sys.stderr)
+        sys.exit(1)
+    if not os.path.isfile(args.sums):
+        print(f"ERROR: sums file not found: {args.sums}", file=sys.stderr)
+        sys.exit(1)
+    if args.galaxy_store_csv and not os.path.isfile(args.galaxy_store_csv):
+        print(f"ERROR: --galaxy-store-csv not found: {args.galaxy_store_csv}", file=sys.stderr)
+        sys.exit(1)
+    if args.smartthings_csv and not os.path.isfile(args.smartthings_csv):
+        print(f"ERROR: --smartthings-csv not found: {args.smartthings_csv}", file=sys.stderr)
+        sys.exit(1)
 
     apps = load_csvs(args.csv)
     sums = load_sums(args.sums)
@@ -377,7 +393,7 @@ def main():
     if out_dir:
         os.makedirs(out_dir, exist_ok=True)
     with open(args.out, 'w', encoding='utf-8') as f:
-        json.dump(result, f, indent=2)
+        json.dump(result, f, indent=2, sort_keys=True)
     print(f"Written {len(result['packages'])} package records to {args.out}")
 
 if __name__ == '__main__':
