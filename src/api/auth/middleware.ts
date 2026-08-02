@@ -9,20 +9,27 @@
  */
 
 import type { Request, Response, NextFunction } from "express";
+import { createHmac, timingSafeEqual as cryptoTimingSafeEqual } from "node:crypto";
+
+// Anchored regex: exactly "Bearer <single-token>", no extra spaces/tokens.
+const BEARER_RE = /^Bearer ([!-~]+)$/;
+
+// Stable key used only for constant-time HMAC comparison; not a secret.
+const CMP_KEY = "bless-auth-hmac-compare";
 
 /**
- * Returns true when the process has a non-empty API_KEY configured.
+ * Returns true when the process has a non-empty, non-whitespace API_KEY.
  * Call once at startup to fail-closed before accepting connections.
  */
 export function isApiKeyConfigured(): boolean {
-  return typeof process.env["API_KEY"] === "string" &&
-    process.env["API_KEY"].length > 0;
+  const key = process.env["API_KEY"];
+  return typeof key === "string" && key.trim().length > 0 && key === key.trim();
 }
 
 /**
- * Express middleware that enforces Bearer token authentication.
+ * Express middleware that enforces Bearer authentication.
  *
- * Reads the expected key from `process.env.API_KEY`.  Responds with 401 when
+ * Reads the expected key from `process.env.API_KEY`. Responds with 401 when
  * the header is absent or the token does not match, and 503 when no API key
  * has been configured in the environment (fail-closed posture).
  */
@@ -38,28 +45,41 @@ export function requireApiKey(
   }
 
   const authHeader = req.headers["authorization"] ?? "";
-  const [scheme, token] = authHeader.split(" ");
+  const match = BEARER_RE.exec(authHeader);
 
-  if (scheme !== "Bearer" || !token) {
-    res.status(401).json({ error: "Missing or malformed Authorization header. Expected: Bearer <token>" });
+  if (!match || !match[1]) {
+    res
+      .status(401)
+      .set("WWW-Authenticate", 'Bearer realm="BLESS API"')
+      .json({ error: "Missing or malformed Authorization header. Expected: Bearer <token>" });
     return;
   }
 
-  // Constant-time comparison to prevent timing attacks
-  if (!timingSafeEqual(token, configured)) {
-    res.status(401).json({ error: "Invalid API key." });
+  const token = match[1];
+
+  // HMAC both strings to equal-length digests before comparing — prevents
+  // length-leaking early exits in crypto.timingSafeEqual.
+  if (!hmacTimingSafeEqual(token, configured)) {
+    res
+      .status(401)
+      .set("WWW-Authenticate", 'Bearer realm="BLESS API"')
+      .json({ error: "Invalid API key." });
     return;
   }
 
   next();
 }
 
-/** Constant-time string comparison (no early exit on first mismatch). */
-function timingSafeEqual(a: string, b: string): boolean {
-  if (a.length !== b.length) return false;
-  let result = 0;
-  for (let i = 0; i < a.length; i++) {
-    result |= a.charCodeAt(i) ^ b.charCodeAt(i);
-  }
-  return result === 0;
+/**
+ * Constant-time string equality via HMAC-SHA256.
+ *
+ * Both inputs are reduced to fixed-length digests with the same key before
+ * calling Node's crypto.timingSafeEqual, so comparison time is independent
+ * of the length or content of either string.
+ */
+function hmacTimingSafeEqual(a: string, b: string): boolean {
+  const keyBuf = Buffer.from(CMP_KEY);
+  const aDigest = createHmac("sha256", keyBuf).update(a).digest();
+  const bDigest = createHmac("sha256", keyBuf).update(b).digest();
+  return cryptoTimingSafeEqual(aDigest, bDigest);
 }

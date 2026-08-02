@@ -13,13 +13,16 @@ import provenanceRouter from "./routes/provenance.js";
 export function createApp(): express.Application {
   const app = express();
 
-  app.use(express.json());
+  // Do not advertise the framework in responses.
+  app.disable("x-powered-by");
 
-  // Unauthenticated routes
+  // Unauthenticated routes — no body parsing needed.
   app.use(healthRouter);
 
-  // All /api/* routes require a valid Bearer key
-  app.use("/api", requireApiKey, provenanceRouter);
+  // All /api/* routes require a valid Bearer token.
+  // express.json() is scoped here so unauthenticated requests never reach the
+  // body parser and malformed bodies cannot produce stack traces on public paths.
+  app.use("/api", requireApiKey, express.json(), provenanceRouter);
 
   // 404 fallback
   app.use((_req, res) => {

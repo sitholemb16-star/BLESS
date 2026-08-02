@@ -2,30 +2,32 @@ import request from "supertest";
 import { createApp } from "../app";
 import { promises as fs } from "fs";
 import { join } from "path";
+import os from "os";
 
 const TEST_KEY = "test-key-provenance";
 const SUMS_PATH = join(process.cwd(), "apks", "SHA256SUMS.txt");
-const PROV_PATH = join(process.cwd(), "apks", "provenance.json");
 
 describe("GET /api/provenance", () => {
   let app: ReturnType<typeof createApp>;
+  let tmpDir: string;
 
-  beforeEach(() => {
+  beforeEach(async () => {
+    tmpDir = await fs.mkdtemp(join(os.tmpdir(), "bless-prov-test-"));
     process.env["API_KEY"] = TEST_KEY;
     app = createApp();
   });
 
-  afterEach(() => {
+  afterEach(async () => {
     delete process.env["API_KEY"];
+    delete process.env["PROVENANCE_PATH"];
+    await fs.rm(tmpDir, { recursive: true, force: true });
   });
 
   it("returns 404 when provenance.json does not exist", async () => {
-    // provenance.json is git-ignored and won't be present in CI
-    const exists = await fs.access(PROV_PATH).then(() => true).catch(() => false);
-    if (exists) {
-      // File exists in local dev — skip this variant
-      return;
-    }
+    // Point to a path we know doesn't exist.
+    process.env["PROVENANCE_PATH"] = join(tmpDir, "no-such-file.json");
+    app = createApp();
+
     const res = await request(app)
       .get("/api/provenance")
       .set("Authorization", `Bearer ${TEST_KEY}`);
@@ -34,19 +36,20 @@ describe("GET /api/provenance", () => {
   });
 
   it("returns 200 with parsed JSON when provenance.json exists", async () => {
-    // Only run when the file exists (local dev with pulled APKs)
-    const exists = await fs.access(PROV_PATH).then(() => true).catch(() => false);
-    if (!exists) return;
+    const provData = { generated: "test", apks: [] };
+    const provFile = join(tmpDir, "provenance.json");
+    await fs.writeFile(provFile, JSON.stringify(provData));
+    process.env["PROVENANCE_PATH"] = provFile;
+    app = createApp();
 
     const res = await request(app)
       .get("/api/provenance")
       .set("Authorization", `Bearer ${TEST_KEY}`);
     expect(res.status).toBe(200);
-    expect(typeof res.body).toBe("object");
+    expect(res.body).toMatchObject({ generated: "test" });
   });
 
   it("SHA256SUMS.txt is present in the repo", async () => {
-    // Verify the hashes manifest (tracked in git) is accessible
     const exists = await fs.access(SUMS_PATH).then(() => true).catch(() => false);
     expect(exists).toBe(true);
   });

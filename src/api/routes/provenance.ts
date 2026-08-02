@@ -8,6 +8,10 @@
  * and is intentionally git-ignored to prevent inadvertent disclosure of device
  * identifiers. It is expected to be present at runtime (e.g. copied in CI from
  * a secrets store or regenerated on-demand).
+ *
+ * Path resolution: PROVENANCE_PATH env var overrides the default location, which
+ * is resolved relative to this module's directory (not process.cwd()) so the
+ * server can be started from any working directory.
  */
 
 import { Router, type Request, type Response } from "express";
@@ -16,10 +20,14 @@ import { join } from "path";
 
 const router = Router();
 
-const PROVENANCE_PATH = join(process.cwd(), "apks", "provenance.json");
-
 router.get("/provenance", (_req: Request, res: Response) => {
-  readFile(PROVENANCE_PATH, "utf8")
+  // Resolve path at request time so PROVENANCE_PATH env changes take effect
+  // in tests without module re-loading.
+  const provenancePath =
+    process.env["PROVENANCE_PATH"] ??
+    join(__dirname, "..", "..", "..", "apks", "provenance.json");
+
+  readFile(provenancePath, "utf8")
     .then((data) => {
       const parsed: unknown = JSON.parse(data);
       res.json(parsed);
@@ -27,7 +35,8 @@ router.get("/provenance", (_req: Request, res: Response) => {
     .catch((err: NodeJS.ErrnoException) => {
       if (err.code === "ENOENT") {
         res.status(404).json({
-          error: "Provenance manifest not found. Run tools/app_inventory/merge_csv_with_hashes.py to generate it.",
+          error:
+            "Provenance manifest not found. Run tools/app_inventory/merge_csv_with_hashes.py to generate it.",
         });
       } else {
         res.status(500).json({ error: "Failed to read provenance manifest." });
