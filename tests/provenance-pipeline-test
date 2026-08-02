@@ -50,6 +50,18 @@ python3 tools/app_inventory/merge_csv_with_hashes.py \
   --sums "$tmpdir/sums.txt" \
   --out "$tmpdir/provenance-mixed.json" >/dev/null
 
+# Assert: invalid-timestamp row (version 2 / split.apk) must be discarded;
+# only the valid-timestamp row (version 1 / base.apk) should survive.
+python3 - "$tmpdir/provenance-mixed.json" <<'PY'
+import json, sys
+with open(sys.argv[1], "r", encoding="utf-8") as f:
+    doc = json.load(f)
+pkg = next(p for p in doc["packages"] if p["package_name"] == "com.example.mixedts")
+assert pkg.get("version_code") == 1, f"expected version_code 1, got {pkg.get('version_code')}"
+filenames = [a["filename"] for a in pkg.get("artifacts", [])]
+assert "split.apk" not in filenames, f"split.apk from invalid-timestamp row must be dropped; got {filenames}"
+PY
+
 python3 tools/app_inventory/merge_csv_with_hashes.py \
   --csv "$tmpdir/equal-ts-invalid-first.csv" \
   --sums "$tmpdir/sums.txt" \
