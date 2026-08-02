@@ -44,8 +44,8 @@ until [[ "$("${ADB[@]}" get-state 2>/dev/null | tr -d '\r')" == "device" ]]; do
   sleep 2
 done
 avd_name="$("${ADB[@]}" shell getprop ro.boot.qemu.avd_name 2>/dev/null | tr -d '\r')"
-if [[ -n "$avd_name" && "$avd_name" != "$EXPECTED_AVD_NAME" ]]; then
-  echo "ERROR: Connected emulator is '$avd_name', expected '$EXPECTED_AVD_NAME'." >&2
+if [[ -z "$avd_name" || "$avd_name" != "$EXPECTED_AVD_NAME" ]]; then
+  echo "ERROR: Connected device has AVD name '${avd_name:-<empty>}', expected '$EXPECTED_AVD_NAME'. Refusing to install to a non-emulator or unexpected AVD." >&2
   exit 1
 fi
 until [[ "$("${ADB[@]}" shell getprop sys.boot_completed 2>/dev/null | tr -d '\r')" == "1" ]]; do

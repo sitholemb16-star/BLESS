@@ -91,7 +91,7 @@ ANDROID_AVD_HOME="$EXTERNAL_AVD_HOME" ./scripts/setup-s25-avd
 
 Launch it:
 ```bash
-./scripts/launch-s25
+ANDROID_AVD_HOME="$EXTERNAL_AVD_HOME" ./scripts/launch-s25
 ```
 
 Install pulled APK set into the running emulator:
