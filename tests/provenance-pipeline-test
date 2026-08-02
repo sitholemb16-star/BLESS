@@ -30,6 +30,12 @@ TIMESTAMP,ITEM_DATA,FILE_LIST
 not-a-timestamp,"{""package_name"":""com.example.mixedts"",""app_name"":""Mixed TS"",""version_code"":2,""is_aab"":false}","[{""path"":""split.apk"",""hash"":""bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"",""size"":1,""type"":""apk""}]"
 CSV
 
+cat > "$tmpdir/equal-ts-invalid-first.csv" <<'CSV'
+TIMESTAMP,ITEM_DATA,FILE_LIST
+1700000000200,"{""package_name"":""com.example.ordering"",""app_name"":""Ordering"",""version_code"":1,""is_aab"":false}","[{""path"":""base.apk"",""hash"":""not-a-sha256"",""size"":1,""type"":""apk""}]"
+1700000000200,"{""package_name"":""com.example.ordering"",""app_name"":""Ordering"",""version_code"":1,""is_aab"":false}","[{""path"":""base.apk"",""hash"":""cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"",""size"":1,""type"":""apk""}]"
+CSV
+
 cat > "$tmpdir/sums.txt" <<'SUMS'
 aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa  apks/com.example.app/base.apk
 SUMS
@@ -44,6 +50,11 @@ python3 tools/app_inventory/merge_csv_with_hashes.py \
   --sums "$tmpdir/sums.txt" \
   --out "$tmpdir/provenance-mixed.json" >/dev/null
 
+python3 tools/app_inventory/merge_csv_with_hashes.py \
+  --csv "$tmpdir/equal-ts-invalid-first.csv" \
+  --sums "$tmpdir/sums.txt" \
+  --out "$tmpdir/provenance-ordering.json" >/dev/null
+
 python3 - "$tmpdir/provenance.json" <<'PY'
 import json
 import sys
@@ -51,6 +62,18 @@ with open(sys.argv[1], "r", encoding="utf-8") as f:
     doc = json.load(f)
 assert isinstance(doc.get("packages"), list)
 assert any(p.get("package_name") == "com.example.app" for p in doc["packages"])
+PY
+
+python3 - "$tmpdir/provenance-ordering.json" <<'PY'
+import json
+import sys
+
+with open(sys.argv[1], "r", encoding="utf-8") as f:
+    doc = json.load(f)
+
+pkg = next(p for p in doc["packages"] if p["package_name"] == "com.example.ordering")
+artifact = next(a for a in pkg["artifacts"] if a["filename"] == "base.apk")
+assert artifact["backup_hash_sha256"] == "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
 PY
 
 if python3 tools/app_inventory/verify_hashes_against_csv.py \
