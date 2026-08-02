@@ -19,6 +19,7 @@ SHA256_RE = re.compile(r"^[0-9a-fA-F]{64}$")
 
 def load_sums(path):
     sums = {}
+    invalid_local_rows = 0
     with open(path, encoding="utf-8") as f:
         for line in f:
             line = line.strip()
@@ -26,10 +27,15 @@ def load_sums(path):
                 continue
             parts = line.split(None, 1)
             if len(parts) != 2:
+                invalid_local_rows += 1
                 continue
             sha, rel_path = parts
-            sums[rel_path.lstrip("./")] = sha.lower()
-    return sums
+            sha = sha.strip().lower()
+            if not SHA256_RE.match(sha):
+                invalid_local_rows += 1
+                continue
+            sums[rel_path.lstrip("./")] = sha
+    return sums, invalid_local_rows
 
 
 def load_expected(csv_paths):
@@ -83,7 +89,9 @@ def load_expected(csv_paths):
                                 file=sys.stderr,
                             )
                             continue
-                        backup_hash = str(item.get("hash", "")).strip()
+                        item_path = item_path.strip()
+                        raw_hash = item.get("hash", "")
+                        backup_hash = "" if raw_hash is None else str(raw_hash).strip()
                         if backup_hash and not SHA256_RE.match(backup_hash):
                             invalid_rows += 1
                             print(
@@ -121,8 +129,9 @@ def main():
     )
     args = ap.parse_args()
 
-    sums = load_sums(args.sums)
+    sums, invalid_local_rows = load_sums(args.sums)
     expected, invalid_rows = load_expected(args.csv)
+    invalid_rows += invalid_local_rows
 
     matched = 0
     mismatched = 0

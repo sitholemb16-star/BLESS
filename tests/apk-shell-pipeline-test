@@ -79,7 +79,7 @@ grep -q 'apks/com.example.shelltest/base.apk' apks/SHA256SUMS.txt
 
 adb_log="$tmpdir/adb-calls.log"
 PATH="$mockbin:$PATH" ADB_LOG="$adb_log" ./scripts/install-apks-to-emulator --serial emulator-5554 >/dev/null
-grep -q -- 'wait-for-device' "$adb_log"
+grep -q -- 'get-state' "$adb_log"
 grep -q -- 'shell getprop sys.boot_completed' "$adb_log"
 grep -q -- 'install-multiple -r -t' "$adb_log"
 
