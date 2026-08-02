@@ -38,6 +38,8 @@ paths.sort()
 with open(out, "w", encoding="utf-8") as fh:
     for path in paths:
         rel = os.path.relpath(path, repo_root)
+        if "\n" in rel or "\r" in rel:
+            raise RuntimeError(f"Unsupported APK path with newline: {rel!r}")
         h = hashlib.sha256()
         with open(path, "rb") as src:
             for chunk in iter(lambda: src.read(1024 * 1024), b""):

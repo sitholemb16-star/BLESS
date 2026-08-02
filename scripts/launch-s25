@@ -5,9 +5,15 @@ set -euo pipefail
 
 EXTERNAL="/Volumes/Secure AI Coding Tools"
 SDK_ROOT="$EXTERNAL/Android/sdk"
-AVD_HOME="/Volumes/VOLUME 1/2027 Final Drafts.sparsebundle/android-avd"
+AVD_HOME="${ANDROID_AVD_HOME:-/Volumes/VOLUME 1/2027 Final Drafts.sparsebundle/android-avd}"
 AVD_NAME="Galaxy-S25-128GB"
-JAVA_HOME="/usr/local/opt/openjdk"
+if [[ -n "${JAVA_HOME:-}" ]]; then
+  JAVA_HOME="${JAVA_HOME}"
+elif [[ -d "/opt/homebrew/opt/openjdk" ]]; then
+  JAVA_HOME="/opt/homebrew/opt/openjdk"
+else
+  JAVA_HOME="/usr/local/opt/openjdk"
+fi
 
 export JAVA_HOME
 export ANDROID_SDK_ROOT="$SDK_ROOT"

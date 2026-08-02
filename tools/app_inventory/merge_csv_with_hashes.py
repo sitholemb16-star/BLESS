@@ -42,13 +42,19 @@ def snapshot_is_newer(current_value, candidate_value):
 
 
 def merge_unique_files(existing_files, incoming_files):
-    seen = {(item.get('filename'), item.get('type')) for item in existing_files}
+    by_key = {(item.get('filename'), item.get('type')): idx for idx, item in enumerate(existing_files)}
     for item in incoming_files:
         key = (item.get('filename'), item.get('type'))
-        if key in seen:
+        idx = by_key.get(key)
+        if idx is None:
+            existing_files.append(item)
+            by_key[key] = len(existing_files) - 1
             continue
-        existing_files.append(item)
-        seen.add(key)
+        existing = existing_files[idx]
+        existing_hash = bool(existing.get('backup_hash'))
+        incoming_hash = bool(item.get('backup_hash'))
+        if (not existing_hash) and incoming_hash:
+            existing_files[idx] = item
 
 
 def load_sums(path):

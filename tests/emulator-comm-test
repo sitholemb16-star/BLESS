@@ -63,6 +63,17 @@ assert_log_contains 'emu sms send 5551234 test\ message'
 "$ROOT/scripts/emulator-comm" compose-sms 5551234 'hello world' >/dev/null
 assert_log_contains 'shell am\ start\ -W\ -a\ android.intent.action.SENDTO\ -d\ smsto:5551234\ --es\ sms_body\ hello\\\ world'
 
+: >"$ADB_LOG"
+"$ROOT/scripts/emulator-comm" compose-sms 5551234 'semi;and&dollar$pipe|gt>lt<back\slash' >/dev/null
+log_line="$(tail -n1 "$ADB_LOG")"
+[[ "$log_line" == *'\\;'* ]] || { echo "expected escaped semicolon in compose-sms command" >&2; exit 1; }
+[[ "$log_line" == *'\\&'* ]] || { echo "expected escaped ampersand in compose-sms command" >&2; exit 1; }
+[[ "$log_line" == *'\\$'* ]] || { echo "expected escaped dollar in compose-sms command" >&2; exit 1; }
+[[ "$log_line" == *'\\|'* ]] || { echo "expected escaped pipe in compose-sms command" >&2; exit 1; }
+[[ "$log_line" == *'\\>'* ]] || { echo "expected escaped greater-than in compose-sms command" >&2; exit 1; }
+[[ "$log_line" == *'\\<'* ]] || { echo "expected escaped less-than in compose-sms command" >&2; exit 1; }
+[[ "$log_line" == *'\\\\slash'* ]] || { echo "expected escaped backslash in compose-sms command" >&2; exit 1; }
+
 if MOCK_QEMU=0 "$ROOT/scripts/emulator-comm" incoming-call 5551234 >/dev/null 2>&1; then
   printf 'physical devices must reject incoming call injection\n' >&2
   exit 1
