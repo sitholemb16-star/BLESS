@@ -50,6 +50,8 @@ case "${1:-}" in
       fi
     elif [[ "${1:-}" == "getprop" && "${2:-}" == "sys.boot_completed" ]]; then
       echo "1"
+    elif [[ "${1:-}" == "getprop" && "${2:-}" == "ro.boot.qemu.avd_name" ]]; then
+      echo "${EXPECTED_AVD_NAME:-Galaxy-S25-128GB}"
     fi
     ;;
   pull)
