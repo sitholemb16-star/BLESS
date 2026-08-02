@@ -118,6 +118,24 @@ if MOCK_AVD_NAME=Galaxy-S25-128GB MOCK_BOOT_COMPLETED=0 BOOT_TIMEOUT=2 "$ROOT/sc
   exit 1
 fi
 
+# --- require_s25 rejects empty AVD name ---
+if MOCK_AVD_NAME= "$ROOT/scripts/emulator-comm" incoming-call 5551234 >/dev/null 2>&1; then
+  printf 'empty avd_name must be rejected by require_s25\n' >&2
+  exit 1
+fi
+
+# --- boot-wait rejects BOOT_TIMEOUT=0 ---
+if MOCK_AVD_NAME=Galaxy-S25-128GB BOOT_TIMEOUT=0 "$ROOT/scripts/emulator-comm" boot-wait >/dev/null 2>&1; then
+  printf 'BOOT_TIMEOUT=0 must be rejected\n' >&2
+  exit 1
+fi
+
+# --- boot-wait rejects non-integer BOOT_TIMEOUT ---
+if MOCK_AVD_NAME=Galaxy-S25-128GB BOOT_TIMEOUT=abc "$ROOT/scripts/emulator-comm" boot-wait >/dev/null 2>&1; then
+  printf 'BOOT_TIMEOUT=abc must be rejected\n' >&2
+  exit 1
+fi
+
 ADB=missing-adb "$ROOT/scripts/emulator-comm" --help >/dev/null
 
 printf 'emulator communication tests passed\n'
