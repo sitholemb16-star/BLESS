@@ -7,16 +7,18 @@
     "node": ">=20.0.0"
   },
   "scripts": {
-    "build": "tsc --noEmit",
+    "build": "tsc",
+    "typecheck": "tsc --noEmit",
+    "start": "node dist/api/server.js",
     "lint": "eslint \"src/**/*.ts\"",
-    "test": "jest --runInBand --forceExit"
+    "test": "jest --runInBand"
   },
   "dependencies": {
     "express": "4.21.2"
   },
   "devDependencies": {
     "@eslint/js": "9.18.0",
-    "@types/express": "5.0.1",
+    "@types/express": "4.17.21",
     "@types/jest": "29.5.14",
     "@types/node": "22.15.30",
     "@types/supertest": "6.0.3",

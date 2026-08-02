@@ -8,6 +8,11 @@ const config: Config = {
     "^(\\.{1,2}/.*)\\.js$": "$1",
   },
   clearMocks: true,
+  globals: {
+    "ts-jest": {
+      tsconfig: "./tsconfig.test.json",
+    },
+  },
 };
 
 export default config;
