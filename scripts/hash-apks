@@ -1,0 +1,64 @@
+#!/usr/bin/env bash
+# hash-apks – generate SHA256SUMS.txt manifest for all APKs in apks/
+set -euo pipefail
+REPO_ROOT="$(cd "$(dirname "$0")/.." && pwd)"
+APKS_DIR="$REPO_ROOT/apks"
+OUT="$APKS_DIR/SHA256SUMS.txt"
+
+if ! find "$APKS_DIR" -type f \( -name "*.apk" -o -name "*.apks" \) -print -quit | grep -q .; then
+  : > "$OUT"
+  echo "No APK/APKS files found under $APKS_DIR"
+  echo "Manifest written: $OUT"
+  exit 0
+fi
+
+python3 - "$REPO_ROOT" "$APKS_DIR" "$OUT" <<'PY'
+import hashlib
+import os
+import stat
+import sys
+import tempfile
+
+repo_root, apks_dir, out = sys.argv[1:4]
+paths = []
+
+def on_walk_error(err):
+    raise RuntimeError(f"Failed to scan APK directory: {err}")
+
+for root, _, files in os.walk(apks_dir, onerror=on_walk_error):
+    for name in files:
+        if name.endswith(".apk") or name.endswith(".apks"):
+            if "\n" in name or "\r" in name:
+                raise RuntimeError(f"Unsupported APK filename with newline: {name!r}")
+            path = os.path.join(root, name)
+            st = os.lstat(path)
+            if stat.S_ISREG(st.st_mode) and not stat.S_ISLNK(st.st_mode):
+                paths.append(path)
+paths.sort()
+
+fd, tmp = tempfile.mkstemp(dir=apks_dir, prefix=".SHA256SUMS-", suffix=".tmp")
+mask = os.umask(0)
+os.umask(mask)
+os.fchmod(fd, 0o666 & ~mask)
+try:
+    with os.fdopen(fd, "w", encoding="utf-8") as fh:
+        for path in paths:
+            rel = os.path.relpath(path, repo_root)
+            if "\n" in rel or "\r" in rel:
+                raise RuntimeError(f"Unsupported APK path with newline: {rel!r}")
+            h = hashlib.sha256()
+            with open(path, "rb") as src:
+                for chunk in iter(lambda: src.read(1024 * 1024), b""):
+                    h.update(chunk)
+            fh.write(f"{h.hexdigest()}  {rel}\n")
+    os.replace(tmp, out)
+except BaseException:
+    try:
+        os.unlink(tmp)
+    except OSError:
+        pass
+    raise
+PY
+
+echo "Manifest written: $OUT"
+cat "$OUT"

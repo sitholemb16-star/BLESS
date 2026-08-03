@@ -1,0 +1,90 @@
+#!/usr/bin/env bash
+# launch-s25-test — Integration tests for scripts/launch-s25.
+# Invokes the real script against a stubbed SDK and asserts on actual emulator argv.
+set -euo pipefail
+
+REPO_ROOT="$(cd "$(dirname "$0")/.." && pwd)"
+
+# ── Stub environment ──────────────────────────────────────────────────────────
+stub_dir="$(mktemp -d)"
+trap 'rm -rf "$stub_dir"' EXIT
+
+mkdir -p "$stub_dir/sdk/emulator"
+mkdir -p "$stub_dir/sdk/platform-tools"
+mkdir -p "$stub_dir/avd"
+
+# Stub emulator: records its argv to a file and exits cleanly.
+argv_file="$stub_dir/emulator_argv"
+cat > "$stub_dir/sdk/emulator/emulator" <<STUB
+#!/usr/bin/env bash
+printf '%s\n' "\$@" > "$argv_file"
+exit 0
+STUB
+chmod +x "$stub_dir/sdk/emulator/emulator"
+
+# Helper: invoke the real scripts/launch-s25 with overridden SDK/AVD paths.
+# s25-env.sh uses ANDROID_SDK_ROOT as SDK_ROOT, so setting it here is enough.
+run_launch() {
+  rm -f "$argv_file"
+  ANDROID_SDK_ROOT="$stub_dir/sdk" \
+  ANDROID_AVD_HOME="$stub_dir/avd" \
+    "$REPO_ROOT/scripts/launch-s25" "$@"
+}
+
+# ── Test 1: normal launch (no extra flags) ────────────────────────────────────
+run_launch
+argv="$(cat "$argv_file")"
+echo "$argv" | grep -q -- "-avd"          || { echo "FAIL test1: -avd missing"; exit 1; }
+echo "$argv" | grep -q "Galaxy-S25-128GB" || { echo "FAIL test1: AVD name missing"; exit 1; }
+echo "$argv" | grep -q -- "-no-window"    && { echo "FAIL test1: -no-window present in normal mode"; exit 1; }
+echo "test1 (normal): passed"
+
+# ── Test 2: --headless launch ─────────────────────────────────────────────────
+run_launch --headless
+argv="$(cat "$argv_file")"
+echo "$argv" | grep -q -- "-no-window" || { echo "FAIL test2: -no-window missing in headless mode"; exit 1; }
+echo "$argv" | grep -q -- "-no-audio"  || { echo "FAIL test2: -no-audio missing in headless mode"; exit 1; }
+echo "test2 (headless): passed"
+
+# ── Test 3: extra flags are forwarded ─────────────────────────────────────────
+run_launch -gpu swiftshader_indirect
+argv="$(cat "$argv_file")"
+echo "$argv" | grep -q -- "-gpu"              || { echo "FAIL test3: -gpu not forwarded"; exit 1; }
+echo "$argv" | grep -q "swiftshader_indirect" || { echo "FAIL test3: gpu value not forwarded"; exit 1; }
+echo "test3 (extra flags): passed"
+
+# ── Test 4: missing emulator binary exits non-zero ────────────────────────────
+missing_sdk="$stub_dir/missing-sdk"
+mkdir -p "$missing_sdk/emulator"
+# No emulator binary here — the script's guard should reject it.
+if ANDROID_SDK_ROOT="$missing_sdk" ANDROID_AVD_HOME="$stub_dir/avd" \
+    "$REPO_ROOT/scripts/launch-s25" 2>/dev/null; then
+  echo "FAIL test4: should have exited non-zero for missing emulator"
+  exit 1
+fi
+echo "test4 (missing emulator guard): passed"
+
+# ── Test 5: EXTRA_FLAGS cannot override the selected AVD ──────────────────────
+if run_launch -avd OtherDevice >/dev/null 2>&1; then
+  echo "FAIL test5: -avd override should be rejected"
+  exit 1
+fi
+if run_launch @OtherDevice >/dev/null 2>&1; then
+  echo "FAIL test5: @name override should be rejected"
+  exit 1
+fi
+echo "test5 (AVD override guard): passed"
+
+# ── Test 6: DNS_SERVER is emitted only when configured ────────────────────────
+DNS_SERVER=1.1.1.1 run_launch
+argv="$(cat "$argv_file")"
+echo "$argv" | grep -q -- "-dns-server" || { echo "FAIL test6: -dns-server missing"; exit 1; }
+echo "$argv" | grep -q -- "1.1.1.1" || { echo "FAIL test6: DNS value missing"; exit 1; }
+
+run_launch
+argv="$(cat "$argv_file")"
+echo "$argv" | grep -q -- "-dns-server" && { echo "FAIL test6: -dns-server present when unset"; exit 1; }
+echo "test6 (conditional DNS flag): passed"
+
+echo ""
+echo "launch-s25 tests passed"

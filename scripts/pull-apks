@@ -1,0 +1,258 @@
+#!/usr/bin/env bash
+# pull-apks – pull installed APKs from a connected ADB device into apks/<package>/
+# Usage: ./scripts/pull-apks [--serial <SERIAL>] [<package>...]
+# If no packages given, prompts or reads from apks/packages.txt
+set -euo pipefail
+
+SERIAL="${ANDROID_SERIAL:-}"
+PACKAGES=()
+APKS_DIR="$(cd "$(dirname "$0")/.." && pwd)/apks"
+ACTIVE_STAGE_DIR=""
+ACTIVE_BACKUP_DIR=""
+ACTIVE_DEST_DIR=""
+ACTIVE_LOCK_DIR=""
+cleanup_stage() {
+  if [[ -n "$ACTIVE_BACKUP_DIR" && -n "$ACTIVE_DEST_DIR" && ( -e "$ACTIVE_BACKUP_DIR" || -L "$ACTIVE_BACKUP_DIR" ) ]]; then
+    if [[ ! -e "$ACTIVE_DEST_DIR" && ! -L "$ACTIVE_DEST_DIR" ]]; then
+      mv "$ACTIVE_BACKUP_DIR" "$ACTIVE_DEST_DIR"
+    fi
+  fi
+  if [[ -n "$ACTIVE_STAGE_DIR" && -d "$ACTIVE_STAGE_DIR" ]]; then
+    rm -rf "$ACTIVE_STAGE_DIR"
+  fi
+  if [[ -n "$ACTIVE_LOCK_DIR" && -d "$ACTIVE_LOCK_DIR" ]]; then
+    if [[ -n "${ACTIVE_LOCK_TOKEN:-}" && -f "$ACTIVE_LOCK_DIR/token" ]] \
+      && [[ "$(cat "$ACTIVE_LOCK_DIR/token" 2>/dev/null || true)" == "$ACTIVE_LOCK_TOKEN" ]]; then
+      rm -rf "$ACTIVE_LOCK_DIR"
+    fi
+  fi
+}
+trap cleanup_stage EXIT
+
+while [[ $# -gt 0 ]]; do
+  case "$1" in
+    --serial|-s)
+      [[ -n "${2:-}" ]] || {
+        echo "ERROR: --serial requires a value." >&2
+        echo "Usage: $(basename "$0") [--serial <SERIAL>] [<package>...]" >&2
+        exit 1
+      }
+      SERIAL="$2"; shift 2 ;;
+    --help|-h)
+      echo "Usage: $(basename "$0") [--serial <SERIAL>] [<package>...]"
+      echo ""
+      echo "Pulls APK(s) from connected ADB device into apks/<package>/"
+      echo "If no packages given, reads apks/packages.txt (one per line)."
+      exit 0 ;;
+    *) PACKAGES+=("$1"); shift ;;
+  esac
+done
+
+ADB=(adb)
+[[ -n "$SERIAL" ]] && ADB+=(-s "$SERIAL")
+
+# Verify device
+if ! "${ADB[@]}" get-state >/dev/null 2>&1; then
+  echo "ERROR: No ADB device found. Connect a device or start an emulator." >&2
+  exit 1
+fi
+
+DEVICE_SERIAL=$("${ADB[@]}" get-serialno 2>/dev/null)
+echo "Device: $DEVICE_SERIAL"
+
+# Load from packages.txt if none given
+if [[ ${#PACKAGES[@]} -eq 0 ]]; then
+  PKG_FILE="$APKS_DIR/packages.txt"
+  if [[ -f "$PKG_FILE" ]]; then
+    while IFS= read -r line || [[ -n "$line" ]]; do
+      line="${line#"${line%%[![:space:]]*}"}"
+      line="${line%"${line##*[![:space:]]}"}"
+      [[ -z "$line" || "$line" == \#* ]] && continue
+      PACKAGES+=("$line")
+    done < "$PKG_FILE"
+  else
+    echo "ERROR: No packages specified and $PKG_FILE not found." >&2
+    echo "Usage: $(basename "$0") <package> [<package>...]" >&2
+    exit 1
+  fi
+fi
+
+PULLED=0
+SKIPPED=0
+FAILED=0
+
+for PKG in "${PACKAGES[@]}"; do
+  if [[ ! "$PKG" =~ ^([A-Za-z0-9_]+)(\.[A-Za-z0-9_]+)*$ ]]; then
+    echo "FAIL  $PKG (invalid package name)" >&2
+    ((FAILED+=1))
+    continue
+  fi
+  DEST_ABS="$APKS_DIR/$PKG"
+  LOCK_DIR="$APKS_DIR/.lock-$PKG"
+  LOCK_PID_FILE="$LOCK_DIR/pid"
+  LOCK_TOKEN_FILE="$LOCK_DIR/token"
+  LOCK_TOKEN="$$:$RANDOM:$SECONDS"
+  if ! mkdir "$LOCK_DIR" 2>/dev/null; then
+    # Reclaim only complete stale locks. An empty/incomplete lock may belong to
+    # a just-started owner that has not written its token and pid yet, unless
+    # the lock directory is old enough (>60s) to be considered abandoned.
+    existing_pid=""
+    existing_token=""
+    [[ -f "$LOCK_PID_FILE" ]] && existing_pid="$(cat "$LOCK_PID_FILE" 2>/dev/null || true)"
+    [[ -f "$LOCK_TOKEN_FILE" ]] && existing_token="$(cat "$LOCK_TOKEN_FILE" 2>/dev/null || true)"
+    if [[ -z "$existing_pid" || -z "$existing_token" ]]; then
+      # Incomplete lock: reclaim only if older than 60 seconds (post-SIGKILL).
+      if ! find "$LOCK_DIR" -maxdepth 0 -mmin +1 -print 2>/dev/null | grep -q .; then
+        echo "FAIL  $PKG (another pull is acquiring the lock for this package)" >&2
+        ((FAILED+=1))
+        continue
+      fi
+      # Incomplete lock is stale (>60s); treat as abandoned.
+      existing_pid="0"
+    fi
+    if [[ -n "$existing_pid" ]] && kill -0 "$existing_pid" 2>/dev/null; then
+      echo "FAIL  $PKG (another pull is in progress for this package, PID $existing_pid)" >&2
+      ((FAILED+=1))
+      continue
+    fi
+    # Serialize the reclaim/re-acquire sequence with flock to prevent two
+    # concurrent reclaimers from both succeeding on mv→mkdir and proceeding.
+    RECLAIM_LOCK="$APKS_DIR/.reclaim-$PKG"
+    exec {reclaim_fd}>>"$RECLAIM_LOCK"
+    if ! flock -n "$reclaim_fd"; then
+      exec {reclaim_fd}>&-
+      echo "FAIL  $PKG (concurrent reclaim in progress for this package)" >&2
+      ((FAILED+=1))
+      continue
+    fi
+    # Re-validate lock state under flock: the stale check above was a
+    # pre-flock snapshot; another reclaimer may have already handled the lock
+    # between then and now.  Re-read metadata and re-verify before touching
+    # anything.
+    if [[ ! -d "$LOCK_DIR" ]]; then
+      exec {reclaim_fd}>&-
+      echo "FAIL  $PKG (lock disappeared during reclaim — another holder cleaned up)" >&2
+      ((FAILED+=1))
+      continue
+    fi
+    re_pid=""
+    re_token=""
+    [[ -f "$LOCK_PID_FILE" ]] && re_pid="$(cat "$LOCK_PID_FILE" 2>/dev/null || true)"
+    [[ -f "$LOCK_TOKEN_FILE" ]] && re_token="$(cat "$LOCK_TOKEN_FILE" 2>/dev/null || true)"
+    if [[ -n "$re_pid" ]] && [[ "$re_pid" != "0" ]] && kill -0 "$re_pid" 2>/dev/null; then
+      exec {reclaim_fd}>&-
+      echo "FAIL  $PKG (lock is now held by live PID $re_pid — will not reclaim)" >&2
+      ((FAILED+=1))
+      continue
+    fi
+    stale_dir="$LOCK_DIR.stale.$$"
+    if ! mv "$LOCK_DIR" "$stale_dir" 2>/dev/null; then
+      exec {reclaim_fd}>&-
+      echo "FAIL  $PKG (cannot reclaim stale lock for this package)" >&2
+      ((FAILED+=1))
+      continue
+    fi
+    if ! mkdir "$LOCK_DIR" 2>/dev/null; then
+      rm -rf "$stale_dir"
+      exec {reclaim_fd}>&-
+      echo "FAIL  $PKG (cannot acquire lock for this package)" >&2
+      ((FAILED+=1))
+      continue
+    fi
+    exec {reclaim_fd}>&-
+    rm -rf "$stale_dir"
+  fi
+  printf '%s\n' "$LOCK_TOKEN" > "$LOCK_TOKEN_FILE"
+  echo $$ > "$LOCK_PID_FILE"
+  ACTIVE_LOCK_DIR="$LOCK_DIR"
+  ACTIVE_LOCK_TOKEN="$LOCK_TOKEN"
+
+  PM_PATH_RAW=$("${ADB[@]}" shell pm path "$PKG" 2>/dev/null || true)
+  PATHS=$(printf '%s' "$PM_PATH_RAW" | tr -d '\r')
+  if [[ -z "$PATHS" ]] || ! grep -q '^package:' <<< "$PATHS"; then
+    if [[ -z "$PATHS" ]]; then
+      echo "SKIP  $PKG (not installed on device; preserved prior pull set)"
+      ((SKIPPED+=1))
+    else
+      echo "FAIL  $PKG (pm path query failed)" >&2
+      ((FAILED+=1))
+    fi
+    rm -rf "$LOCK_DIR"
+    ACTIVE_LOCK_DIR=""
+    ACTIVE_LOCK_TOKEN=""
+    continue
+  fi
+
+  STAGE_DIR="$APKS_DIR/.staging-$PKG-$$"
+  rm -rf "$STAGE_DIR"
+  mkdir -p "$STAGE_DIR"
+  ACTIVE_STAGE_DIR="$STAGE_DIR"
+  echo "Pulling $PKG..."
+  package_failed=0
+  pkg_pulled=0
+
+  while IFS= read -r line; do
+    APK_PATH="${line#package:}"
+    FNAME=$(basename "$APK_PATH")
+    if "${ADB[@]}" pull "$APK_PATH" "$STAGE_DIR/$FNAME" >/dev/null 2>&1; then
+      SIZE=$(du -sh "$STAGE_DIR/$FNAME" | cut -f1)
+      echo "  ✓  $FNAME ($SIZE)"
+      ((pkg_pulled+=1))
+    else
+      echo "  ✗  $FNAME (pull failed)" >&2
+      package_failed=1
+      ((FAILED+=1))
+    fi
+  done <<< "$PATHS"
+
+  if (( package_failed > 0 )); then
+    rm -rf "$STAGE_DIR"
+    ACTIVE_STAGE_DIR=""
+    echo "FAIL  $PKG (preserved prior pull set)" >&2
+    rm -rf "$LOCK_DIR"
+    ACTIVE_LOCK_DIR=""
+    ACTIVE_LOCK_TOKEN=""
+    continue
+  fi
+
+  backup_dir="$APKS_DIR/.backup-$PKG-$$"
+  rm -rf "$backup_dir"
+  ACTIVE_DEST_DIR="$DEST_ABS"
+  ACTIVE_BACKUP_DIR="$backup_dir"
+  if [[ -e "$DEST_ABS" || -L "$DEST_ABS" ]]; then
+    mv "$DEST_ABS" "$backup_dir"
+  fi
+  if mv "$STAGE_DIR" "$DEST_ABS"; then
+    rm -rf "$backup_dir"
+    ACTIVE_BACKUP_DIR=""
+    ACTIVE_DEST_DIR=""
+    ACTIVE_STAGE_DIR=""
+    ((PULLED+=pkg_pulled))
+  else
+    rm -rf "$DEST_ABS"
+    if [[ -e "$backup_dir" || -L "$backup_dir" ]]; then
+      mv "$backup_dir" "$DEST_ABS"
+    fi
+    rm -rf "$STAGE_DIR"
+    ACTIVE_STAGE_DIR=""
+    ACTIVE_BACKUP_DIR=""
+    ACTIVE_DEST_DIR=""
+    echo "FAIL  $PKG (destination update failed; previous pull set restored)" >&2
+    ((FAILED+=1))
+    rm -rf "$LOCK_DIR"
+    ACTIVE_LOCK_DIR=""
+    ACTIVE_LOCK_TOKEN=""
+    continue
+  fi
+  rm -rf "$LOCK_DIR"
+  ACTIVE_LOCK_DIR=""
+  ACTIVE_LOCK_TOKEN=""
+done
+
+echo ""
+echo "Done: $PULLED APK(s) pulled, $SKIPPED skipped, $FAILED failed."
+echo "APKs saved to: $APKS_DIR/"
+
+if (( FAILED > 0 )); then
+  exit 1
+fi

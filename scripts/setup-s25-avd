@@ -1,0 +1,149 @@
+#!/usr/bin/env bash
+# setup-s25-avd — Create a Galaxy S25-equivalent AVD on external storage
+# Storage: 128GB data partition (sparse — actual disk use grows gradually)
+# Targets: Android 14/15 system images (API 34 + 35), AVD uses API 35.
+set -euo pipefail
+
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+# shellcheck source=scripts/s25-env.sh
+source "$SCRIPT_DIR/s25-env.sh"
+
+# ── Resolve ABI from environment or host architecture ──────────────────────────
+if [[ -n "${SYSIMG_ABI:-}" ]]; then
+  case "$SYSIMG_ABI" in
+    arm64-v8a|x86_64)
+      ABI="$SYSIMG_ABI"
+      ;;
+    *)
+      echo "ERROR: SYSIMG_ABI must be 'arm64-v8a' or 'x86_64' (got: '$SYSIMG_ABI')." >&2
+      exit 1
+      ;;
+  esac
+else
+  _host_arch="$(uname -m)"
+  case "$_host_arch" in
+    arm64|aarch64) ABI="arm64-v8a" ;;
+    x86_64)  ABI="x86_64"   ;;
+    *)
+      echo "ERROR: Unsupported host architecture '$_host_arch'. " \
+           "Set SYSIMG_ABI to 'arm64-v8a' or 'x86_64' explicitly." >&2
+      exit 1
+      ;;
+  esac
+  unset _host_arch
+fi
+
+SYSIMG_35="system-images;android-35;google_apis_playstore;${ABI}"
+FORCE=0
+
+# ── Validate AVD_NAME (no path separators) ────────────────────────────────────
+if [[ "$AVD_NAME" =~ [/\\] ]]; then
+  echo "ERROR: AVD_NAME must not contain '/' or '\\' (got: '$AVD_NAME')." >&2
+  exit 1
+fi
+
+while [[ $# -gt 0 ]]; do
+  case "$1" in
+    --force) FORCE=1; shift ;;
+    *) echo "Unknown arg: $1" >&2; exit 1 ;;
+  esac
+done
+
+export PATH="$JAVA_HOME/bin:$SDK_ROOT/cmdline-tools/latest/bin:$SDK_ROOT/platform-tools:$SDK_ROOT/emulator:$PATH"
+
+install_sysimg() {
+  local sysimg="$1"
+  set +o pipefail
+  local rc=0
+  if ! yes | sdkmanager --sdk_root="$SDK_ROOT" "$sysimg"; then
+    rc=${PIPESTATUS[1]:-1}
+  fi
+  set -o pipefail
+  if [[ $rc -ne 0 ]]; then
+    echo "ERROR: sdkmanager failed for $sysimg" >&2
+    exit "$rc"
+  fi
+}
+
+# ── 1) Install system images if missing
+if [[ ! -f "$SDK_ROOT/system-images/android-35/google_apis_playstore/${ABI}/source.properties" ]]; then
+  echo "Installing API 35 Play Store ${ABI} system image..."
+  install_sysimg "$SYSIMG_35"
+else
+  echo "API 35 system image already installed."
+fi
+
+# ── 2) Create AVD dir and validate external storage intent
+mkdir -p "$AVD_HOME"
+
+# Validate that AVD_HOME matches EXTERNAL_AVD_HOME if the latter is provided.
+# This prevents the 128 GB AVD from being silently created on local storage.
+if [[ -n "${EXTERNAL_AVD_HOME:-}" ]]; then
+  mkdir -p "$EXTERNAL_AVD_HOME"
+fi
+if [[ -n "${EXTERNAL_AVD_HOME:-}" && ! "$AVD_HOME" -ef "$EXTERNAL_AVD_HOME" ]]; then
+  echo "ERROR: ANDROID_AVD_HOME ('$AVD_HOME') does not match EXTERNAL_AVD_HOME ('$EXTERNAL_AVD_HOME')." >&2
+  echo "Set ANDROID_AVD_HOME=\"\$EXTERNAL_AVD_HOME\" to place the AVD on external storage." >&2
+  exit 1
+fi
+
+# ── 3) Preserve existing AVD unless --force is provided
+has_avd_dir=0
+has_avd_ini=0
+has_config_ini=0
+[[ -d "$AVD_HOME/$AVD_NAME.avd" ]] && has_avd_dir=1
+[[ -f "$AVD_HOME/$AVD_NAME.ini" ]] && has_avd_ini=1
+[[ -f "$AVD_HOME/$AVD_NAME.avd/config.ini" ]] && has_config_ini=1
+if (( has_avd_dir == 1 || has_avd_ini == 1 )); then
+  if [[ "$FORCE" -ne 1 ]]; then
+    if (( has_avd_dir == 1 && has_avd_ini == 1 && has_config_ini == 1 )); then
+      echo "AVD '$AVD_NAME' already exists; preserving current device state."
+      echo "Re-run with --force to recreate it from scratch."
+      exit 0
+    fi
+    echo "ERROR: Partial AVD state detected for '$AVD_NAME' (.avd, .ini, or config.ini missing)." >&2
+    echo "Re-run with --force to repair and recreate it safely." >&2
+    exit 1
+  fi
+  if ! command -v avdmanager >/dev/null 2>&1; then
+    echo "ERROR: avdmanager not found on PATH. Cannot proceed with --force recreation." >&2
+    exit 1
+  fi
+  echo "Removing existing AVD $AVD_NAME (--force)..."
+  avdmanager delete avd -n "$AVD_NAME" 2>/dev/null || true
+  rm -rf "$AVD_HOME/$AVD_NAME.avd" "$AVD_HOME/$AVD_NAME.ini"
+fi
+
+# ── 4) Create the AVD (pixel_9_pro = 6.3" 1080×2424, closest to S25 6.2")
+echo "Creating AVD: $AVD_NAME..."
+echo "no" | avdmanager create avd \
+  -n "$AVD_NAME" \
+  -k "$SYSIMG_35" \
+  -d "pixel_9_pro" \
+  --sdcard 128M \
+  --path "$AVD_HOME/$AVD_NAME.avd"
+
+# ── 5) Patch hardware config for S25 profile
+CFG="$AVD_HOME/$AVD_NAME.avd/config.ini"
+{
+  echo "# Galaxy S25 hardware overrides"
+  echo "hw.ramSize=8192"
+  echo "hw.cpu.ncore=4"
+  echo "hw.lcd.width=1080"
+  echo "hw.lcd.height=2340"
+  echo "hw.lcd.density=416"
+  echo "hw.sensor.accelerometer=yes"
+  echo "hw.sensor.gyroscope=yes"
+  echo "hw.sensor.light=yes"
+  echo "hw.sensor.proximity=yes"
+  echo "hw.camera.back=virtualscene"
+  echo "hw.camera.front=emulated"
+  echo "hw.gps=yes"
+  echo "hw.keyboard=yes"
+  echo "disk.dataPartition.size=128G"
+} >> "$CFG"
+
+echo "✓ AVD '$AVD_NAME' created at: $AVD_HOME/$AVD_NAME.avd"
+echo "  Config: $CFG"
+echo ""
+echo "Launch with:  ./scripts/launch-s25"

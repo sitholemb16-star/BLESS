@@ -1,3 +1,5 @@
+# This workflow is managed by gh actions-lock.
+
 name: Auto Copilot Review
 
 on:
@@ -15,7 +17,7 @@ permissions:
 jobs:
   auto-copilot-review:
     name: Auto Copilot Review
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-latest
     steps:
       - name: Emit required status
         run: echo "Auto Copilot Review status emitted for trusted PR trigger."

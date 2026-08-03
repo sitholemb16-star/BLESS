@@ -1,0 +1,153 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+TMP="$(mktemp -d)"
+trap 'rm -rf "$TMP"' EXIT
+
+cat >"$TMP/adb" <<'EOF'
+#!/usr/bin/env bash
+printf '%q ' "$@" >>"$ADB_LOG"
+printf '\n' >>"$ADB_LOG"
+
+case "$*" in
+  *"get-state"*) printf 'device\n' ;;
+  *"getprop ro.kernel.qemu"*) printf '%s\n' "${MOCK_QEMU:-1}" ;;
+  *"getprop ro.product.model"*) printf 'Test Emulator\n' ;;
+  *"getprop ro.boot.qemu.avd_name"*) printf '%s\n' "${MOCK_AVD_NAME:-}" ;;
+  *"getprop sys.boot_completed"*)
+    if [[ "${MOCK_BOOT_FAIL_ONCE:-0}" == "1" && ! -f "$ADB_LOG.boot-failed-once" ]]; then
+      touch "$ADB_LOG.boot-failed-once"
+      exit 1
+    fi
+    printf '%s\n' "${MOCK_BOOT_COMPLETED:-1}" ;;
+esac
+EOF
+chmod +x "$TMP/adb"
+
+export ADB="$TMP/adb"
+export ADB_LOG="$TMP/adb.log"
+
+assert_log_contains() {
+  grep -F -- "$1" "$ADB_LOG" >/dev/null || {
+    printf 'expected adb call not found: %s\n' "$1" >&2
+    cat "$ADB_LOG" >&2
+    exit 1
+  }
+}
+
+: >"$ADB_LOG"
+"$ROOT/scripts/emulator-comm" status >/dev/null
+assert_log_contains 'shell getprop ro.product.model'
+assert_log_contains 'shell getprop ro.kernel.qemu'
+
+: >"$ADB_LOG"
+"$ROOT/scripts/emulator-comm" --serial emulator-5554 dial +15551234567 >/dev/null
+assert_log_contains '-s emulator-5554 shell am start -W -a android.intent.action.CALL -d tel:+15551234567'
+
+: >"$ADB_LOG"
+"$ROOT/scripts/emulator-comm" end-call >/dev/null
+assert_log_contains 'shell input keyevent KEYCODE_ENDCALL'
+
+: >"$ADB_LOG"
+MOCK_AVD_NAME=Galaxy-S25-128GB "$ROOT/scripts/emulator-comm" incoming-call 5551234 >/dev/null
+assert_log_contains 'emu gsm call 5551234'
+
+: >"$ADB_LOG"
+MOCK_AVD_NAME=Galaxy-S25-128GB "$ROOT/scripts/emulator-comm" accept-call 5551234 >/dev/null
+assert_log_contains 'emu gsm accept 5551234'
+
+: >"$ADB_LOG"
+MOCK_AVD_NAME=Galaxy-S25-128GB "$ROOT/scripts/emulator-comm" reject-call 5551234 >/dev/null
+assert_log_contains 'emu gsm cancel 5551234'
+
+: >"$ADB_LOG"
+MOCK_AVD_NAME=Galaxy-S25-128GB "$ROOT/scripts/emulator-comm" incoming-sms 5551234 'test message' >/dev/null
+assert_log_contains 'emu sms send 5551234 test\ message'
+
+: >"$ADB_LOG"
+"$ROOT/scripts/emulator-comm" compose-sms 5551234 'hello world' >/dev/null
+assert_log_contains 'shell am\ start\ -W\ -a\ android.intent.action.SENDTO\ -d\ smsto:5551234\ --es\ sms_body\ hello\\\ world'
+
+: >"$ADB_LOG"
+"$ROOT/scripts/emulator-comm" compose-sms 5551234 'semi;and&dollar$pipe|gt>lt<back\slash' >/dev/null
+log_line="$(tail -n1 "$ADB_LOG")"
+[[ "$log_line" == *'\\;'* ]] || { echo "expected escaped semicolon in compose-sms command" >&2; exit 1; }
+[[ "$log_line" == *'\\&'* ]] || { echo "expected escaped ampersand in compose-sms command" >&2; exit 1; }
+[[ "$log_line" == *'\\$'* ]] || { echo "expected escaped dollar in compose-sms command" >&2; exit 1; }
+[[ "$log_line" == *'\\|'* ]] || { echo "expected escaped pipe in compose-sms command" >&2; exit 1; }
+[[ "$log_line" == *'\\>'* ]] || { echo "expected escaped greater-than in compose-sms command" >&2; exit 1; }
+[[ "$log_line" == *'\\<'* ]] || { echo "expected escaped less-than in compose-sms command" >&2; exit 1; }
+[[ "$log_line" == *'\\\\slash'* ]] || { echo "expected escaped backslash in compose-sms command" >&2; exit 1; }
+
+if MOCK_QEMU=0 "$ROOT/scripts/emulator-comm" incoming-call 5551234 >/dev/null 2>&1; then
+  printf 'physical devices must reject incoming call injection\n' >&2
+  exit 1
+fi
+
+if "$ROOT/scripts/emulator-comm" dial '555;rm' >/dev/null 2>&1; then
+  printf 'invalid phone numbers must be rejected\n' >&2
+  exit 1
+fi
+
+# --- status shows AVD name when available ---
+: >"$ADB_LOG"
+status_out="$(MOCK_AVD_NAME=Galaxy-S25-128GB "$ROOT/scripts/emulator-comm" status 2>/dev/null)"
+printf '%s' "$status_out" | grep -q 'avd: Galaxy-S25-128GB' || {
+  printf 'status must include avd name when available\n' >&2
+  printf 'actual output: %s\n' "$status_out" >&2
+  exit 1
+}
+
+# --- require_s25 rejects wrong AVD name ---
+if MOCK_AVD_NAME=wrong-avd "$ROOT/scripts/emulator-comm" incoming-call 5551234 >/dev/null 2>&1; then
+  printf 'wrong AVD name must be rejected by require_s25\n' >&2
+  exit 1
+fi
+
+# --- require_s25 allows matching AVD name ---
+: >"$ADB_LOG"
+EXPECTED_AVD_NAME=my-test-avd MOCK_AVD_NAME=my-test-avd \
+  "$ROOT/scripts/emulator-comm" incoming-call 5551234 >/dev/null
+assert_log_contains 'emu gsm call 5551234'
+
+# --- boot-wait succeeds immediately when already booted ---
+: >"$ADB_LOG"
+MOCK_AVD_NAME=Galaxy-S25-128GB MOCK_BOOT_COMPLETED=1 "$ROOT/scripts/emulator-comm" boot-wait >/dev/null
+assert_log_contains 'getprop sys.boot_completed'
+
+# --- boot-wait retries after transient adb shell failures ---
+: >"$ADB_LOG"
+rm -f "$ADB_LOG.boot-failed-once"
+MOCK_AVD_NAME=Galaxy-S25-128GB MOCK_BOOT_COMPLETED=1 MOCK_BOOT_FAIL_ONCE=1 \
+  "$ROOT/scripts/emulator-comm" boot-wait >/dev/null
+assert_log_contains 'getprop sys.boot_completed'
+
+# --- boot-wait times out when boot never completes ---
+if MOCK_AVD_NAME=Galaxy-S25-128GB MOCK_BOOT_COMPLETED=0 BOOT_TIMEOUT=2 "$ROOT/scripts/emulator-comm" boot-wait >/dev/null 2>&1; then
+  printf 'boot-wait must fail when emulator never boots within timeout\n' >&2
+  exit 1
+fi
+
+# --- require_s25 rejects empty AVD name ---
+if MOCK_AVD_NAME= "$ROOT/scripts/emulator-comm" incoming-call 5551234 >/dev/null 2>&1; then
+  printf 'empty avd_name must be rejected by require_s25\n' >&2
+  exit 1
+fi
+
+# --- boot-wait rejects BOOT_TIMEOUT=0 ---
+if MOCK_AVD_NAME=Galaxy-S25-128GB BOOT_TIMEOUT=0 "$ROOT/scripts/emulator-comm" boot-wait >/dev/null 2>&1; then
+  printf 'BOOT_TIMEOUT=0 must be rejected\n' >&2
+  exit 1
+fi
+
+# --- boot-wait rejects non-integer BOOT_TIMEOUT ---
+if MOCK_AVD_NAME=Galaxy-S25-128GB BOOT_TIMEOUT=abc "$ROOT/scripts/emulator-comm" boot-wait >/dev/null 2>&1; then
+  printf 'BOOT_TIMEOUT=abc must be rejected\n' >&2
+  exit 1
+fi
+
+ADB=missing-adb "$ROOT/scripts/emulator-comm" --help >/dev/null
+
+printf 'emulator communication tests passed\n'
