@@ -22,7 +22,7 @@ jobs:
   harness-syntax:
     name: Validate harness scripts (syntax + unit tests)
     runs-on: ubuntu-24.04
-    if: ${{ contains(fromJson('["sitholemb16-star","BlessOrg26","dependabot[bot]","github-actions[bot]"]'), github.triggering_actor) }}
+    if: ${{ github.triggering_actor == 'sitholemb16-star' || github.triggering_actor == 'BlessOrg26' || github.triggering_actor == 'dependabot[bot]' || github.triggering_actor == 'github-actions[bot]' }}
     steps:
       - name: Check actor allowlist
         run: |
@@ -150,7 +150,7 @@ jobs:
   api-tests:
     name: API Tests
     runs-on: ubuntu-24.04
-    if: ${{ contains(fromJson('["sitholemb16-star","BlessOrg26","dependabot[bot]","github-actions[bot]"]'), github.triggering_actor) }}
+    if: ${{ github.triggering_actor == 'sitholemb16-star' || github.triggering_actor == 'BlessOrg26' || github.triggering_actor == 'dependabot[bot]' || github.triggering_actor == 'github-actions[bot]' }}
     steps:
       - name: Check actor allowlist
         run: |
@@ -189,7 +189,7 @@ jobs:
   auto-copilot-review:
     name: Auto Copilot Review
     runs-on: ubuntu-24.04
-    if: ${{ contains(fromJson('["sitholemb16-star","BlessOrg26","dependabot[bot]","github-actions[bot]"]'), github.triggering_actor) }}
+    if: ${{ github.triggering_actor == 'sitholemb16-star' || github.triggering_actor == 'BlessOrg26' || github.triggering_actor == 'dependabot[bot]' || github.triggering_actor == 'github-actions[bot]' }}
     steps:
       - name: Check emitted required status
         run: echo "Auto Copilot Review status emitted for trusted PR trigger."
