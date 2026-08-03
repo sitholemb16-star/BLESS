@@ -1,1 +1,1 @@
-export { requireApiKey, isApiKeyConfigured } from "./middleware.js";
+export { requireApiKey, isApiKeyConfigured } from "./middleware";

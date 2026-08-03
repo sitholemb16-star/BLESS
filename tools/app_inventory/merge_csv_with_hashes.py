@@ -84,7 +84,17 @@ def load_csvs(paths):
     apps = {}
     for path in paths:
         with open(path, encoding='utf-8-sig') as f:
-            for index, row in enumerate(csv.DictReader(f), start=2):
+            reader = csv.DictReader(f)
+            fieldnames = reader.fieldnames or []
+            required_cols = {'ITEM_DATA', 'FILE_LIST', 'TIMESTAMP'}
+            missing = required_cols - set(fieldnames)
+            if missing:
+                print(
+                    f"WARN: Skipping {path} — missing required columns: {sorted(missing)}",
+                    file=sys.stderr,
+                )
+                continue
+            for index, row in enumerate(reader, start=2):
                 item_data_raw = row.get('ITEM_DATA') or '{}'
                 try:
                     meta = json.loads(item_data_raw)
@@ -161,18 +171,27 @@ def load_csvs(paths):
                     )
 
                 if pkg not in apps:
+                    ts_init = row.get('TIMESTAMP', '')
+                    ts_init_key = timestamp_key(ts_init)
+                    if ts_init_key is None and ts_init:
+                        print(
+                            f"WARN: Skipping row with invalid TIMESTAMP for new package {pkg} in {path}:{index}",
+                            file=sys.stderr,
+                        )
+                        continue
                     apps[pkg] = {
                         'package_name': pkg,
                         'app_name': meta.get('app_name', ''),
                         'version_code': meta.get('version_code'),
                         'is_aab': meta.get('is_aab', True),
-                        'backup_timestamp': row.get('TIMESTAMP', ''),
+                        'backup_timestamp': ts_init,
                         'backup_files': [],
                         'has_malformed_apk_entries': False,
                     }
 
                 app = apps[pkg]
                 ts = row.get('TIMESTAMP', '')
+                ts_key = timestamp_key(ts)
                 if snapshot_is_newer(app.get('backup_timestamp', ''), ts):
                     # Keep package-level metadata aligned with the latest snapshot
                     # when the same package appears across multiple manifests.
@@ -182,7 +201,7 @@ def load_csvs(paths):
                     app['backup_timestamp'] = ts
                     app['backup_files'] = list(parsed_files)
                     app['has_malformed_apk_entries'] = malformed_apk_count > 0
-                elif ts == app.get('backup_timestamp', ''):
+                elif ts_key is not None and ts_key == timestamp_key(app.get('backup_timestamp', '')):
                     merge_unique_files(app['backup_files'], parsed_files)
                     if malformed_apk_count > 0:
                         app['has_malformed_apk_entries'] = True
@@ -264,8 +283,10 @@ def parse_galaxy_store_download_history(path):
             header_idx = {name: idx for idx, name in enumerate(header)}
             continue
 
-        # Section ends at the next labeled header block.
-        if len(row) == 1 and row[0].strip():
+        # Section ends when the only non-empty cell is the first (either a
+        # genuine 1-cell row or a row with trailing empty columns added by
+        # Galaxy Store exports).
+        if row[0].strip() and all(not c.strip() for c in row[1:]):
             break
 
         content_idx = header_idx.get('content id', -1)

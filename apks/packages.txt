@@ -1,7 +1,7 @@
 # APK packages to pull from the USB-connected device.
 # Sources: Samsung Cloud backup manifests (APP_1784239533045.csv, APP_1784239532891.csv,
 #           APPLICATION_BACKUP_INDEX.csv) — merged full list, non-APK entries excluded.
-# Run: ADB_SERIAL=<your-device-serial> ./scripts/pull-apks
+# Run: ANDROID_SERIAL=<your-device-serial> ./scripts/pull-apks
 
 # ── Third-party apps ──────────────────────────────────────────────────────────
 and.lhhpub.goodshunt

@@ -36,7 +36,7 @@ describe("GET /api/provenance", () => {
   });
 
   it("returns 200 with parsed JSON when provenance.json exists", async () => {
-    const provData = { generated: "test", apks: [] };
+    const provData = { generated_at: "2024-01-01T00:00:00Z", packages: [{ package_name: "com.example.app" }], apks: [] };
     const provFile = join(tmpDir, "provenance.json");
     await fs.writeFile(provFile, JSON.stringify(provData));
     process.env["PROVENANCE_PATH"] = provFile;
@@ -46,7 +46,7 @@ describe("GET /api/provenance", () => {
       .get("/api/provenance")
       .set("Authorization", `Bearer ${TEST_KEY}`);
     expect(res.status).toBe(200);
-    expect(res.body).toMatchObject({ generated: "test" });
+    expect(res.body).toMatchObject({ generated_at: "2024-01-01T00:00:00Z" });
   });
 
   it("SHA256SUMS.txt is present in the repo", async () => {

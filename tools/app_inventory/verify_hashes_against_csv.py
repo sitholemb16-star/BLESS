@@ -35,7 +35,18 @@ def load_sums(path):
             if not SHA256_RE.match(sha):
                 invalid_local_rows += 1
                 continue
-            sums[rel_path.lstrip("./")] = sha
+            # Normalize separators and strip exactly one leading "./" prefix.
+            norm = rel_path.replace("\\", "/")
+            if norm.startswith("./"):
+                norm = norm[2:]
+            if norm in sums:
+                print(
+                    f"WARN: Duplicate path in sums file (second entry ignored): {norm!r}",
+                    file=sys.stderr,
+                )
+                invalid_local_rows += 1
+                continue
+            sums[norm] = sha
     return sums, invalid_local_rows
 
 
@@ -44,7 +55,17 @@ def load_expected(csv_paths):
     invalid_rows = 0
     for path in csv_paths:
         with open(path, encoding="utf-8-sig") as f:
-            for index, row in enumerate(csv.DictReader(f), start=2):
+            reader = csv.DictReader(f, strict=True)
+            try:
+                rows = list(reader)
+            except csv.Error as exc:
+                invalid_rows += 1
+                print(
+                    f"WARN: Malformed CSV in {path}: {exc}",
+                    file=sys.stderr,
+                )
+                continue
+            for index, row in enumerate(rows, start=2):
                 try:
                     meta = json.loads(row.get("ITEM_DATA", "{}"))
                     if not isinstance(meta, dict):
@@ -92,7 +113,14 @@ def load_expected(csv_paths):
                             continue
                         item_path = item_path.strip()
                         raw_hash = item.get("hash", "")
-                        backup_hash = "" if raw_hash is None else str(raw_hash).strip()
+                        if raw_hash is not None and not isinstance(raw_hash, str):
+                            invalid_rows += 1
+                            print(
+                                f"WARN: FILE_LIST entry has non-string hash type in {path}:{index}",
+                                file=sys.stderr,
+                            )
+                            continue
+                        backup_hash = "" if raw_hash is None else raw_hash.strip()
                         if backup_hash and not SHA256_RE.match(backup_hash):
                             invalid_rows += 1
                             print(
@@ -119,6 +147,7 @@ def load_expected(csv_paths):
     return expected, invalid_rows
 
 
+
 def main():
     ap = argparse.ArgumentParser(description=__doc__)
     ap.add_argument("--csv", nargs="+", required=True, help="APP_*.csv files")
@@ -126,7 +155,13 @@ def main():
     ap.add_argument(
         "--fail-on-mismatch",
         action="store_true",
-        help="Exit non-zero if any hash mismatch is found",
+        help=(
+            "Exit non-zero (code 2) when any of the following are detected: "
+            "hash mismatches, APKs missing locally, APKs without a backup hash, "
+            "malformed CSV/sums rows, or extra local APKs not referenced by any CSV. "
+            "This is a fail-closed gate: any deviation from a fully consistent state "
+            "causes a non-zero exit."
+        ),
     )
     args = ap.parse_args()
 

@@ -55,6 +55,7 @@ The package list lives in `apks/packages.txt`. The script skips packages that ar
 APP_MANIFEST_1="<path-to-first-app-csv>"
 APP_MANIFEST_2="<path-to-second-app-csv>"
 APP_MANIFEST_3="<path-to-third-app-csv>"
+DONOR_DEVICE_SERIAL="<your-donor-device-serial>"   # e.g. adb get-serialno
 DONOR_DEVICE_MODEL="<your-donor-device-model>"
 
 python3 tools/app_inventory/merge_csv_with_hashes.py \
@@ -86,17 +87,19 @@ Use the external sparsebundle-backed path for AVD storage:
 Create/update the AVD:
 ```bash
 EXTERNAL_AVD_HOME="<external-avd-home>"
-ANDROID_AVD_HOME="$EXTERNAL_AVD_HOME" ./scripts/setup-s25-avd
+ANDROID_SDK_ROOT="<android-sdk-root>"
+ANDROID_AVD_HOME="$EXTERNAL_AVD_HOME" ANDROID_SDK_ROOT="$ANDROID_SDK_ROOT" ./scripts/setup-s25-avd
 ```
 
 Launch it:
 ```bash
-ANDROID_AVD_HOME="$EXTERNAL_AVD_HOME" ./scripts/launch-s25
+ANDROID_AVD_HOME="$EXTERNAL_AVD_HOME" ANDROID_SDK_ROOT="$ANDROID_SDK_ROOT" ./scripts/launch-s25
 ```
 
 Install pulled APK set into the running emulator:
 ```bash
-./scripts/install-apks-to-emulator --serial emulator-5554
+EMULATOR_SERIAL="${ANDROID_SERIAL:-emulator-5554}"
+./scripts/install-apks-to-emulator --serial "$EMULATOR_SERIAL"
 ```
 
 ## Security Notes

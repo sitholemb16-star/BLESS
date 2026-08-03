@@ -122,7 +122,7 @@ case "$COMMAND" in
     printf 'waiting for boot (timeout %ss)...\n' "$BOOT_TIMEOUT"
     deadline=$(( $(date +%s) + BOOT_TIMEOUT ))
     while true; do
-      booted="$(adb_run shell getprop sys.boot_completed 2>/dev/null | tr -d '\r')"
+      booted="$( { adb_run shell getprop sys.boot_completed 2>/dev/null || true; } | tr -d '\r')"
       [[ "$booted" == "1" ]] && { printf 'boot complete\n'; break; }
       (( $(date +%s) < deadline )) || fail "emulator did not boot within ${BOOT_TIMEOUT}s"
       sleep 2

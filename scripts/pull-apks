@@ -61,7 +61,7 @@ echo "Device: $DEVICE_SERIAL"
 if [[ ${#PACKAGES[@]} -eq 0 ]]; then
   PKG_FILE="$APKS_DIR/packages.txt"
   if [[ -f "$PKG_FILE" ]]; then
-    while IFS= read -r line; do
+    while IFS= read -r line || [[ -n "$line" ]]; do
       line="${line#"${line%%[![:space:]]*}"}"
       line="${line%"${line##*[![:space:]]}"}"
       [[ -z "$line" || "$line" == \#* ]] && continue
@@ -86,11 +86,25 @@ for PKG in "${PACKAGES[@]}"; do
   fi
   DEST_ABS="$APKS_DIR/$PKG"
   LOCK_DIR="$APKS_DIR/.lock-$PKG"
+  LOCK_PID_FILE="$LOCK_DIR/pid"
   if ! mkdir "$LOCK_DIR" 2>/dev/null; then
-    echo "FAIL  $PKG (another pull is in progress for this package)" >&2
-    ((FAILED+=1))
-    continue
+    # Check if owning PID is still alive; reclaim stale locks.
+    existing_pid=""
+    [[ -f "$LOCK_PID_FILE" ]] && existing_pid="$(cat "$LOCK_PID_FILE" 2>/dev/null || true)"
+    if [[ -n "$existing_pid" ]] && kill -0 "$existing_pid" 2>/dev/null; then
+      echo "FAIL  $PKG (another pull is in progress for this package, PID $existing_pid)" >&2
+      ((FAILED+=1))
+      continue
+    fi
+    # Stale lock — reclaim.
+    rm -rf "$LOCK_DIR"
+    if ! mkdir "$LOCK_DIR" 2>/dev/null; then
+      echo "FAIL  $PKG (cannot acquire lock for this package)" >&2
+      ((FAILED+=1))
+      continue
+    fi
   fi
+  echo $$ > "$LOCK_PID_FILE"
   ACTIVE_LOCK_DIR="$LOCK_DIR"
 
   PM_PATH_RAW=$("${ADB[@]}" shell pm path "$PKG" 2>/dev/null || true)
@@ -139,13 +153,11 @@ for PKG in "${PACKAGES[@]}"; do
     continue
   fi
 
-  ((PULLED+=pkg_pulled))
-
   backup_dir="$APKS_DIR/.backup-$PKG-$$"
   rm -rf "$backup_dir"
   ACTIVE_DEST_DIR="$DEST_ABS"
   ACTIVE_BACKUP_DIR="$backup_dir"
-  if [[ -d "$DEST_ABS" ]]; then
+  if [[ -e "$DEST_ABS" || -L "$DEST_ABS" ]]; then
     mv "$DEST_ABS" "$backup_dir"
   fi
   if mv "$STAGE_DIR" "$DEST_ABS"; then
@@ -153,6 +165,7 @@ for PKG in "${PACKAGES[@]}"; do
     ACTIVE_BACKUP_DIR=""
     ACTIVE_DEST_DIR=""
     ACTIVE_STAGE_DIR=""
+    ((PULLED+=pkg_pulled))
   else
     rm -rf "$DEST_ABS"
     if [[ -d "$backup_dir" ]]; then

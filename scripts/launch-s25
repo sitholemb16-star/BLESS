@@ -25,7 +25,18 @@ for arg in "$@"; do
   esac
 done
 
-FLAGS=(-avd "$AVD_NAME" -dns-server 8.8.8.8 -no-snapshot-save)
+# Reject EXTRA_FLAGS that would override the target AVD.
+for _flag in "${EXTRA_FLAGS[@]}"; do
+  if [[ "$_flag" == "-avd" || "$_flag" == "@"* ]]; then
+    echo "ERROR: EXTRA_FLAGS must not override the target AVD (got: '$_flag')." >&2
+    exit 1
+  fi
+done
+unset _flag
+
+# Use -dns-server only when DNS_SERVER is set to support custom/VPN/private DNS.
+FLAGS=(-avd "$AVD_NAME" -no-snapshot-save)
+[[ -n "${DNS_SERVER:-}" ]] && FLAGS+=(-dns-server "$DNS_SERVER")
 [[ $HEADLESS -eq 1 ]] && FLAGS+=(-no-window -no-audio)
 
 echo "Starting $AVD_NAME emulator..."
