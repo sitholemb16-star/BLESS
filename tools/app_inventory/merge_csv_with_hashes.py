@@ -10,6 +10,7 @@ import json
 import os
 import re
 import sys
+import tempfile
 from datetime import datetime, timezone
 
 SHA256_RE = re.compile(r"^[0-9a-fA-F]{64}$")
@@ -53,6 +54,10 @@ def merge_unique_files(existing_files, incoming_files):
         existing = existing_files[idx]
         existing_hash = existing.get('backup_hash', '')
         incoming_hash = item.get('backup_hash', '')
+        # Once a conflict is marked, preserve it — a third duplicate cannot
+        # retroactively resolve the ambiguity.
+        if existing.get('hash_conflict'):
+            return
         if (not existing_hash) and incoming_hash:
             existing_files[idx] = item
         elif existing_hash and incoming_hash and existing_hash != incoming_hash:
@@ -141,6 +146,7 @@ def load_csvs(paths):
                 malformed_apk_count = 0
                 for item in file_list:
                     if not isinstance(item, dict):
+                        malformed_apk_count += 1
                         continue
                     item_type = item.get('type')
                     if item_type not in ('apk', 'apks'):
@@ -328,8 +334,18 @@ def merge(apps, sums, *, smartthings_devices, galaxy_store_summary, pulled_devic
         try:
             generated_at = datetime.fromtimestamp(int(epoch_str), tz=timezone.utc).isoformat()
         except (ValueError, OSError):
+            print(
+                "WARN: SOURCE_DATE_EPOCH value is malformed; falling back to current time."
+                " Set SOURCE_DATE_EPOCH to a Unix timestamp for reproducible builds.",
+                file=sys.stderr,
+            )
             generated_at = datetime.now(timezone.utc).isoformat()
     else:
+        print(
+            "WARN: SOURCE_DATE_EPOCH is not set; using current time for generated_at."
+            " Set SOURCE_DATE_EPOCH to a Unix timestamp for reproducible builds.",
+            file=sys.stderr,
+        )
         generated_at = datetime.now(timezone.utc).isoformat()
     account_device_models = sorted(
         {
@@ -377,6 +393,8 @@ def merge(apps, sums, *, smartthings_devices, galaxy_store_summary, pulled_devic
                 not info.get('has_malformed_apk_entries', False)
                 and bool(pulled)
                 and all(a['hash_match'] is True for a in pulled)
+                # Conflict means two manifests disagree — cannot be verified.
+                and not any(bf.get('hash_conflict') for bf in info['backup_files'])
             ),
         })
     return {
@@ -432,12 +450,11 @@ def main():
         pulled_device=pulled_device,
     )
 
-    out_dir = os.path.dirname(args.out)
-    if out_dir:
-        os.makedirs(out_dir, exist_ok=True)
-    tmp_out = args.out + '.tmp'
+    out_dir = os.path.dirname(os.path.abspath(args.out))
+    os.makedirs(out_dir, exist_ok=True)
+    fd, tmp_out = tempfile.mkstemp(dir=out_dir, prefix='.provenance-', suffix='.tmp')
     try:
-        with open(tmp_out, 'w', encoding='utf-8') as f:
+        with os.fdopen(fd, 'w', encoding='utf-8') as f:
             json.dump(result, f, indent=2, sort_keys=True)
         os.replace(tmp_out, args.out)
     except Exception:
