@@ -9,141 +9,30 @@ By default, mismatches are reported but do not fail the process because
 apps can update between backup time and pull time.
 """
 import argparse
-import csv
-import json
 import os
-import re
 import sys
 
-SHA256_RE = re.compile(r"^[0-9a-fA-F]{64}$")
-
-
-def load_sums(path):
-    sums = {}
-    invalid_local_rows = 0
-    with open(path, encoding="utf-8") as f:
-        for line in f:
-            line = line.strip()
-            if not line:
-                continue
-            parts = line.split(None, 1)
-            if len(parts) != 2:
-                invalid_local_rows += 1
-                continue
-            sha, rel_path = parts
-            sha = sha.strip().lower()
-            if not SHA256_RE.match(sha):
-                invalid_local_rows += 1
-                continue
-            # Normalize separators and strip exactly one leading "./" prefix.
-            norm = rel_path.replace("\\", "/")
-            if norm.startswith("./"):
-                norm = norm[2:]
-            if norm in sums:
-                print(
-                    f"WARN: Duplicate path in sums file (second entry ignored): {norm!r}",
-                    file=sys.stderr,
-                )
-                invalid_local_rows += 1
-                continue
-            sums[norm] = sha
-    return sums, invalid_local_rows
+from common import iter_app_csv_rows, load_sums
 
 
 def load_expected(csv_paths):
     expected = []
     invalid_rows = 0
-    for path in csv_paths:
-        with open(path, encoding="utf-8-sig") as f:
-            reader = csv.DictReader(f, strict=True)
-            try:
-                rows = list(reader)
-            except csv.Error as exc:
-                invalid_rows += 1
-                print(
-                    f"WARN: Malformed CSV in {path}: {exc}",
-                    file=sys.stderr,
-                )
-                continue
-            for index, row in enumerate(rows, start=2):
-                try:
-                    meta = json.loads(row.get("ITEM_DATA", "{}"))
-                    if not isinstance(meta, dict):
-                        invalid_rows += 1
-                        print(
-                            f"WARN: non-object ITEM_DATA in {path}:{index}",
-                            file=sys.stderr,
-                        )
-                        continue
-                    pkg = meta.get("package_name")
-                    if not isinstance(pkg, str) or not pkg.strip():
-                        invalid_rows += 1
-                        print(
-                            f"WARN: missing/invalid package_name in {path}:{index}",
-                            file=sys.stderr,
-                        )
-                        continue
-                    pkg = pkg.strip()
-                    file_list = json.loads(row.get("FILE_LIST", "[]"))
-                    if not isinstance(file_list, list):
-                        invalid_rows += 1
-                        print(
-                            f"WARN: non-list FILE_LIST in {path}:{index}",
-                            file=sys.stderr,
-                        )
-                        continue
-                    for item in file_list:
-                        if not isinstance(item, dict):
-                            invalid_rows += 1
-                            print(
-                                f"WARN: non-object FILE_LIST entry in {path}:{index}",
-                                file=sys.stderr,
-                            )
-                            continue
-                        item_type = item.get("type")
-                        if item_type not in ("apk", "apks"):
-                            continue
-                        item_path = item.get("path")
-                        if not isinstance(item_path, str) or not item_path.strip():
-                            invalid_rows += 1
-                            print(
-                                f"WARN: FILE_LIST entry missing path in {path}:{index}",
-                                file=sys.stderr,
-                            )
-                            continue
-                        item_path = item_path.strip()
-                        raw_hash = item.get("hash", "")
-                        if raw_hash is not None and not isinstance(raw_hash, str):
-                            invalid_rows += 1
-                            print(
-                                f"WARN: FILE_LIST entry has non-string hash type in {path}:{index}",
-                                file=sys.stderr,
-                            )
-                            continue
-                        backup_hash = "" if raw_hash is None else raw_hash.strip()
-                        if backup_hash and not SHA256_RE.match(backup_hash):
-                            invalid_rows += 1
-                            print(
-                                f"WARN: invalid FILE_LIST hash in {path}:{index}",
-                                file=sys.stderr,
-                            )
-                            continue
-                        rel = f"apks/{pkg}/{item_path.split('/')[-1]}"
-                        expected.append(
-                            {
-                                "rel_path": rel,
-                                "backup_hash": backup_hash.lower(),
-                                "package_name": pkg,
-                                "type": item_type,
-                            }
-                        )
-                except (json.JSONDecodeError, KeyError, TypeError, ValueError):
-                    invalid_rows += 1
-                    print(
-                        f"WARN: malformed row in {path}:{index}",
-                        file=sys.stderr,
-                    )
-                    continue
+    for row in iter_app_csv_rows(csv_paths):
+        if row.get("invalid"):
+            invalid_rows += 1
+        if row.get("skip"):
+            continue
+        pkg = row["package_name"]
+        for item in row["parsed_files"]:
+            expected.append(
+                {
+                    "rel_path": f"apks/{pkg}/{item['filename']}",
+                    "backup_hash": item["backup_hash"],
+                    "package_name": pkg,
+                    "type": item["type"],
+                }
+            )
     return expected, invalid_rows
 
 

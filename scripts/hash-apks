@@ -17,6 +17,7 @@ import hashlib
 import os
 import stat
 import sys
+import tempfile
 
 repo_root, apks_dir, out = sys.argv[1:4]
 paths = []
@@ -35,9 +36,9 @@ for root, _, files in os.walk(apks_dir, onerror=on_walk_error):
                 paths.append(path)
 paths.sort()
 
-tmp = out + f".{os.getpid()}.tmp"
+fd, tmp = tempfile.mkstemp(dir=apks_dir, prefix=".SHA256SUMS-", suffix=".tmp")
 try:
-    with open(tmp, "w", encoding="utf-8") as fh:
+    with os.fdopen(fd, "w", encoding="utf-8") as fh:
         for path in paths:
             rel = os.path.relpath(path, repo_root)
             if "\n" in rel or "\r" in rel:
@@ -48,7 +49,7 @@ try:
                     h.update(chunk)
             fh.write(f"{h.hexdigest()}  {rel}\n")
     os.replace(tmp, out)
-except Exception:
+except BaseException:
     try:
         os.unlink(tmp)
     except OSError:

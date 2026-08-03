@@ -8,12 +8,11 @@ import argparse
 import csv
 import json
 import os
-import re
 import sys
 import tempfile
 from datetime import datetime, timezone
 
-SHA256_RE = re.compile(r"^[0-9a-fA-F]{64}$")
+from common import iter_app_csv_rows, load_sums as load_sums_with_invalid
 
 
 def timestamp_key(value):
@@ -57,7 +56,7 @@ def merge_unique_files(existing_files, incoming_files):
         # Once a conflict is marked, preserve it — a third duplicate cannot
         # retroactively resolve the ambiguity.
         if existing.get('hash_conflict'):
-            return
+            continue
         if (not existing_hash) and incoming_hash:
             existing_files[idx] = item
         elif existing_hash and incoming_hash and existing_hash != incoming_hash:
@@ -70,147 +69,59 @@ def merge_unique_files(existing_files, incoming_files):
 
 
 def load_sums(path):
-    sums = {}
-    with open(path, encoding='utf-8') as f:
-        for line in f:
-            line = line.strip()
-            if not line:
-                continue
-            parts = line.split(None, 1)
-            if len(parts) == 2:
-                sha, fpath = parts
-                sha = sha.strip().lower()
-                if SHA256_RE.match(sha):
-                    sums[fpath.lstrip('./')] = sha
-    return sums
+    return load_sums_with_invalid(path)[0]
 
 
 def load_csvs(paths):
     apps = {}
-    for path in paths:
-        with open(path, encoding='utf-8-sig') as f:
-            reader = csv.DictReader(f)
-            fieldnames = reader.fieldnames or []
-            required_cols = {'ITEM_DATA', 'FILE_LIST', 'TIMESTAMP'}
-            missing = required_cols - set(fieldnames)
-            if missing:
+    for parsed in iter_app_csv_rows(paths):
+        if parsed.get('skip'):
+            continue
+        row = parsed['row']
+        meta = parsed['meta']
+        pkg = parsed['package_name']
+        parsed_files = parsed['parsed_files']
+        malformed_apk_count = parsed['malformed_apk_count']
+        path = parsed['path']
+        index = parsed['index']
+
+        if pkg not in apps:
+            ts_init = row.get('TIMESTAMP', '')
+            ts_init_key = timestamp_key(ts_init)
+            if ts_init_key is None and ts_init:
                 print(
-                    f"WARN: Skipping {path} — missing required columns: {sorted(missing)}",
+                    f"WARN: Skipping row with invalid TIMESTAMP for new package {pkg} in {path}:{index}",
                     file=sys.stderr,
                 )
                 continue
-            for index, row in enumerate(reader, start=2):
-                item_data_raw = row.get('ITEM_DATA') or '{}'
-                try:
-                    meta = json.loads(item_data_raw)
-                except json.JSONDecodeError as exc:
-                    print(
-                        f"WARN: Skipping malformed ITEM_DATA in {path}:{index}: {exc}",
-                        file=sys.stderr,
-                    )
-                    continue
-                if not isinstance(meta, dict):
-                    print(
-                        f"WARN: Skipping non-object ITEM_DATA in {path}:{index}",
-                        file=sys.stderr,
-                    )
-                    continue
-                pkg_raw = meta.get('package_name', '')
-                if not isinstance(pkg_raw, str):
-                    print(
-                        f"WARN: Skipping non-string package_name in {path}:{index}",
-                        file=sys.stderr,
-                    )
-                    continue
-                pkg = pkg_raw.strip()
-                if not pkg:
-                    continue
+            apps[pkg] = {
+                'package_name': pkg,
+                'app_name': meta.get('app_name', ''),
+                'version_code': meta.get('version_code'),
+                'is_aab': meta.get('is_aab', True),
+                'backup_timestamp': ts_init,
+                'backup_files': [],
+                'has_malformed_apk_entries': False,
+            }
 
-                file_list_raw = row.get('FILE_LIST') or '[]'
-                try:
-                    file_list = json.loads(file_list_raw)
-                except json.JSONDecodeError as exc:
-                    print(
-                        f"WARN: Skipping malformed FILE_LIST in {path}:{index}: {exc}",
-                        file=sys.stderr,
-                    )
-                    continue
-                if not isinstance(file_list, list):
-                    print(
-                        f"WARN: Skipping non-list FILE_LIST in {path}:{index}",
-                        file=sys.stderr,
-                    )
-                    continue
-
-                parsed_files = []
-                malformed_apk_count = 0
-                for item in file_list:
-                    if not isinstance(item, dict):
-                        malformed_apk_count += 1
-                        continue
-                    item_type = item.get('type')
-                    if item_type not in ('apk', 'apks'):
-                        continue
-                    item_path = item.get('path')
-                    if not isinstance(item_path, str) or not item_path.strip():
-                        print(
-                            f"WARN: Skipping FILE_LIST entry without path in {path}:{index}",
-                            file=sys.stderr,
-                        )
-                        malformed_apk_count += 1
-                        continue
-                    raw_hash = item.get('hash', '')
-                    backup_hash = '' if raw_hash is None else str(raw_hash).strip().lower()
-                    if backup_hash and not SHA256_RE.match(backup_hash):
-                        print(
-                            f"WARN: FILE_LIST entry has invalid hash in {path}:{index}; keeping as unverified",
-                            file=sys.stderr,
-                        )
-                        backup_hash = ''
-                    parsed_files.append(
-                        {
-                            'filename': os.path.basename(item_path),
-                            'backup_hash': backup_hash,
-                            'size': item.get('size', 0),
-                            'type': item_type,
-                        }
-                    )
-
-                if pkg not in apps:
-                    ts_init = row.get('TIMESTAMP', '')
-                    ts_init_key = timestamp_key(ts_init)
-                    if ts_init_key is None and ts_init:
-                        print(
-                            f"WARN: Skipping row with invalid TIMESTAMP for new package {pkg} in {path}:{index}",
-                            file=sys.stderr,
-                        )
-                        continue
-                    apps[pkg] = {
-                        'package_name': pkg,
-                        'app_name': meta.get('app_name', ''),
-                        'version_code': meta.get('version_code'),
-                        'is_aab': meta.get('is_aab', True),
-                        'backup_timestamp': ts_init,
-                        'backup_files': [],
-                        'has_malformed_apk_entries': False,
-                    }
-
-                app = apps[pkg]
-                ts = row.get('TIMESTAMP', '')
-                ts_key = timestamp_key(ts)
-                if snapshot_is_newer(app.get('backup_timestamp', ''), ts):
-                    # Keep package-level metadata aligned with the latest snapshot
-                    # when the same package appears across multiple manifests.
-                    app['app_name'] = meta.get('app_name', app.get('app_name', ''))
-                    app['version_code'] = meta.get('version_code')
-                    app['is_aab'] = meta.get('is_aab', app.get('is_aab', True))
-                    app['backup_timestamp'] = ts
-                    app['backup_files'] = list(parsed_files)
-                    app['has_malformed_apk_entries'] = malformed_apk_count > 0
-                elif ts_key is not None and ts_key == timestamp_key(app.get('backup_timestamp', '')):
-                    merge_unique_files(app['backup_files'], parsed_files)
-                    if malformed_apk_count > 0:
-                        app['has_malformed_apk_entries'] = True
+        app = apps[pkg]
+        ts = row.get('TIMESTAMP', '')
+        ts_key = timestamp_key(ts)
+        if snapshot_is_newer(app.get('backup_timestamp', ''), ts):
+            # Keep package-level metadata aligned with the latest snapshot
+            # when the same package appears across multiple manifests.
+            app['app_name'] = meta.get('app_name', app.get('app_name', ''))
+            app['version_code'] = meta.get('version_code')
+            app['is_aab'] = meta.get('is_aab', app.get('is_aab', True))
+            app['backup_timestamp'] = ts
+            app['backup_files'] = list(parsed_files)
+            app['has_malformed_apk_entries'] = malformed_apk_count > 0
+        elif (ts_key is not None and ts_key == timestamp_key(app.get('backup_timestamp', ''))) or (
+            not ts and not app.get('backup_timestamp', '')
+        ):
+            merge_unique_files(app['backup_files'], parsed_files)
+            if malformed_apk_count > 0:
+                app['has_malformed_apk_entries'] = True
     return apps
 
 
@@ -289,10 +200,9 @@ def parse_galaxy_store_download_history(path):
             header_idx = {name: idx for idx, name in enumerate(header)}
             continue
 
-        # Section ends when the only non-empty cell is the first (either a
-        # genuine 1-cell row or a row with trailing empty columns added by
-        # Galaxy Store exports).
-        if row[0].strip() and all(not c.strip() for c in row[1:]):
+        # Section titles are exported as genuine one-cell rows. Do not treat a
+        # multi-column row with only content id populated as a section boundary.
+        if len(row) == 1 and row[0].strip():
             break
 
         content_idx = header_idx.get('content id', -1)

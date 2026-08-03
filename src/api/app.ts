@@ -6,9 +6,9 @@
  */
 
 import express from "express";
-import { requireApiKey } from "./auth/index.js";
-import healthRouter from "./routes/health.js";
-import provenanceRouter from "./routes/provenance.js";
+import { requireApiKey } from "./auth/index";
+import healthRouter from "./routes/health";
+import provenanceRouter from "./routes/provenance";
 
 export function createApp(): express.Application {
   const app = express();

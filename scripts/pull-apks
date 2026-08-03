@@ -21,7 +21,10 @@ cleanup_stage() {
     rm -rf "$ACTIVE_STAGE_DIR"
   fi
   if [[ -n "$ACTIVE_LOCK_DIR" && -d "$ACTIVE_LOCK_DIR" ]]; then
-    rm -rf "$ACTIVE_LOCK_DIR"
+    if [[ -n "${ACTIVE_LOCK_TOKEN:-}" && -f "$ACTIVE_LOCK_DIR/token" ]] \
+      && [[ "$(cat "$ACTIVE_LOCK_DIR/token" 2>/dev/null || true)" == "$ACTIVE_LOCK_TOKEN" ]]; then
+      rm -rf "$ACTIVE_LOCK_DIR"
+    fi
   fi
 }
 trap cleanup_stage EXIT
@@ -87,25 +90,42 @@ for PKG in "${PACKAGES[@]}"; do
   DEST_ABS="$APKS_DIR/$PKG"
   LOCK_DIR="$APKS_DIR/.lock-$PKG"
   LOCK_PID_FILE="$LOCK_DIR/pid"
+  LOCK_TOKEN_FILE="$LOCK_DIR/token"
+  LOCK_TOKEN="$$:$RANDOM:$SECONDS"
   if ! mkdir "$LOCK_DIR" 2>/dev/null; then
-    # Check if owning PID is still alive; reclaim stale locks.
+    # Reclaim only complete stale locks. An empty/incomplete lock may belong to
+    # a just-started owner that has not written its token and pid yet.
     existing_pid=""
+    existing_token=""
     [[ -f "$LOCK_PID_FILE" ]] && existing_pid="$(cat "$LOCK_PID_FILE" 2>/dev/null || true)"
+    [[ -f "$LOCK_TOKEN_FILE" ]] && existing_token="$(cat "$LOCK_TOKEN_FILE" 2>/dev/null || true)"
+    if [[ -z "$existing_pid" || -z "$existing_token" ]]; then
+      echo "FAIL  $PKG (another pull is acquiring the lock for this package)" >&2
+      ((FAILED+=1))
+      continue
+    fi
     if [[ -n "$existing_pid" ]] && kill -0 "$existing_pid" 2>/dev/null; then
       echo "FAIL  $PKG (another pull is in progress for this package, PID $existing_pid)" >&2
       ((FAILED+=1))
       continue
     fi
-    # Stale lock — reclaim.
-    rm -rf "$LOCK_DIR"
+    stale_dir="$LOCK_DIR.stale.$$"
+    if ! mv "$LOCK_DIR" "$stale_dir" 2>/dev/null; then
+      echo "FAIL  $PKG (cannot reclaim stale lock for this package)" >&2
+      ((FAILED+=1))
+      continue
+    fi
+    rm -rf "$stale_dir"
     if ! mkdir "$LOCK_DIR" 2>/dev/null; then
       echo "FAIL  $PKG (cannot acquire lock for this package)" >&2
       ((FAILED+=1))
       continue
     fi
   fi
+  printf '%s\n' "$LOCK_TOKEN" > "$LOCK_TOKEN_FILE"
   echo $$ > "$LOCK_PID_FILE"
   ACTIVE_LOCK_DIR="$LOCK_DIR"
+  ACTIVE_LOCK_TOKEN="$LOCK_TOKEN"
 
   PM_PATH_RAW=$("${ADB[@]}" shell pm path "$PKG" 2>/dev/null || true)
   PATHS=$(printf '%s' "$PM_PATH_RAW" | tr -d '\r')
@@ -119,6 +139,7 @@ for PKG in "${PACKAGES[@]}"; do
     fi
     rm -rf "$LOCK_DIR"
     ACTIVE_LOCK_DIR=""
+    ACTIVE_LOCK_TOKEN=""
     continue
   fi
 
@@ -150,6 +171,7 @@ for PKG in "${PACKAGES[@]}"; do
     echo "FAIL  $PKG (preserved prior pull set)" >&2
     rm -rf "$LOCK_DIR"
     ACTIVE_LOCK_DIR=""
+    ACTIVE_LOCK_TOKEN=""
     continue
   fi
 
@@ -179,10 +201,12 @@ for PKG in "${PACKAGES[@]}"; do
     ((FAILED+=1))
     rm -rf "$LOCK_DIR"
     ACTIVE_LOCK_DIR=""
+    ACTIVE_LOCK_TOKEN=""
     continue
   fi
   rm -rf "$LOCK_DIR"
   ACTIVE_LOCK_DIR=""
+  ACTIVE_LOCK_TOKEN=""
 done
 
 echo ""

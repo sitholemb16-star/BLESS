@@ -59,7 +59,7 @@ DONOR_DEVICE_SERIAL="<your-donor-device-serial>"   # e.g. adb get-serialno
 DONOR_DEVICE_MODEL="<your-donor-device-model>"
 # Optional: set SOURCE_DATE_EPOCH to a Unix timestamp for reproducible generated_at values.
 # Without it, the current system time is used and a WARN is printed to stderr.
-# export SOURCE_DATE_EPOCH=$(date -u +%s)
+# export SOURCE_DATE_EPOCH="$(git log -1 --format=%ct)"
 
 python3 tools/app_inventory/merge_csv_with_hashes.py \
   --csv "$APP_MANIFEST_1" "$APP_MANIFEST_2" "$APP_MANIFEST_3" \

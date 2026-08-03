@@ -64,5 +64,27 @@ if ANDROID_SDK_ROOT="$missing_sdk" ANDROID_AVD_HOME="$stub_dir/avd" \
 fi
 echo "test4 (missing emulator guard): passed"
 
+# ── Test 5: EXTRA_FLAGS cannot override the selected AVD ──────────────────────
+if run_launch -avd OtherDevice >/dev/null 2>&1; then
+  echo "FAIL test5: -avd override should be rejected"
+  exit 1
+fi
+if run_launch @OtherDevice >/dev/null 2>&1; then
+  echo "FAIL test5: @name override should be rejected"
+  exit 1
+fi
+echo "test5 (AVD override guard): passed"
+
+# ── Test 6: DNS_SERVER is emitted only when configured ────────────────────────
+DNS_SERVER=1.1.1.1 run_launch
+argv="$(cat "$argv_file")"
+echo "$argv" | grep -q -- "-dns-server" || { echo "FAIL test6: -dns-server missing"; exit 1; }
+echo "$argv" | grep -q -- "1.1.1.1" || { echo "FAIL test6: DNS value missing"; exit 1; }
+
+run_launch
+argv="$(cat "$argv_file")"
+echo "$argv" | grep -q -- "-dns-server" && { echo "FAIL test6: -dns-server present when unset"; exit 1; }
+echo "test6 (conditional DNS flag): passed"
+
 echo ""
 echo "launch-s25 tests passed"
