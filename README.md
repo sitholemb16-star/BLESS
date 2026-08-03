@@ -99,11 +99,29 @@ Launch it:
 ANDROID_AVD_HOME="$EXTERNAL_AVD_HOME" ANDROID_SDK_ROOT="$ANDROID_SDK_ROOT" ./scripts/launch-s25
 ```
 
+Run a live smoke test (device + API + provenance + SMS bridge):
+```bash
+export API_KEY="<your-api-key>"
+export ANDROID_SERIAL="emulator-5554"
+API_URL="http://localhost:3000" ./scripts/emulator-smoke-test
+```
+
 Install pulled APK set into the running emulator:
 ```bash
 EMULATOR_SERIAL="${ANDROID_SERIAL:-emulator-5554}"
 ./scripts/install-apks-to-emulator --serial "$EMULATOR_SERIAL"
 ```
+
+### Optional CI live smoke step
+
+`emulator-harness.yml` includes an optional live smoke step gated by:
+
+```bash
+ENABLE_LIVE_EMULATOR_SMOKE=true
+```
+
+When enabled, provide `ANDROID_SDK_ROOT`, `ANDROID_AVD_HOME`, and `API_KEY` in the runner environment.
+In GitHub Actions, set `ANDROID_SDK_ROOT` and `ANDROID_AVD_HOME` as repository variables and `API_KEY` as a repository secret.
 
 ## Security Notes
 - Never commit secrets, API keys, or tokens.
