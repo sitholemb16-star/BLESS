@@ -9,6 +9,9 @@ on:
       - main
   workflow_dispatch:
 
+env:
+  ALLOWED_ACTORS_JSON: '["sitholemb16-star","BlessOrg26","dependabot[bot]","github-actions[bot]"]'
+
 permissions:
   contents: read
 
@@ -16,7 +19,7 @@ jobs:
   api-tests:
     name: API Tests
     runs-on: ubuntu-24.04
-    if: ${{ github.actor == 'sitholemb16-star' || github.actor == 'BlessOrg26' || github.actor == 'dependabot[bot]' || github.actor == 'github-actions[bot]' }}
+    if: ${{ contains(fromJson(env.ALLOWED_ACTORS_JSON), github.actor) }}
     steps:
       - name: Checkout
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
