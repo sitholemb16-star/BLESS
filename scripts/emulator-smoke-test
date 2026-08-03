@@ -1,0 +1,37 @@
+#!/usr/bin/env bash
+# emulator-smoke-test — Validate live emulator + API + provenance + SMS bridge.
+set -euo pipefail
+
+ADB="${ADB:-adb}"
+SERIAL="${ANDROID_SERIAL:-emulator-5554}"
+API_URL="${API_URL:-http://localhost:3000}"
+SMS_FROM="${SMS_FROM:-12345}"
+SMS_TEXT="${SMS_TEXT:-Test message from CI}"
+
+fail() {
+  echo "ERROR: $*" >&2
+  exit 1
+}
+
+command -v "$ADB" >/dev/null 2>&1 || fail "adb was not found"
+command -v curl >/dev/null 2>&1 || fail "curl was not found"
+command -v jq >/dev/null 2>&1 || fail "jq was not found"
+
+[[ -n "${API_KEY:-}" ]] || fail "API_KEY must be set"
+
+echo "[Smoke Test] Checking emulator status..."
+"$ADB" devices | grep -q "^${SERIAL}[[:space:]]\\+device$" || fail "emulator '$SERIAL' not detected"
+
+echo "[Smoke Test] API health check..."
+curl -fsS "$API_URL/health" \
+  | jq -e '.status == "ok"' >/dev/null || fail "health check failed"
+
+echo "[Smoke Test] Provenance manifest check..."
+curl -fsS -H "Authorization: Bearer $API_KEY" "$API_URL/api/provenance" \
+  | jq -e 'type == "object"' >/dev/null || fail "provenance endpoint failed"
+
+echo "[Smoke Test] Emulator SMS bridge..."
+ANDROID_SERIAL="$SERIAL" ./scripts/emulator-comm incoming-sms "$SMS_FROM" "$SMS_TEXT" >/dev/null \
+  || fail "SMS bridge failed"
+
+echo "OK: Emulator live, API healthy, provenance manifest accessible, SMS bridge working"

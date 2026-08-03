@@ -16,6 +16,7 @@ on:
 # Prevents untrusted forks from running scripts against live secrets/devices.
 env:
   ALLOWED_ACTORS: "sitholemb16-star BlessOrg26 dependabot[bot] github-actions[bot]"
+  ENABLE_LIVE_EMULATOR_SMOKE: "false"
 
 permissions:
   contents: read
@@ -87,7 +88,7 @@ jobs:
 
       - name: Bash syntax check — S25 emulator scripts
         run: |
-          for script in scripts/setup-s25-avd scripts/launch-s25 scripts/install-apks-to-emulator; do
+          for script in scripts/setup-s25-avd scripts/launch-s25 scripts/install-apks-to-emulator scripts/emulator-smoke-test; do
             if [ ! -f "$script" ]; then
               echo "MISSING REQUIRED SCRIPT: $script" >&2
               exit 1
@@ -148,3 +149,40 @@ jobs:
             echo "ERROR: tests/avd-lifecycle-test is required for this workflow." >&2
             exit 1
           fi
+
+      - name: Run live emulator smoke test (optional)
+        if: ${{ env.ENABLE_LIVE_EMULATOR_SMOKE == 'true' }}
+        env:
+          API_KEY: ${{ secrets.API_KEY }}
+          ANDROID_SDK_ROOT: ${{ vars.ANDROID_SDK_ROOT }}
+          ANDROID_AVD_HOME: ${{ vars.ANDROID_AVD_HOME }}
+          EXTERNAL_AVD_HOME: ${{ vars.ANDROID_AVD_HOME }}
+          ANDROID_SERIAL: emulator-5554
+          API_URL: http://localhost:3000
+          BOOT_TIMEOUT: "120"
+        run: |
+          if [ -z "${ANDROID_SDK_ROOT:-}" ] || [ -z "${ANDROID_AVD_HOME:-}" ]; then
+            echo "ERROR: repository variables ANDROID_SDK_ROOT and ANDROID_AVD_HOME must be set for live smoke testing." >&2
+            exit 1
+          fi
+          if [ -z "${API_KEY:-}" ]; then
+            echo "ERROR: API_KEY secret is required for live smoke testing." >&2
+            exit 1
+          fi
+          export PATH="$ANDROID_SDK_ROOT/platform-tools:$ANDROID_SDK_ROOT/emulator:$PATH"
+          chmod +x scripts/setup-s25-avd scripts/launch-s25 scripts/emulator-comm scripts/emulator-smoke-test
+          npm ci
+          npm run build
+          smoke_provenance="$(mktemp)"
+          printf '{"generated_at":"1970-01-01T00:00:00Z","packages":[]}\n' > "$smoke_provenance"
+          PORT=3000 PROVENANCE_PATH="$smoke_provenance" npm start >/tmp/bless-api.log 2>&1 &
+          api_pid="$!"
+          trap 'kill "$api_pid" >/dev/null 2>&1 || true; adb -s "${ANDROID_SERIAL}" emu kill >/dev/null 2>&1 || true' EXIT
+          for _ in $(seq 1 30); do
+            curl -fsS "$API_URL/health" >/dev/null 2>&1 && break
+            sleep 1
+          done
+          ./scripts/setup-s25-avd
+          ./scripts/launch-s25 --headless -no-boot-anim >/tmp/s25-emulator.log 2>&1 &
+          ./scripts/emulator-comm --serial "${ANDROID_SERIAL}" boot-wait
+          ./scripts/emulator-smoke-test
