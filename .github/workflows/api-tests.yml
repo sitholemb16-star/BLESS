@@ -1,4 +1,4 @@
-name: API Tests (Standalone)
+name: API Tests
 
 on:
   pull_request:
@@ -12,14 +12,11 @@ on:
 permissions:
   contents: read
 
-env:
-  ALLOWED_ACTORS_JSON: '["sitholemb16-star","BlessOrg26","dependabot[bot]","github-actions[bot]"]'
-
 jobs:
   api-tests:
-    name: API Tests (Standalone)
+    name: API Tests
     runs-on: ubuntu-24.04
-    if: ${{ contains(fromJson(env.ALLOWED_ACTORS_JSON), github.actor) }}
+    if: ${{ github.actor == 'sitholemb16-star' || github.actor == 'BlessOrg26' || github.actor == 'dependabot[bot]' || github.actor == 'github-actions[bot]' }}
     steps:
       - name: Checkout
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2

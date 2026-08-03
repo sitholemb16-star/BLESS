@@ -125,6 +125,26 @@ for PKG in "${PACKAGES[@]}"; do
       ((FAILED+=1))
       continue
     fi
+    # Re-validate lock state under flock: the stale check above was a
+    # pre-flock snapshot; another reclaimer may have already handled the lock
+    # between then and now.  Re-read metadata and re-verify before touching
+    # anything.
+    if [[ ! -d "$LOCK_DIR" ]]; then
+      exec {reclaim_fd}>&-
+      echo "FAIL  $PKG (lock disappeared during reclaim — another holder cleaned up)" >&2
+      ((FAILED+=1))
+      continue
+    fi
+    re_pid=""
+    re_token=""
+    [[ -f "$LOCK_PID_FILE" ]] && re_pid="$(cat "$LOCK_PID_FILE" 2>/dev/null || true)"
+    [[ -f "$LOCK_TOKEN_FILE" ]] && re_token="$(cat "$LOCK_TOKEN_FILE" 2>/dev/null || true)"
+    if [[ -n "$re_pid" ]] && [[ "$re_pid" != "0" ]] && kill -0 "$re_pid" 2>/dev/null; then
+      exec {reclaim_fd}>&-
+      echo "FAIL  $PKG (lock is now held by live PID $re_pid — will not reclaim)" >&2
+      ((FAILED+=1))
+      continue
+    fi
     stale_dir="$LOCK_DIR.stale.$$"
     if ! mv "$LOCK_DIR" "$stale_dir" 2>/dev/null; then
       exec {reclaim_fd}>&-
