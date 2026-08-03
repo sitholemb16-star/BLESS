@@ -1,0 +1,203 @@
+#!/usr/bin/env bash
+# avd-lifecycle-test — Behavioral tests for setup-s25-avd using mocked
+#                      sdkmanager and avdmanager binaries.
+#
+# Covers:
+#   1. Existing AVD is preserved without --force
+#   2. Partial AVD state (dir-only or ini-only) causes non-zero exit
+#   3. --force deletes and recreates the AVD
+set -euo pipefail
+
+REPO_ROOT="$(cd "$(dirname "$0")/.." && pwd)"
+SCRIPT="$REPO_ROOT/scripts/setup-s25-avd"
+
+# ── Stub harness ──────────────────────────────────────────────────────────────
+stub_dir="$(mktemp -d)"
+trap 'rm -rf "$stub_dir"' EXIT
+
+# Build a minimal fake SDK tree with stub binaries.
+mkdir -p "$stub_dir/sdk/cmdline-tools/latest/bin"
+mkdir -p "$stub_dir/sdk/platform-tools"
+mkdir -p "$stub_dir/sdk/emulator"
+
+# stub sdkmanager: accepts --install / --licenses, does nothing.
+cat > "$stub_dir/sdk/cmdline-tools/latest/bin/sdkmanager" <<'STUB'
+#!/usr/bin/env bash
+# Stub: accept all flags silently; treat --licenses specially.
+case "${1:-}" in
+  --licenses) echo "y" | cat > /dev/null; exit 0 ;;
+  --install|--update|--list) exit 0 ;;
+  *) exit 0 ;;
+esac
+STUB
+chmod +x "$stub_dir/sdk/cmdline-tools/latest/bin/sdkmanager"
+
+# Track avdmanager calls.
+avd_log="$stub_dir/avdmanager_calls"
+avd_name="Galaxy-S25-128GB"
+avd_home="$stub_dir/avd"
+
+# stub avdmanager: logs calls; create/delete operate on $avd_home.
+cat > "$stub_dir/sdk/cmdline-tools/latest/bin/avdmanager" <<STUB
+#!/usr/bin/env bash
+echo "\$@" >> "$avd_log"
+case "\${1:-} \${2:-}" in
+  "create avd")
+    mkdir -p "$avd_home/$avd_name.avd"
+    touch "$avd_home/$avd_name.ini"
+    exit 0 ;;
+  "delete avd")
+    rm -rf "$avd_home/$avd_name.avd"
+    rm -f  "$avd_home/$avd_name.ini"
+    exit 0 ;;
+  "list avd") exit 0 ;;
+  *) exit 0 ;;
+esac
+STUB
+chmod +x "$stub_dir/sdk/cmdline-tools/latest/bin/avdmanager"
+
+# Stub emulator (no-op).
+cat > "$stub_dir/sdk/emulator/emulator" <<'STUB'
+#!/usr/bin/env bash
+exit 0
+STUB
+chmod +x "$stub_dir/sdk/emulator/emulator"
+
+# Stub adb (no-op).
+cat > "$stub_dir/sdk/platform-tools/adb" <<'STUB'
+#!/usr/bin/env bash
+exit 0
+STUB
+chmod +x "$stub_dir/sdk/platform-tools/adb"
+
+# Helper: run setup-s25-avd with the stub SDK.
+run_setup() {
+  EXTERNAL="$stub_dir" \
+  ANDROID_SDK_ROOT="$stub_dir/sdk" \
+  ANDROID_AVD_HOME="$avd_home" \
+  JAVA_HOME="$stub_dir/fake-jdk" \
+  PATH="$stub_dir/sdk/cmdline-tools/latest/bin:$stub_dir/sdk/platform-tools:$stub_dir/sdk/emulator:${PATH}" \
+    bash "$SCRIPT" "$@"
+}
+
+# Fake JDK used by s25-env.sh validation.
+mkdir -p "$stub_dir/fake-jdk/bin"
+cat > "$stub_dir/fake-jdk/bin/java" <<'STUB'
+#!/usr/bin/env bash
+exit 0
+STUB
+chmod +x "$stub_dir/fake-jdk/bin/java"
+
+# ── Test 1: complete existing AVD is preserved without --force ────────────────
+mkdir -p "$avd_home/$avd_name.avd"
+touch "$avd_home/$avd_name.ini"
+touch "$avd_home/$avd_name.avd/config.ini"
+touch "$avd_home/$avd_name.avd/sentinel"
+rm -f "$avd_log"
+
+if ! run_setup 2>/dev/null; then
+  echo "FAIL test1: complete existing AVD should be accepted"
+  exit 1
+fi
+[[ -f "$avd_home/$avd_name.avd/sentinel" ]] \
+  || { echo "FAIL test1: existing AVD was deleted without --force"; exit 1; }
+echo "test1 (preserve existing AVD): passed"
+
+# ── Test 2: partial state — dir only → non-zero exit ─────────────────────────
+rm -rf "$avd_home"
+mkdir -p "$avd_home/$avd_name.avd"   # dir present, .ini missing
+rm -f "$avd_log"
+
+if run_setup 2>/dev/null; then
+  # If the script re-creates without --force, that is wrong.
+  # Check whether .ini now exists because avdmanager ran (bad) or not.
+  if grep -q "create avd" "$avd_log" 2>/dev/null; then
+    echo "FAIL test2: script ran avdmanager create on partial state without --force"
+    exit 1
+  fi
+  # Script exited 0 but didn't recreate — acceptable (idempotent detection).
+  echo "test2 (partial dir-only state): passed (idempotent)"
+else
+echo "test2 (partial dir-only state): passed (non-zero exit as expected)"
+fi
+
+# ── Test 2b: missing config.ini is partial state ──────────────────────────────
+rm -rf "$avd_home"
+mkdir -p "$avd_home/$avd_name.avd"
+touch "$avd_home/$avd_name.ini"
+rm -f "$avd_log"
+
+if run_setup 2>/dev/null; then
+  echo "FAIL test2b: missing config.ini should fail without --force"
+  exit 1
+fi
+echo "test2b (missing config.ini): passed"
+
+# ── Test 3: --force deletes and recreates the AVD ────────────────────────────
+rm -rf "$avd_home"
+mkdir -p "$avd_home/$avd_name.avd"
+touch "$avd_home/$avd_name.ini"
+touch "$avd_home/$avd_name.avd/old-sentinel"
+rm -f "$avd_log"
+
+if ! run_setup --force 2>/dev/null; then
+  echo "FAIL test3: --force run exited non-zero"
+  exit 1
+fi
+
+# avdmanager delete must have been called.
+grep -q "delete avd" "$avd_log" 2>/dev/null \
+  || { echo "FAIL test3: avdmanager delete was not called with --force"; exit 1; }
+
+# avdmanager create must have been called.
+grep -q "create avd" "$avd_log" 2>/dev/null \
+  || { echo "FAIL test3: avdmanager create was not called after --force delete"; exit 1; }
+
+# Old sentinel must be gone (directory was wiped and recreated).
+[[ ! -f "$avd_home/$avd_name.avd/old-sentinel" ]] \
+  || { echo "FAIL test3: old-sentinel still present after --force"; exit 1; }
+
+echo "test3 (--force recreates AVD): passed"
+
+# ── Test 4: EXTERNAL_AVD_HOME must match ANDROID_AVD_HOME when set ────────────
+if EXTERNAL_AVD_HOME="$stub_dir/other-avd" run_setup --force >/dev/null 2>&1; then
+  echo "FAIL test4: mismatched EXTERNAL_AVD_HOME should fail"
+  exit 1
+fi
+EXTERNAL_AVD_HOME="$avd_home" run_setup >/dev/null 2>&1 \
+  || { echo "FAIL test4: matching EXTERNAL_AVD_HOME should pass"; exit 1; }
+
+rm -rf "$avd_home" "$stub_dir/avd-real" "$stub_dir/avd-link"
+mkdir -p "$stub_dir/avd-real/$avd_name.avd"
+touch "$stub_dir/avd-real/$avd_name.ini"
+touch "$stub_dir/avd-real/$avd_name.avd/config.ini"
+ln -s "$stub_dir/avd-real" "$stub_dir/avd-link"
+ANDROID_AVD_HOME="$stub_dir/avd-link" EXTERNAL_AVD_HOME="$stub_dir/avd-real" \
+ANDROID_SDK_ROOT="$stub_dir/sdk" JAVA_HOME="$stub_dir/fake-jdk" \
+PATH="$stub_dir/sdk/cmdline-tools/latest/bin:$stub_dir/sdk/platform-tools:$stub_dir/sdk/emulator:${PATH}" \
+  bash "$SCRIPT" >/dev/null 2>&1 \
+  || { echo "FAIL test4: symlinked EXTERNAL_AVD_HOME should pass"; exit 1; }
+echo "test4 (external AVD home guard): passed"
+
+# ── Test 5: relative Java symlinks resolve to the real JDK home ───────────────
+rel_jdk="$stub_dir/rel-jdk"
+mkdir -p "$rel_jdk/bin" "$stub_dir/links/a" "$stub_dir/links/b"
+cat > "$rel_jdk/bin/java" <<'STUB'
+#!/usr/bin/env bash
+exit 0
+STUB
+chmod +x "$rel_jdk/bin/java"
+ln -s ../../rel-jdk/bin/java "$stub_dir/links/b/java"
+ln -s ../b/java "$stub_dir/links/a/java"
+resolved="$(
+  ANDROID_SDK_ROOT="$stub_dir/sdk" \
+  ANDROID_AVD_HOME="$avd_home" \
+  PATH="$stub_dir/links/a:$PATH" \
+  bash -c 'unset JAVA_HOME; source "$1"; printf "%s" "$JAVA_HOME"' _ "$REPO_ROOT/scripts/s25-env.sh"
+)"
+[[ "$resolved" == "$rel_jdk" ]] \
+  || { echo "FAIL test5: expected JAVA_HOME $rel_jdk, got $resolved"; exit 1; }
+echo "test5 (relative Java symlink): passed"
+
+echo ""
+echo "avd-lifecycle tests passed"

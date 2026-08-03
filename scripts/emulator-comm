@@ -1,0 +1,178 @@
+#!/usr/bin/env bash
+# emulator-comm — ADB bridge for call/SMS communication with an Android emulator.
+# Galaxy S25 target: validates AVD identity before injecting incoming events.
+
+set -euo pipefail
+
+ADB="${ADB:-adb}"
+SERIAL="${ANDROID_SERIAL:-}"
+EXPECTED_AVD="${EXPECTED_AVD_NAME:-Galaxy-S25-128GB}"
+BOOT_TIMEOUT="${BOOT_TIMEOUT:-120}"
+
+usage() {
+  cat <<'EOF'
+Usage: scripts/emulator-comm [--serial SERIAL] COMMAND [ARGUMENTS]
+
+Commands:
+  status
+  boot-wait                     Wait until emulator boot completes (polls sys.boot_completed)
+  dial NUMBER
+  end-call
+  incoming-call NUMBER
+  accept-call NUMBER
+  reject-call NUMBER
+  compose-sms NUMBER MESSAGE
+  incoming-sms NUMBER MESSAGE
+
+Incoming call/SMS injection requires an Android Emulator (not a physical device).
+boot-wait polls until sys.boot_completed=1 or BOOT_TIMEOUT seconds elapse (default 120).
+EOF
+}
+
+fail() {
+  printf 'error: %s\n' "$*" >&2
+  exit 1
+}
+
+adb_run() {
+  if [[ -n "$SERIAL" ]]; then
+    "$ADB" -s "$SERIAL" "$@"
+  else
+    "$ADB" "$@"
+  fi
+}
+
+require_adb() {
+  command -v "$ADB" >/dev/null 2>&1 || fail "adb was not found; install Android SDK Platform-Tools"
+  local state
+  state="$(adb_run get-state 2>/dev/null || true)"
+  [[ "$state" == "device" ]] || fail "no reachable Android device or emulator"
+}
+
+require_number() {
+  local number="${1:-}"
+  local supported_number='^\+?[0-9]+$'
+  [[ -n "$number" ]] || fail "a phone number is required"
+  [[ "$number" =~ $supported_number ]] || fail "phone number contains unsupported characters: $number"
+}
+
+require_safe_message() {
+  local message="$1"
+  [[ "$message" != *$'\n'* ]] || fail "SMS message cannot contain newlines"
+  [[ "$message" != *$'\r'* ]] || fail "SMS message cannot contain carriage returns"
+}
+
+require_emulator() {
+  local is_emulator
+  is_emulator="$(adb_run shell getprop ro.kernel.qemu | tr -d '\r')"
+  [[ "$is_emulator" == "1" ]] || fail "incoming event injection requires an Android Emulator"
+}
+
+# Verify the connected emulator is the expected Galaxy S25 AVD.
+require_s25() {
+  require_emulator
+  local avd_name
+  avd_name="$(adb_run shell getprop ro.boot.qemu.avd_name 2>/dev/null | tr -d '\r')"
+  if [[ "$avd_name" != "$EXPECTED_AVD" ]]; then
+    fail "connected AVD is '$avd_name', expected '$EXPECTED_AVD' (override with EXPECTED_AVD_NAME)"
+  fi
+}
+
+if [[ "${1:-}" == "--serial" ]]; then
+  [[ -n "${2:-}" ]] || fail "--serial requires a value"
+  SERIAL="$2"
+  shift 2
+fi
+
+COMMAND="${1:-}"
+[[ -n "$COMMAND" ]] || {
+  usage
+  exit 2
+}
+shift
+
+if [[ "$COMMAND" == "-h" || "$COMMAND" == "--help" || "$COMMAND" == "help" ]]; then
+  usage
+  exit 0
+fi
+
+require_adb
+
+case "$COMMAND" in
+  status)
+    model="$(adb_run shell getprop ro.product.model | tr -d '\r')"
+    is_emulator="$(adb_run shell getprop ro.kernel.qemu | tr -d '\r')"
+    avd_name="$(adb_run shell getprop ro.boot.qemu.avd_name 2>/dev/null | tr -d '\r')"
+    printf 'connected: %s (%s)\n' "${SERIAL:-default adb target}" "${model:-unknown model}"
+    [[ -n "$avd_name" ]] && printf 'avd: %s\n' "$avd_name"
+    if [[ "$is_emulator" == "1" ]]; then
+      if [[ "$avd_name" == "$EXPECTED_AVD" ]]; then
+        printf 'incoming event injection: available\n'
+      else
+        printf 'incoming event injection: restricted (expected AVD %s, connected: %s)\n' \
+          "$EXPECTED_AVD" "${avd_name:-unknown}"
+      fi
+    else
+      printf 'incoming event injection: unavailable (target is not an emulator)\n'
+    fi
+    ;;
+  boot-wait)
+    require_s25
+    [[ "$BOOT_TIMEOUT" =~ ^[1-9][0-9]*$ ]] || fail "BOOT_TIMEOUT must be a positive integer"
+    printf 'waiting for boot (timeout %ss)...\n' "$BOOT_TIMEOUT"
+    deadline=$(( $(date +%s) + BOOT_TIMEOUT ))
+    while true; do
+      booted="$( { adb_run shell getprop sys.boot_completed 2>/dev/null || true; } | tr -d '\r')"
+      [[ "$booted" == "1" ]] && { printf 'boot complete\n'; break; }
+      (( $(date +%s) < deadline )) || fail "emulator did not boot within ${BOOT_TIMEOUT}s"
+      sleep 2
+    done
+    ;;
+  dial)
+    require_number "${1:-}"
+    adb_run shell am start -W -a android.intent.action.CALL -d "tel:$1"
+    ;;
+  end-call)
+    adb_run shell input keyevent KEYCODE_ENDCALL
+    ;;
+  incoming-call)
+    require_number "${1:-}"
+    require_s25
+    adb_run emu gsm call "$1"
+    ;;
+  accept-call)
+    require_number "${1:-}"
+    require_s25
+    adb_run emu gsm accept "$1"
+    ;;
+  reject-call)
+    require_number "${1:-}"
+    require_s25
+    adb_run emu gsm cancel "$1"
+    ;;
+  compose-sms)
+    number="${1:-}"
+    require_number "$number"
+    shift
+    [[ -n "${1:-}" ]] || fail "an SMS message is required"
+    msg="$*"
+    require_safe_message "$msg"
+    msg_q=$(printf '%q' "$msg")
+    number_q=$(printf '%q' "smsto:$number")
+    adb_run shell "am start -W -a android.intent.action.SENDTO -d $number_q --es sms_body $msg_q"
+    ;;
+  incoming-sms)
+    require_number "${1:-}"
+    number="$1"
+    shift
+    [[ -n "${1:-}" ]] || fail "an SMS message is required"
+    msg="$*"
+    require_safe_message "$msg"
+    require_s25
+    adb_run emu sms send "$number" "$msg"
+    ;;
+  *)
+    usage >&2
+    fail "unknown command: $COMMAND"
+    ;;
+esac

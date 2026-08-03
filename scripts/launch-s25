@@ -1,0 +1,46 @@
+#!/usr/bin/env bash
+# launch-s25 — Start the Galaxy S25 AVD from the external volume
+# Usage: ./scripts/launch-s25 [--headless] [extra emulator flags...]
+set -euo pipefail
+
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+# shellcheck source=scripts/s25-env.sh
+source "$SCRIPT_DIR/s25-env.sh"
+
+export PATH="$JAVA_HOME/bin:$SDK_ROOT/platform-tools:$SDK_ROOT/emulator:$PATH"
+
+EMU="$SDK_ROOT/emulator/emulator"
+if [[ ! -x "$EMU" ]]; then
+  echo "ERROR: emulator binary not found at $EMU" >&2
+  echo "Install the Android Emulator package (SDK Manager) or correct SDK_ROOT, then run ./scripts/setup-s25-avd." >&2
+  exit 1
+fi
+
+HEADLESS=0
+EXTRA_FLAGS=()
+for arg in "$@"; do
+  case "$arg" in
+    --headless) HEADLESS=1 ;;
+    *) EXTRA_FLAGS+=("$arg") ;;
+  esac
+done
+
+# Reject EXTRA_FLAGS that would override the target AVD.
+for _flag in "${EXTRA_FLAGS[@]}"; do
+  if [[ "$_flag" == "-avd" || "$_flag" == "@"* ]]; then
+    echo "ERROR: EXTRA_FLAGS must not override the target AVD (got: '$_flag')." >&2
+    exit 1
+  fi
+done
+unset _flag
+
+# Use -dns-server only when DNS_SERVER is set to support custom/VPN/private DNS.
+FLAGS=(-avd "$AVD_NAME" -no-snapshot-save)
+[[ -n "${DNS_SERVER:-}" ]] && FLAGS+=(-dns-server "$DNS_SERVER")
+[[ $HEADLESS -eq 1 ]] && FLAGS+=(-no-window -no-audio)
+
+echo "Starting $AVD_NAME emulator..."
+echo "  SDK:  $SDK_ROOT"
+echo "  AVD:  $AVD_HOME/$AVD_NAME.avd"
+echo ""
+exec "$EMU" "${FLAGS[@]}" "${EXTRA_FLAGS[@]}"

@@ -1,0 +1,104 @@
+#!/usr/bin/env bash
+# install-apks-to-emulator — Install all pulled APKs into the running S25 emulator
+# Usage: ./scripts/install-apks-to-emulator [--serial emulator-5554]
+set -euo pipefail
+
+REPO_ROOT="$(cd "$(dirname "$0")/.." && pwd)"
+APKS_DIR="$REPO_ROOT/apks"
+SERIAL="${ANDROID_SERIAL:-emulator-5554}"
+
+while [[ $# -gt 0 ]]; do
+  case "$1" in
+    --serial|-s)
+      [[ -n "${2:-}" ]] || {
+        echo "ERROR: --serial requires a value." >&2
+        echo "Usage: $(basename "$0") [--serial emulator-5554]" >&2
+        exit 1
+      }
+      SERIAL="$2"; shift 2 ;;
+    *) echo "Unknown arg: $1"; exit 1 ;;
+  esac
+done
+
+if ! command -v adb >/dev/null 2>&1; then
+  SDK_ROOT="${ANDROID_SDK_ROOT:-${ANDROID_HOME:-}}"
+  if [[ -z "$SDK_ROOT" ]]; then
+    echo "ERROR: adb not found on PATH and ANDROID_SDK_ROOT/ANDROID_HOME is not set." >&2
+    exit 1
+  fi
+  export PATH="$SDK_ROOT/platform-tools:$PATH"
+  if ! command -v adb >/dev/null 2>&1; then
+    echo "ERROR: adb not found on PATH or under the configured SDK root's platform-tools directory." >&2
+    exit 1
+  fi
+fi
+
+ADB=(adb -s "$SERIAL")
+EXPECTED_AVD_NAME="${EXPECTED_AVD_NAME:-Galaxy-S25-128GB}"
+BOOT_TIMEOUT_SECONDS="${BOOT_TIMEOUT_SECONDS:-180}"
+if [[ ! "$BOOT_TIMEOUT_SECONDS" =~ ^[1-9][0-9]*$ ]]; then
+  echo "ERROR: BOOT_TIMEOUT_SECONDS must be a positive integer." >&2
+  exit 1
+fi
+
+# Wait for emulator to be fully booted
+echo "Waiting for emulator $SERIAL to finish booting..."
+deadline=$((SECONDS + BOOT_TIMEOUT_SECONDS))
+until [[ "$("${ADB[@]}" get-state 2>/dev/null | tr -d '\r')" == "device" ]]; do
+  if (( SECONDS >= deadline )); then
+    echo "ERROR: Device $SERIAL not reachable within ${BOOT_TIMEOUT_SECONDS}s." >&2
+    exit 1
+  fi
+  sleep 2
+done
+avd_name="$("${ADB[@]}" shell getprop ro.boot.qemu.avd_name 2>/dev/null | tr -d '\r')"
+if [[ -z "$avd_name" || "$avd_name" != "$EXPECTED_AVD_NAME" ]]; then
+  echo "ERROR: Connected device has AVD name '${avd_name:-<empty>}', expected '$EXPECTED_AVD_NAME'. Refusing to install to a non-emulator or unexpected AVD." >&2
+  exit 1
+fi
+until [[ "$("${ADB[@]}" shell getprop sys.boot_completed 2>/dev/null | tr -d '\r')" == "1" ]]; do
+  if (( SECONDS >= deadline )); then
+    echo "ERROR: Emulator did not finish booting within ${BOOT_TIMEOUT_SECONDS}s." >&2
+    exit 1
+  fi
+  sleep 3
+  echo "  still booting..."
+done
+echo "  Emulator ready."
+
+PASSED=0; FAILED=0; SKIPPED=0
+
+shopt -s nullglob
+FOUND_APKS=0
+
+for pkg_dir in "$APKS_DIR"/*/; do
+  pkg="$(basename "$pkg_dir")"
+  apk_files=()
+  while IFS= read -r apk_path; do
+    apk_files+=("$apk_path")
+  done < <(find "$pkg_dir" -name "*.apk" | sort)
+  [[ ${#apk_files[@]} -eq 0 ]] && { ((SKIPPED+=1)); continue; }
+  FOUND_APKS=1
+
+  echo -n "Installing $pkg (${#apk_files[@]} APK(s))... "
+  adb_out="$("${ADB[@]}" install-multiple -r -t "${apk_files[@]}" 2>&1)" && {
+    echo "✓"
+    ((PASSED+=1))
+  } || {
+    echo "FAIL"
+    echo "  adb: $adb_out" >&2
+    ((FAILED+=1))
+  }
+done
+
+if (( FOUND_APKS == 0 )); then
+  echo "ERROR: No package directories with APK files found under $APKS_DIR" >&2
+  exit 1
+fi
+
+echo ""
+echo "Done: $PASSED installed, $FAILED failed, $SKIPPED skipped"
+
+if (( FAILED > 0 )); then
+  exit 1
+fi
