@@ -35,6 +35,7 @@ router.get("/provenance", (_req: Request, res: Response) => {
         typeof parsed !== "object" ||
         parsed === null ||
         !("generated_at" in parsed) ||
+        typeof (parsed as Record<string, unknown>)["generated_at"] !== "string" ||
         !("packages" in parsed) ||
         !Array.isArray((parsed as Record<string, unknown>)["packages"])
       ) {

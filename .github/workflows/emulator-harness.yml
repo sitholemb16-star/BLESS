@@ -22,7 +22,7 @@ jobs:
     steps:
       - name: Check actor allowlist
         run: |
-          actor="${{ github.actor }}"
+          actor="${{ github.triggering_actor }}"
           for allowed in $ALLOWED_ACTORS; do
             [ "$actor" = "$allowed" ] && exit 0
           done
@@ -149,7 +149,7 @@ jobs:
     steps:
       - name: Check actor allowlist
         run: |
-          actor="${{ github.actor }}"
+          actor="${{ github.triggering_actor }}"
           for allowed in $ALLOWED_ACTORS; do
             [ "$actor" = "$allowed" ] && exit 0
           done

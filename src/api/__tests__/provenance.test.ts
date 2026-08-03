@@ -49,6 +49,20 @@ describe("GET /api/provenance", () => {
     expect(res.body).toMatchObject({ generated_at: "2024-01-01T00:00:00Z" });
   });
 
+  it("returns 502 when generated_at is not a string", async () => {
+    const provData = { generated_at: null, packages: [] };
+    const provFile = join(tmpDir, "bad-provenance.json");
+    await fs.writeFile(provFile, JSON.stringify(provData));
+    process.env["PROVENANCE_PATH"] = provFile;
+    app = createApp();
+
+    const res = await request(app)
+      .get("/api/provenance")
+      .set("Authorization", `Bearer ${TEST_KEY}`);
+    expect(res.status).toBe(502);
+    expect(res.body.error).toMatch(/schema mismatch/i);
+  });
+
   it("SHA256SUMS.txt is present in the repo", async () => {
     const exists = await fs.access(SUMS_PATH).then(() => true).catch(() => false);
     expect(exists).toBe(true);

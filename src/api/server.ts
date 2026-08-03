@@ -4,8 +4,8 @@
  * Do not import this file in tests; import app.ts instead.
  */
 
-import { isApiKeyConfigured } from "./auth/index.js";
-import { createApp } from "./app.js";
+import { isApiKeyConfigured } from "./auth/index";
+import { createApp } from "./app";
 
 // Strict integer port validation: must be a bare integer in [1, 65535].
 const rawPort = process.env["PORT"];
