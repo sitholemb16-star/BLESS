@@ -6,6 +6,7 @@ workflows:
     '.github/workflows/api-tests.yml':
         - 'actions/checkout@v4.2.2'
         - 'actions/setup-node@v4.2.0'
+    '.github/workflows/copilot-review.yml': []
     '.github/workflows/emulator-harness.yml':
         - 'actions/checkout@v4.2.2'
 dependencies:
