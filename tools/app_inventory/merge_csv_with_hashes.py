@@ -122,6 +122,11 @@ def load_csvs(paths):
             merge_unique_files(app['backup_files'], parsed_files)
             if malformed_apk_count > 0:
                 app['has_malformed_apk_entries'] = True
+        else:
+            # Older snapshot: don't replace backup_files, but still propagate malformed state
+            # so all_hashes_verified is never True when any same-package FILE_LIST was malformed.
+            if malformed_apk_count > 0:
+                app['has_malformed_apk_entries'] = True
     return apps
 
 
