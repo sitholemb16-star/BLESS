@@ -53,4 +53,14 @@ describe("Authentication middleware", () => {
     expect(res.status).not.toBe(401);
     expect(res.status).not.toBe(503);
   });
+
+  it("returns 413 for oversized JSON instead of masking it as 500", async () => {
+    const res = await request(app)
+      .post("/api/provenance")
+      .set("Authorization", `Bearer ${TEST_KEY}`)
+      .set("Content-Type", "application/json")
+      .send({ payload: "x".repeat(120 * 1024) });
+    expect(res.status).toBe(413);
+    expect(res.body.error).toMatch(/too large/i);
+  });
 });

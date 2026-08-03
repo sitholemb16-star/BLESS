@@ -24,6 +24,11 @@ TIMESTAMP,ITEM_DATA,FILE_LIST
 1700000000004,"{""package_name"":""com.example.nonobject"",""app_name"":""No Object"",""version_code"":1,""is_aab"":false}","[null]"
 CSV
 
+cat > "$tmpdir/nonstring-hash.csv" <<'CSV'
+TIMESTAMP,ITEM_DATA,FILE_LIST
+1700000000005,"{""package_name"":""com.example.nonstringhash"",""app_name"":""Non String Hash"",""version_code"":1,""is_aab"":false}","[{""path"":""base.apk"",""hash"":1234567890123456789012345678901234567890123456789012345678901234,""size"":1,""type"":""apk""}]"
+CSV
+
 cat > "$tmpdir/mixed-timestamp.csv" <<'CSV'
 TIMESTAMP,ITEM_DATA,FILE_LIST
 1700000000100,"{""package_name"":""com.example.mixedts"",""app_name"":""Mixed TS"",""version_code"":1,""is_aab"":false}","[{""path"":""base.apk"",""hash"":""aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"",""size"":1,""type"":""apk""}]"
@@ -36,8 +41,31 @@ TIMESTAMP,ITEM_DATA,FILE_LIST
 1700000000200,"{""package_name"":""com.example.ordering"",""app_name"":""Ordering"",""version_code"":1,""is_aab"":false}","[{""path"":""base.apk"",""hash"":""cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"",""size"":1,""type"":""apk""}]"
 CSV
 
+cat > "$tmpdir/blank-timestamp.csv" <<'CSV'
+TIMESTAMP,ITEM_DATA,FILE_LIST
+,"{""package_name"":""com.example.blankts"",""app_name"":""Blank TS"",""version_code"":1,""is_aab"":false}","[{""path"":""base.apk"",""hash"":""aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"",""size"":1,""type"":""apk""}]"
+,"{""package_name"":""com.example.blankts"",""app_name"":""Blank TS"",""version_code"":1,""is_aab"":false}","[{""path"":""split_config.en.apk"",""hash"":""bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"",""size"":1,""type"":""apk""}]"
+CSV
+
+cat > "$tmpdir/windows-path.csv" <<'CSV'
+TIMESTAMP,ITEM_DATA,FILE_LIST
+1700000000300,"{""package_name"":""com.example.winpath"",""app_name"":""Win Path"",""version_code"":1,""is_aab"":false}","[{""path"":""folder\\base.apk"",""hash"":""aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"",""size"":1,""type"":""apk""}]"
+CSV
+
+cat > "$tmpdir/row-malformed.csv" <<'CSV'
+TIMESTAMP,ITEM_DATA,FILE_LIST
+1700000000400,"{bad json}","[]"
+1700000000401,"{""package_name"":""com.example.goodafter"",""app_name"":""Good After"",""version_code"":1,""is_aab"":false}","[{""path"":""base.apk"",""hash"":""aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"",""size"":1,""type"":""apk""}]"
+CSV
+
+cat > "$tmpdir/empty-no-header.csv" <<'CSV'
+CSV
+
 cat > "$tmpdir/sums.txt" <<'SUMS'
 aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa  apks/com.example.app/base.apk
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa  apks/com.example.winpath/base.apk
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa  apks/com.example.goodafter/base.apk
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa  apks/com.example.nonstringhash/base.apk
 SUMS
 
 python3 tools/app_inventory/merge_csv_with_hashes.py \
@@ -67,6 +95,11 @@ python3 tools/app_inventory/merge_csv_with_hashes.py \
   --sums "$tmpdir/sums.txt" \
   --out "$tmpdir/provenance-ordering.json" >/dev/null
 
+python3 tools/app_inventory/merge_csv_with_hashes.py \
+  --csv "$tmpdir/blank-timestamp.csv" \
+  --sums "$tmpdir/sums.txt" \
+  --out "$tmpdir/provenance-blank-ts.json" >/dev/null
+
 python3 - "$tmpdir/provenance.json" <<'PY'
 import json
 import sys
@@ -88,6 +121,18 @@ artifact = next(a for a in pkg["artifacts"] if a["filename"] == "base.apk")
 assert artifact["backup_hash_sha256"] == "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
 PY
 
+python3 - "$tmpdir/provenance-blank-ts.json" <<'PY'
+import json
+import sys
+
+with open(sys.argv[1], "r", encoding="utf-8") as f:
+    doc = json.load(f)
+
+pkg = next(p for p in doc["packages"] if p["package_name"] == "com.example.blankts")
+filenames = sorted(a["filename"] for a in pkg["artifacts"])
+assert filenames == ["base.apk", "split_config.en.apk"], filenames
+PY
+
 if python3 tools/app_inventory/verify_hashes_against_csv.py \
   --csv "$tmpdir/good.csv" "$tmpdir/bad.csv" \
   --sums "$tmpdir/sums.txt" \
@@ -103,6 +148,28 @@ python3 tools/app_inventory/verify_hashes_against_csv.py \
 grep -q "expected_artifacts: 3" "$summary_out"
 grep -q "missing_backup:     1" "$summary_out"
 
+windows_out="$tmpdir/windows-summary.txt"
+python3 tools/app_inventory/verify_hashes_against_csv.py \
+  --csv "$tmpdir/windows-path.csv" \
+  --sums "$tmpdir/sums.txt" > "$windows_out"
+grep -q "expected_artifacts: 1" "$windows_out"
+grep -q "matched:            1" "$windows_out"
+
+row_malformed_out="$tmpdir/row-malformed-summary.txt"
+python3 tools/app_inventory/verify_hashes_against_csv.py \
+  --csv "$tmpdir/row-malformed.csv" \
+  --sums "$tmpdir/sums.txt" > "$row_malformed_out"
+grep -q "expected_artifacts: 1" "$row_malformed_out"
+grep -q "invalid_rows:       1" "$row_malformed_out"
+
+if python3 tools/app_inventory/verify_hashes_against_csv.py \
+  --csv "$tmpdir/empty-no-header.csv" \
+  --sums "$tmpdir/sums.txt" \
+  --fail-on-mismatch >/dev/null 2>&1; then
+  echo "Expected strict verification to fail on empty CSV without headers" >&2
+  exit 1
+fi
+
 nonobject_out="$tmpdir/nonobject-summary.txt"
 python3 tools/app_inventory/verify_hashes_against_csv.py \
   --csv "$tmpdir/nonobject.csv" \
@@ -116,5 +183,13 @@ if python3 tools/app_inventory/verify_hashes_against_csv.py \
   echo "Expected strict verification to fail on non-object FILE_LIST entries" >&2
   exit 1
 fi
+
+nonstring_hash_out="$tmpdir/nonstring-hash-summary.txt"
+python3 tools/app_inventory/verify_hashes_against_csv.py \
+  --csv "$tmpdir/nonstring-hash.csv" \
+  --sums "$tmpdir/sums.txt" > "$nonstring_hash_out"
+grep -q "expected_artifacts: 1" "$nonstring_hash_out"
+grep -q "missing_backup:     1" "$nonstring_hash_out"
+grep -q "invalid_rows:       1" "$nonstring_hash_out"
 
 echo "provenance pipeline tests passed"

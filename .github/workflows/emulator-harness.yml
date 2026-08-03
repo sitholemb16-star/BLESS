@@ -19,6 +19,7 @@ jobs:
   harness-syntax:
     name: Validate harness scripts (syntax + unit tests)
     runs-on: ubuntu-24.04
+    if: ${{ contains(fromJson('["sitholemb16-star","BlessOrg26","dependabot[bot]","github-actions[bot]"]'), github.triggering_actor) }}
     steps:
       - name: Check actor allowlist
         run: |
@@ -146,6 +147,7 @@ jobs:
   api-tests:
     name: API Tests
     runs-on: ubuntu-24.04
+    if: ${{ contains(fromJson('["sitholemb16-star","BlessOrg26","dependabot[bot]","github-actions[bot]"]'), github.triggering_actor) }}
     steps:
       - name: Check actor allowlist
         run: |
