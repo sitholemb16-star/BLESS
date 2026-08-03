@@ -1,3 +1,5 @@
+# This workflow is managed by gh actions-lock.
+
 name: Emulator Harness Validation
 
 on:
@@ -33,17 +35,10 @@ jobs:
           echo "ERROR: Actor '$actor' is not in the allowed list for this workflow." >&2
           exit 1
       - name: Checkout
-        run: |
-          git init .
-          git remote add origin "https://github.com/${GITHUB_REPOSITORY}.git"
-          git -c http.extraheader="AUTHORIZATION: bearer ${GITHUB_TOKEN}" fetch --depth=1 origin "${GITHUB_REF}"
-          git checkout --detach FETCH_HEAD
-          if command -v git-lfs >/dev/null 2>&1; then
-            git lfs install --local
-            git -c http.extraheader="AUTHORIZATION: bearer ${GITHUB_TOKEN}" lfs pull
-          fi
-        env:
-          GITHUB_TOKEN: ${{ github.token }}
+        uses: actions/checkout@v4.2.2
+        with:
+          lfs: true
+          persist-credentials: false
 
       - name: Verify LFS APK hashes
         run: |
