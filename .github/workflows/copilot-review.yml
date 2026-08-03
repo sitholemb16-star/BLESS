@@ -9,9 +9,6 @@ on:
       - main
   workflow_dispatch:
 
-env:
-  ALLOWED_ACTORS_JSON: '["sitholemb16-star","BlessOrg26","dependabot[bot]","github-actions[bot]"]'
-
 permissions:
   contents: read
   pull-requests: read
@@ -20,7 +17,7 @@ jobs:
   auto-copilot-review:
     name: Auto Copilot Review
     runs-on: ubuntu-24.04
-    if: ${{ contains(fromJson(env.ALLOWED_ACTORS_JSON), github.actor) }}
+    if: "${{ github.actor == 'sitholemb16-star' || github.actor == 'BlessOrg26' || github.actor == 'dependabot[bot]' || github.actor == 'github-actions[bot]' }}"
     steps:
       - name: Verify Copilot review requested or present
         uses: actions/github-script@60a0d83039c74a4aee543508d2ffcb1c3799cdea # v7.0.1
