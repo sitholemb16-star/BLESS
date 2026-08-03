@@ -10,7 +10,15 @@ source "$SCRIPT_DIR/s25-env.sh"
 
 # ── Resolve ABI from environment or host architecture ──────────────────────────
 if [[ -n "${SYSIMG_ABI:-}" ]]; then
-  ABI="$SYSIMG_ABI"
+  case "$SYSIMG_ABI" in
+    arm64-v8a|x86_64)
+      ABI="$SYSIMG_ABI"
+      ;;
+    *)
+      echo "ERROR: SYSIMG_ABI must be 'arm64-v8a' or 'x86_64' (got: '$SYSIMG_ABI')." >&2
+      exit 1
+      ;;
+  esac
 else
   _host_arch="$(uname -m)"
   case "$_host_arch" in
@@ -59,7 +67,7 @@ install_sysimg() {
 
 # ── 1) Install system images if missing
 if [[ ! -f "$SDK_ROOT/system-images/android-35/google_apis_playstore/${ABI}/source.properties" ]]; then
-  echo "Installing API 35 Play Store arm64 system image..."
+  echo "Installing API 35 Play Store ${ABI} system image..."
   install_sysimg "$SYSIMG_35"
 else
   echo "API 35 system image already installed."
