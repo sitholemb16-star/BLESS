@@ -22,7 +22,11 @@ jobs:
   harness-syntax:
     name: Validate harness scripts (syntax + unit tests)
     runs-on: ubuntu-24.04
-    if: "${{ github.actor == 'sitholemb16-star' || github.actor == 'BlessOrg26' || github.actor == 'dependabot[bot]' || github.actor == 'github-actions[bot]' }}"
+    if: >-
+      github.actor == 'sitholemb16-star' ||
+      github.actor == 'BlessOrg26' ||
+      github.actor == 'dependabot[bot]' ||
+      github.actor == 'github-actions[bot]'
     steps:
       - name: Check actor allowlist
         run: |
