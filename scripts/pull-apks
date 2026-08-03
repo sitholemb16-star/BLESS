@@ -94,33 +94,53 @@ for PKG in "${PACKAGES[@]}"; do
   LOCK_TOKEN="$$:$RANDOM:$SECONDS"
   if ! mkdir "$LOCK_DIR" 2>/dev/null; then
     # Reclaim only complete stale locks. An empty/incomplete lock may belong to
-    # a just-started owner that has not written its token and pid yet.
+    # a just-started owner that has not written its token and pid yet, unless
+    # the lock directory is old enough (>60s) to be considered abandoned.
     existing_pid=""
     existing_token=""
     [[ -f "$LOCK_PID_FILE" ]] && existing_pid="$(cat "$LOCK_PID_FILE" 2>/dev/null || true)"
     [[ -f "$LOCK_TOKEN_FILE" ]] && existing_token="$(cat "$LOCK_TOKEN_FILE" 2>/dev/null || true)"
     if [[ -z "$existing_pid" || -z "$existing_token" ]]; then
-      echo "FAIL  $PKG (another pull is acquiring the lock for this package)" >&2
-      ((FAILED+=1))
-      continue
+      # Incomplete lock: reclaim only if older than 60 seconds (post-SIGKILL).
+      if ! find "$LOCK_DIR" -maxdepth 0 -mmin +1 -print 2>/dev/null | grep -q .; then
+        echo "FAIL  $PKG (another pull is acquiring the lock for this package)" >&2
+        ((FAILED+=1))
+        continue
+      fi
+      # Incomplete lock is stale (>60s); treat as abandoned.
+      existing_pid="0"
     fi
     if [[ -n "$existing_pid" ]] && kill -0 "$existing_pid" 2>/dev/null; then
       echo "FAIL  $PKG (another pull is in progress for this package, PID $existing_pid)" >&2
       ((FAILED+=1))
       continue
     fi
+    # Serialize the reclaim/re-acquire sequence with flock to prevent two
+    # concurrent reclaimers from both succeeding on mv→mkdir and proceeding.
+    RECLAIM_LOCK="$APKS_DIR/.reclaim-$PKG"
+    exec {reclaim_fd}>>"$RECLAIM_LOCK"
+    if ! flock -n "$reclaim_fd"; then
+      exec {reclaim_fd}>&-
+      echo "FAIL  $PKG (concurrent reclaim in progress for this package)" >&2
+      ((FAILED+=1))
+      continue
+    fi
     stale_dir="$LOCK_DIR.stale.$$"
     if ! mv "$LOCK_DIR" "$stale_dir" 2>/dev/null; then
+      exec {reclaim_fd}>&-
       echo "FAIL  $PKG (cannot reclaim stale lock for this package)" >&2
       ((FAILED+=1))
       continue
     fi
-    rm -rf "$stale_dir"
     if ! mkdir "$LOCK_DIR" 2>/dev/null; then
+      rm -rf "$stale_dir"
+      exec {reclaim_fd}>&-
       echo "FAIL  $PKG (cannot acquire lock for this package)" >&2
       ((FAILED+=1))
       continue
     fi
+    exec {reclaim_fd}>&-
+    rm -rf "$stale_dir"
   fi
   printf '%s\n' "$LOCK_TOKEN" > "$LOCK_TOKEN_FILE"
   echo $$ > "$LOCK_PID_FILE"

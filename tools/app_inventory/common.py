@@ -54,6 +54,14 @@ def iter_app_csv_rows(csv_paths):
                 )
                 yield {"invalid": True, "skip": True}
                 continue
+            duplicates = {n for n in fieldnames if fieldnames.count(n) > 1}
+            if duplicates:
+                print(
+                    f"WARN: Skipping {path} - duplicate column names: {sorted(duplicates)}",
+                    file=sys.stderr,
+                )
+                yield {"invalid": True, "skip": True}
+                continue
 
             row_iter = iter(reader)
             index = 2
@@ -67,7 +75,13 @@ def iter_app_csv_rows(csv_paths):
                     yield {"invalid": True, "skip": True}
                     index += 1
                     continue
-                yield parse_app_csv_row(row, path, index)
+                if None in row or any(
+                    row.get(name) is None for name in ("ITEM_DATA", "FILE_LIST", "TIMESTAMP")
+                ):
+                    print(f"WARN: Malformed CSV row shape in {path}:{index}", file=sys.stderr)
+                    yield {"invalid": True, "skip": True}
+                else:
+                    yield parse_app_csv_row(row, path, index)
                 index += 1
 
 
@@ -144,10 +158,19 @@ def parse_file_list(row, path, index):
                 f"WARN: FILE_LIST entry has invalid hash in {path}:{index}; keeping as unverified",
                 file=sys.stderr,
             )
+            malformed_apk_count += 1
             backup_hash = ""
+        filename = normalized_apk_filename(item_path)
+        if not filename:
+            print(
+                f"WARN: FILE_LIST entry has empty filename in {path}:{index}",
+                file=sys.stderr,
+            )
+            malformed_apk_count += 1
+            continue
         parsed_files.append(
             {
-                "filename": normalized_apk_filename(item_path),
+                "filename": filename,
                 "backup_hash": backup_hash,
                 "size": item.get("size", 0),
                 "type": item_type,

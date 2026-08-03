@@ -37,6 +37,9 @@ for root, _, files in os.walk(apks_dir, onerror=on_walk_error):
 paths.sort()
 
 fd, tmp = tempfile.mkstemp(dir=apks_dir, prefix=".SHA256SUMS-", suffix=".tmp")
+mask = os.umask(0)
+os.umask(mask)
+os.fchmod(fd, 0o666 & ~mask)
 try:
     with os.fdopen(fd, "w", encoding="utf-8") as fh:
         for path in paths:

@@ -1,4 +1,4 @@
-name: Auto Copilot Review
+name: Copilot Review Check
 
 on:
   pull_request:
@@ -11,12 +11,31 @@ on:
 
 permissions:
   contents: read
+  pull-requests: read
+
+env:
+  ALLOWED_ACTORS_JSON: '["sitholemb16-star","BlessOrg26","dependabot[bot]","github-actions[bot]"]'
 
 jobs:
-  auto-copilot-review:
-    name: Auto Copilot Review
+  copilot-review-check:
+    name: Copilot Review Check
     runs-on: ubuntu-24.04
-    if: ${{ github.triggering_actor == 'sitholemb16-star' || github.triggering_actor == 'BlessOrg26' || github.triggering_actor == 'dependabot[bot]' || github.triggering_actor == 'github-actions[bot]' }}
+    if: ${{ contains(fromJson(env.ALLOWED_ACTORS_JSON), github.actor) }}
     steps:
-      - name: Emit required status
-        run: echo "Auto Copilot Review status emitted for trusted PR trigger."
+      - name: Verify Copilot review requested or present
+        uses: actions/github-script@60a0d83039c74a4aee543508d2ffcb1c3799cdea # v7.0.1
+        with:
+          script: |
+            const { data: reviews } = await github.rest.pulls.listReviews({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              pull_number: context.payload.pull_request?.number ?? 0,
+            });
+            const copilotReview = reviews.find(r =>
+              r.user?.login?.toLowerCase().includes('copilot')
+            );
+            if (copilotReview) {
+              core.info(`Copilot review found: ${copilotReview.state} by ${copilotReview.user.login}`);
+            } else {
+              core.info('No Copilot review yet — review request may be pending.');
+            }
