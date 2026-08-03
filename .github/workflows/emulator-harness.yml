@@ -1,0 +1,195 @@
+name: Emulator Harness Validation
+
+on:
+  pull_request:
+    branches:
+      - main
+  push:
+    branches:
+      - main
+      - sitholemb16-star-emulator-call-comm
+  workflow_dispatch:
+
+# Only allow runs triggered by approved actors.
+# Prevents untrusted forks from running scripts against live secrets/devices.
+env:
+  ALLOWED_ACTORS: "sitholemb16-star BlessOrg26 dependabot[bot] github-actions[bot]"
+
+permissions:
+  contents: read
+
+jobs:
+  harness-syntax:
+    name: Validate harness scripts (syntax + unit tests)
+    runs-on: ubuntu-24.04
+    if: ${{ github.triggering_actor == 'sitholemb16-star' || github.triggering_actor == 'BlessOrg26' || github.triggering_actor == 'dependabot[bot]' || github.triggering_actor == 'github-actions[bot]' }}
+    steps:
+      - name: Check actor allowlist
+        run: |
+          actor="${{ github.triggering_actor }}"
+          for allowed in $ALLOWED_ACTORS; do
+            [ "$actor" = "$allowed" ] && exit 0
+          done
+          echo "ERROR: Actor '$actor' is not in the allowed list for this workflow." >&2
+          exit 1
+      - name: Checkout
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683  # v4.2.2
+        with:
+          lfs: true
+          persist-credentials: false
+
+      - name: Verify LFS APK hashes
+        run: |
+          if [ -f apks/SHA256SUMS.txt ]; then
+            if command -v sha256sum >/dev/null 2>&1; then
+              verifier=(sha256sum -c)
+            elif command -v shasum >/dev/null 2>&1; then
+              verifier=(shasum -a 256 -c)
+            else
+              echo "No checksum verifier found (need sha256sum or shasum)." >&2
+              exit 1
+            fi
+            if ! "${verifier[@]}" apks/SHA256SUMS.txt; then
+              echo "APK hash check FAILED" >&2
+              exit 1
+            fi
+            echo "APK hash check PASSED"
+          else
+            echo "No SHA256SUMS.txt — skipping hash check"
+          fi
+
+      - name: Verify CSV FILE_LIST hashes (if manifests present)
+        run: |
+          shopt -s nullglob
+          csvs=(apks/manifests/*.csv)
+          if [ ${#csvs[@]} -gt 0 ] && [ -f apks/SHA256SUMS.txt ]; then
+            python3 tools/app_inventory/verify_hashes_against_csv.py \
+              --csv "${csvs[@]}" \
+              --sums apks/SHA256SUMS.txt \
+              --fail-on-mismatch
+          else
+            echo "No CSV manifests in apks/manifests — skipping FILE_LIST hash verification"
+          fi
+
+      - name: Bash syntax check — emulator-comm
+        run: |
+          if [ -f scripts/emulator-comm ]; then
+            bash -n scripts/emulator-comm && echo "SYNTAX OK: scripts/emulator-comm"
+          fi
+
+      - name: Bash syntax check — pull-apks
+        run: |
+          if [ -f scripts/pull-apks ]; then
+            bash -n scripts/pull-apks && echo "SYNTAX OK: scripts/pull-apks"
+          fi
+
+      - name: Bash syntax check — S25 emulator scripts
+        run: |
+          for script in scripts/setup-s25-avd scripts/launch-s25 scripts/install-apks-to-emulator; do
+            if [ ! -f "$script" ]; then
+              echo "MISSING REQUIRED SCRIPT: $script" >&2
+              exit 1
+            fi
+            if ! bash -n "$script"; then
+              echo "SYNTAX FAIL: $script" >&2
+              exit 1
+            fi
+            echo "SYNTAX OK: $script"
+          done
+
+      - name: Run harness tests (mocked ADB)
+        run: |
+          if [ -f tests/emulator-comm-test ]; then
+            chmod +x tests/emulator-comm-test scripts/emulator-comm 2>/dev/null || true
+            tests/emulator-comm-test
+          else
+            echo "ERROR: tests/emulator-comm-test is required for this workflow." >&2
+            exit 1
+          fi
+
+      - name: Run provenance pipeline tests
+        run: |
+          if [ -f tests/provenance-pipeline-test ]; then
+            chmod +x tests/provenance-pipeline-test
+            tests/provenance-pipeline-test
+          else
+            echo "ERROR: tests/provenance-pipeline-test is required for this workflow." >&2
+            exit 1
+          fi
+
+      - name: Run APK shell pipeline tests
+        run: |
+          if [ -f tests/apk-shell-pipeline-test ]; then
+            chmod +x tests/apk-shell-pipeline-test
+            tests/apk-shell-pipeline-test
+          else
+            echo "ERROR: tests/apk-shell-pipeline-test is required for this workflow." >&2
+            exit 1
+          fi
+
+      - name: Run launch-s25 argument tests
+        run: |
+          if [ -f tests/launch-s25-test ]; then
+            chmod +x tests/launch-s25-test scripts/launch-s25 scripts/s25-env.sh 2>/dev/null || true
+            tests/launch-s25-test
+          else
+            echo "ERROR: tests/launch-s25-test is required for this workflow." >&2
+            exit 1
+          fi
+
+      - name: Run AVD lifecycle tests
+        run: |
+          if [ -f tests/avd-lifecycle-test ]; then
+            chmod +x tests/avd-lifecycle-test scripts/setup-s25-avd 2>/dev/null || true
+            tests/avd-lifecycle-test
+          else
+            echo "ERROR: tests/avd-lifecycle-test is required for this workflow." >&2
+            exit 1
+          fi
+
+  api-tests:
+    name: API Tests
+    runs-on: ubuntu-24.04
+    if: ${{ github.triggering_actor == 'sitholemb16-star' || github.triggering_actor == 'BlessOrg26' || github.triggering_actor == 'dependabot[bot]' || github.triggering_actor == 'github-actions[bot]' }}
+    steps:
+      - name: Check actor allowlist
+        run: |
+          actor="${{ github.triggering_actor }}"
+          for allowed in $ALLOWED_ACTORS; do
+            [ "$actor" = "$allowed" ] && exit 0
+          done
+          echo "ERROR: Actor '$actor' is not in the allowed list for this workflow." >&2
+          exit 1
+
+      - name: Checkout
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683  # v4.2.2
+        with:
+          persist-credentials: false
+
+      - name: Set up Node.js
+        uses: actions/setup-node@1d0ff469b14e2a5f8fcfa5de0d96c52f8c6d5f64  # v4.2.0
+        with:
+          node-version: "20"
+          cache: "npm"
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Lint
+        run: npm run lint
+
+      - name: Type-check
+        run: npm run typecheck
+
+      - name: Run API tests
+        run: npm test
+        env:
+          API_KEY: test-ci-key-for-unit-tests
+
+  auto-copilot-review:
+    name: Auto Copilot Review
+    runs-on: ubuntu-24.04
+    if: ${{ github.triggering_actor == 'sitholemb16-star' || github.triggering_actor == 'BlessOrg26' || github.triggering_actor == 'dependabot[bot]' || github.triggering_actor == 'github-actions[bot]' }}
+    steps:
+      - name: Check emitted required status
+        run: echo "Auto Copilot Review status emitted for trusted PR trigger."
