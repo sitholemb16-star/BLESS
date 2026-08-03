@@ -78,7 +78,10 @@ mkdir -p "$AVD_HOME"
 
 # Validate that AVD_HOME matches EXTERNAL_AVD_HOME if the latter is provided.
 # This prevents the 128 GB AVD from being silently created on local storage.
-if [[ -n "${EXTERNAL_AVD_HOME:-}" && "$AVD_HOME" != "$EXTERNAL_AVD_HOME" ]]; then
+if [[ -n "${EXTERNAL_AVD_HOME:-}" ]]; then
+  mkdir -p "$EXTERNAL_AVD_HOME"
+fi
+if [[ -n "${EXTERNAL_AVD_HOME:-}" && ! "$AVD_HOME" -ef "$EXTERNAL_AVD_HOME" ]]; then
   echo "ERROR: ANDROID_AVD_HOME ('$AVD_HOME') does not match EXTERNAL_AVD_HOME ('$EXTERNAL_AVD_HOME')." >&2
   echo "Set ANDROID_AVD_HOME=\"\$EXTERNAL_AVD_HOME\" to place the AVD on external storage." >&2
   exit 1

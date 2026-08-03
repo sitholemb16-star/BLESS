@@ -1,10 +1,13 @@
 import csv
 import json
-import os
 import re
 import sys
 
 SHA256_RE = re.compile(r"^[0-9a-fA-F]{64}$")
+
+
+def normalized_apk_filename(path):
+    return path.strip().replace("\\", "/").split("/")[-1]
 
 
 def load_sums(path):
@@ -51,50 +54,56 @@ def iter_app_csv_rows(csv_paths):
                 )
                 yield {"invalid": True, "skip": True}
                 continue
-            try:
-                rows = list(reader)
-            except csv.Error as exc:
-                print(f"WARN: Malformed CSV in {path}: {exc}", file=sys.stderr)
-                yield {"invalid": True, "skip": True}
-                continue
 
-        for index, row in enumerate(rows, start=2):
-            item_data_raw = row.get("ITEM_DATA") or "{}"
-            try:
-                meta = json.loads(item_data_raw)
-            except json.JSONDecodeError as exc:
-                print(
-                    f"WARN: Skipping malformed ITEM_DATA in {path}:{index}: {exc}",
-                    file=sys.stderr,
-                )
-                yield {"invalid": True, "skip": True}
-                continue
-            if not isinstance(meta, dict):
-                print(f"WARN: Skipping non-object ITEM_DATA in {path}:{index}", file=sys.stderr)
-                yield {"invalid": True, "skip": True}
-                continue
-            pkg_raw = meta.get("package_name", "")
-            if not isinstance(pkg_raw, str):
-                print(f"WARN: Skipping non-string package_name in {path}:{index}", file=sys.stderr)
-                yield {"invalid": True, "skip": True}
-                continue
-            pkg = pkg_raw.strip()
-            if not pkg:
-                yield {"invalid": False, "skip": True}
-                continue
+            row_iter = iter(reader)
+            index = 2
+            while True:
+                try:
+                    row = next(row_iter)
+                except StopIteration:
+                    break
+                except csv.Error as exc:
+                    print(f"WARN: Malformed CSV row in {path}:{index}: {exc}", file=sys.stderr)
+                    yield {"invalid": True, "skip": True}
+                    index += 1
+                    continue
+                yield parse_app_csv_row(row, path, index)
+                index += 1
 
-            parsed_files, malformed_apk_count = parse_file_list(row, path, index)
-            yield {
-                "invalid": malformed_apk_count > 0,
-                "skip": False,
-                "path": path,
-                "index": index,
-                "row": row,
-                "meta": meta,
-                "package_name": pkg,
-                "parsed_files": parsed_files,
-                "malformed_apk_count": malformed_apk_count,
-            }
+
+def parse_app_csv_row(row, path, index):
+    item_data_raw = row.get("ITEM_DATA") or "{}"
+    try:
+        meta = json.loads(item_data_raw)
+    except json.JSONDecodeError as exc:
+        print(
+            f"WARN: Skipping malformed ITEM_DATA in {path}:{index}: {exc}",
+            file=sys.stderr,
+        )
+        return {"invalid": True, "skip": True}
+    if not isinstance(meta, dict):
+        print(f"WARN: Skipping non-object ITEM_DATA in {path}:{index}", file=sys.stderr)
+        return {"invalid": True, "skip": True}
+    pkg_raw = meta.get("package_name", "")
+    if not isinstance(pkg_raw, str):
+        print(f"WARN: Skipping non-string package_name in {path}:{index}", file=sys.stderr)
+        return {"invalid": True, "skip": True}
+    pkg = pkg_raw.strip()
+    if not pkg:
+        return {"invalid": False, "skip": True}
+
+    parsed_files, malformed_apk_count = parse_file_list(row, path, index)
+    return {
+        "invalid": malformed_apk_count > 0,
+        "skip": False,
+        "path": path,
+        "index": index,
+        "row": row,
+        "meta": meta,
+        "package_name": pkg,
+        "parsed_files": parsed_files,
+        "malformed_apk_count": malformed_apk_count,
+    }
 
 
 def parse_file_list(row, path, index):
@@ -124,7 +133,12 @@ def parse_file_list(row, path, index):
             malformed_apk_count += 1
             continue
         raw_hash = item.get("hash", "")
-        backup_hash = "" if raw_hash is None else str(raw_hash).strip().lower()
+        if raw_hash is not None and not isinstance(raw_hash, str):
+            print(f"WARN: FILE_LIST entry has non-string hash type in {path}:{index}", file=sys.stderr)
+            malformed_apk_count += 1
+            backup_hash = ""
+        else:
+            backup_hash = "" if raw_hash is None else raw_hash.strip().lower()
         if backup_hash and not SHA256_RE.match(backup_hash):
             print(
                 f"WARN: FILE_LIST entry has invalid hash in {path}:{index}; keeping as unverified",
@@ -133,7 +147,7 @@ def parse_file_list(row, path, index):
             backup_hash = ""
         parsed_files.append(
             {
-                "filename": os.path.basename(item_path.strip()),
+                "filename": normalized_apk_filename(item_path),
                 "backup_hash": backup_hash,
                 "size": item.get("size", 0),
                 "type": item_type,

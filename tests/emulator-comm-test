@@ -16,7 +16,12 @@ case "$*" in
   *"getprop ro.kernel.qemu"*) printf '%s\n' "${MOCK_QEMU:-1}" ;;
   *"getprop ro.product.model"*) printf 'Test Emulator\n' ;;
   *"getprop ro.boot.qemu.avd_name"*) printf '%s\n' "${MOCK_AVD_NAME:-}" ;;
-  *"getprop sys.boot_completed"*) printf '%s\n' "${MOCK_BOOT_COMPLETED:-1}" ;;
+  *"getprop sys.boot_completed"*)
+    if [[ "${MOCK_BOOT_FAIL_ONCE:-0}" == "1" && ! -f "$ADB_LOG.boot-failed-once" ]]; then
+      touch "$ADB_LOG.boot-failed-once"
+      exit 1
+    fi
+    printf '%s\n' "${MOCK_BOOT_COMPLETED:-1}" ;;
 esac
 EOF
 chmod +x "$TMP/adb"
@@ -110,6 +115,13 @@ assert_log_contains 'emu gsm call 5551234'
 # --- boot-wait succeeds immediately when already booted ---
 : >"$ADB_LOG"
 MOCK_AVD_NAME=Galaxy-S25-128GB MOCK_BOOT_COMPLETED=1 "$ROOT/scripts/emulator-comm" boot-wait >/dev/null
+assert_log_contains 'getprop sys.boot_completed'
+
+# --- boot-wait retries after transient adb shell failures ---
+: >"$ADB_LOG"
+rm -f "$ADB_LOG.boot-failed-once"
+MOCK_AVD_NAME=Galaxy-S25-128GB MOCK_BOOT_COMPLETED=1 MOCK_BOOT_FAIL_ONCE=1 \
+  "$ROOT/scripts/emulator-comm" boot-wait >/dev/null
 assert_log_contains 'getprop sys.boot_completed'
 
 # --- boot-wait times out when boot never completes ---

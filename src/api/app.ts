@@ -34,14 +34,42 @@ export function createApp(): express.Application {
       // eslint-disable-next-line @typescript-eslint/no-unused-vars
       _next: express.NextFunction,
     ): void => {
+      if (typeof err === "object" && err !== null && "type" in err) {
+        const bodyError = err as { type: string; status?: number; statusCode?: number };
+        if (bodyError.type === "entity.parse.failed") {
+          res.status(400).json({ error: "Invalid JSON in request body." });
+          return;
+        }
+        if (bodyError.type === "entity.too.large") {
+          res.status(bodyError.status ?? bodyError.statusCode ?? 413).json({
+            error: "Request body too large.",
+          });
+          return;
+        }
+      }
       if (
         typeof err === "object" &&
         err !== null &&
-        "type" in err &&
-        (err as { type: string }).type === "entity.parse.failed"
+        "status" in err &&
+        typeof (err as { status?: unknown }).status === "number"
       ) {
-        res.status(400).json({ error: "Invalid JSON in request body." });
-        return;
+        const status = (err as { status: number }).status;
+        if (status >= 400 && status < 500) {
+          res.status(status).json({ error: "Request rejected." });
+          return;
+        }
+      }
+      if (
+        typeof err === "object" &&
+        err !== null &&
+        "statusCode" in err &&
+        typeof (err as { statusCode?: unknown }).statusCode === "number"
+      ) {
+        const status = (err as { statusCode: number }).statusCode;
+        if (status >= 400 && status < 500) {
+          res.status(status).json({ error: "Request rejected." });
+          return;
+        }
       }
       res.status(500).json({ error: "Internal server error." });
     },
