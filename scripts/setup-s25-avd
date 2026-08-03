@@ -65,23 +65,37 @@ else
   echo "API 35 system image already installed."
 fi
 
-# ── 2) Create AVD dir
+# ── 2) Create AVD dir and validate external storage intent
 mkdir -p "$AVD_HOME"
+
+# Validate that AVD_HOME matches EXTERNAL_AVD_HOME if the latter is provided.
+# This prevents the 128 GB AVD from being silently created on local storage.
+if [[ -n "${EXTERNAL_AVD_HOME:-}" && "$AVD_HOME" != "$EXTERNAL_AVD_HOME" ]]; then
+  echo "ERROR: ANDROID_AVD_HOME ('$AVD_HOME') does not match EXTERNAL_AVD_HOME ('$EXTERNAL_AVD_HOME')." >&2
+  echo "Set ANDROID_AVD_HOME=\"\$EXTERNAL_AVD_HOME\" to place the AVD on external storage." >&2
+  exit 1
+fi
 
 # ── 3) Preserve existing AVD unless --force is provided
 has_avd_dir=0
 has_avd_ini=0
+has_config_ini=0
 [[ -d "$AVD_HOME/$AVD_NAME.avd" ]] && has_avd_dir=1
 [[ -f "$AVD_HOME/$AVD_NAME.ini" ]] && has_avd_ini=1
+[[ -f "$AVD_HOME/$AVD_NAME.avd/config.ini" ]] && has_config_ini=1
 if (( has_avd_dir == 1 || has_avd_ini == 1 )); then
   if [[ "$FORCE" -ne 1 ]]; then
-    if (( has_avd_dir == 1 && has_avd_ini == 1 )); then
+    if (( has_avd_dir == 1 && has_avd_ini == 1 && has_config_ini == 1 )); then
       echo "AVD '$AVD_NAME' already exists; preserving current device state."
       echo "Re-run with --force to recreate it from scratch."
       exit 0
     fi
-    echo "ERROR: Partial AVD state detected for '$AVD_NAME' (missing .ini or .avd)." >&2
+    echo "ERROR: Partial AVD state detected for '$AVD_NAME' (.avd, .ini, or config.ini missing)." >&2
     echo "Re-run with --force to repair and recreate it safely." >&2
+    exit 1
+  fi
+  if ! command -v avdmanager >/dev/null 2>&1; then
+    echo "ERROR: avdmanager not found on PATH. Cannot proceed with --force recreation." >&2
     exit 1
   fi
   echo "Removing existing AVD $AVD_NAME (--force)..."

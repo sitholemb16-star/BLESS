@@ -19,10 +19,33 @@ export function createApp(): express.Application {
   // Unauthenticated routes — no body parsing needed.
   app.use(healthRouter);
 
-  // All /api/* routes require a valid Bearer token.
+  // All /api/* routes require a valid API key (see auth/middleware.ts).
   // express.json() is scoped here so unauthenticated requests never reach the
   // body parser and malformed bodies cannot produce stack traces on public paths.
   app.use("/api", requireApiKey, express.json(), provenanceRouter);
+
+  // JSON body-parse error handler — must declare all four parameters so Express
+  // recognises it as an error-handling middleware (not a regular route).
+  app.use(
+    (
+      err: unknown,
+      _req: express.Request,
+      res: express.Response,
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      _next: express.NextFunction,
+    ): void => {
+      if (
+        typeof err === "object" &&
+        err !== null &&
+        "type" in err &&
+        (err as { type: string }).type === "entity.parse.failed"
+      ) {
+        res.status(400).json({ error: "Invalid JSON in request body." });
+        return;
+      }
+      res.status(500).json({ error: "Internal server error." });
+    },
+  );
 
   // 404 fallback
   app.use((_req, res) => {

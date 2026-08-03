@@ -23,7 +23,8 @@ const CMP_KEY = "bless-auth-hmac-compare";
  */
 export function isApiKeyConfigured(): boolean {
   const key = process.env["API_KEY"];
-  return typeof key === "string" && key.trim().length > 0 && key === key.trim();
+  // Require non-empty printable ASCII — same character class as BEARER_RE.
+  return typeof key === "string" && /^[!-~]+$/.test(key);
 }
 
 /**
@@ -38,11 +39,11 @@ export function requireApiKey(
   res: Response,
   next: NextFunction,
 ): void {
-  const configured = process.env["API_KEY"];
-  if (!configured) {
+  if (!isApiKeyConfigured()) {
     res.status(503).json({ error: "API key not configured on this server." });
     return;
   }
+  const configured = process.env["API_KEY"]!; // safe: isApiKeyConfigured() verified it above
 
   const authHeader = req.headers["authorization"] ?? "";
   const match = BEARER_RE.exec(authHeader);

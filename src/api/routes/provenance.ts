@@ -30,6 +30,20 @@ router.get("/provenance", (_req: Request, res: Response) => {
   readFile(provenancePath, "utf8")
     .then((data) => {
       const parsed: unknown = JSON.parse(data);
+      // Validate required top-level fields before serving 200.
+      if (
+        typeof parsed !== "object" ||
+        parsed === null ||
+        !("generated_at" in parsed) ||
+        !("packages" in parsed) ||
+        !Array.isArray((parsed as Record<string, unknown>)["packages"])
+      ) {
+        res
+          .status(502)
+          .set("Cache-Control", "no-store")
+          .json({ error: "Provenance manifest schema mismatch." });
+        return;
+      }
       res.set("Cache-Control", "no-store").json(parsed);
     })
     .catch((err: NodeJS.ErrnoException) => {
